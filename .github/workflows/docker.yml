@@ -71,12 +71,7 @@ jobs:
       - name: Resolve bankstatementparser install spec for build
         id: pin
         run: |
-          REF="${{ github.head_ref || github.ref_name }}"
-          if [[ "$REF" == feat/* ]]; then
-            echo "spec=bankstatementparser @ git+https://github.com/sebastienrousseau/bankstatementparser@${REF}" >> "$GITHUB_OUTPUT"
-          else
-            echo "spec=bankstatementparser>=0.0.9" >> "$GITHUB_OUTPUT"
-          fi
+          echo "spec=bankstatementparser>=0.0.9" >> "$GITHUB_OUTPUT"
 
       - name: Build (and push on non-PR events)
         id: build

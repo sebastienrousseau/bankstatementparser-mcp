@@ -22,12 +22,7 @@ jobs:
       - name: Install bankstatementparser + this package + dev tools
         run: |
           python -m pip install --upgrade pip
-          REF="${{ github.head_ref || github.ref_name }}"
-          if [[ "$REF" == feat/* ]]; then
-            pip install "bankstatementparser @ git+https://github.com/sebastienrousseau/bankstatementparser@${REF}"
-          else
-            pip install "bankstatementparser>=0.0.9"
-          fi
+          pip install "bankstatementparser>=0.0.9"
           pip install -e .
           pip install pytest pytest-cov interrogate ruff black mypy types-jsonschema
 
