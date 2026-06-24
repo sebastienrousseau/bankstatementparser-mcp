@@ -111,6 +111,11 @@ def test_detect_format_failure() -> None:
         server.detect_format("<unknown/>", "mystery.xml")
 
 
+def test_detect_format_garbage_with_csv_hint() -> None:
+    """Garbage content with a ``.csv`` hint detects via the extension."""
+    assert server.detect_format("garbage nonsense", "statement.csv") == "csv"
+
+
 # --------------------------------------------------------------------------
 # parse_statement
 # --------------------------------------------------------------------------
@@ -144,6 +149,34 @@ def test_parse_statement_rejects_unknown_format() -> None:
         server.parse_statement(CSV, "statement.csv", format="nope")
 
 
+def test_parse_statement_limit_zero_returns_no_rows() -> None:
+    """A ``limit`` of 0 returns no rows but keeps the full count."""
+    result = server.parse_statement(CSV, "statement.csv", limit=0)
+    assert result["transaction_count"] == 2
+    assert result["transactions"] == []
+
+
+def test_parse_statement_limit_above_row_count() -> None:
+    """A ``limit`` larger than the row count returns every row."""
+    result = server.parse_statement(CSV, "statement.csv", limit=99)
+    assert result["transaction_count"] == 2
+    assert len(result["transactions"]) == 2
+
+
+def test_parse_statement_malformed_xml_raises() -> None:
+    """A malformed XML payload surfaces the parser's ValidationError."""
+    with pytest.raises(ValidationError):
+        server.parse_statement("<not valid xml", "statement.xml")
+
+
+def test_parse_statement_explicit_wrong_format() -> None:
+    """CSV content parsed as MT940 yields a structurally empty result."""
+    result = server.parse_statement(CSV, "statement.csv", format="mt940")
+    assert result["format"] == "mt940"
+    assert result["transaction_count"] == 0
+    assert result["transactions"] == []
+
+
 # --------------------------------------------------------------------------
 # validate_statement
 # --------------------------------------------------------------------------
@@ -168,6 +201,32 @@ def test_validate_statement_rejects_unknown_format() -> None:
     """An unsupported explicit format is rejected up front."""
     with pytest.raises(ValueError, match="Unsupported format 'nope'"):
         server.validate_statement(CSV, "statement.csv", format="nope")
+
+
+def test_validate_statement_malformed_xml_structured_error() -> None:
+    """Malformed XML is reported as a structured error, never raised."""
+    result = server.validate_statement("<not valid xml", "statement.xml")
+    assert result["is_valid"] is False
+    assert result["format"] is None
+    assert result["transaction_count"] == 0
+    assert isinstance(result["error"], str) and result["error"]
+
+
+def test_validate_statement_explicit_wrong_format() -> None:
+    """An explicit-but-wrong format keeps the resolved format on output."""
+    result = server.validate_statement(CSV, "statement.csv", format="mt940")
+    assert result["is_valid"] is True
+    assert result["format"] == "mt940"
+    assert result["transaction_count"] == 0
+
+
+# --------------------------------------------------------------------------
+# summarize_statement (garbage path)
+# --------------------------------------------------------------------------
+def test_summarize_statement_garbage_raises() -> None:
+    """An undetectable payload raises rather than returning a summary."""
+    with pytest.raises(ValidationError):
+        server.summarize_statement("<unknown/>", "mystery.xml")
 
 
 # --------------------------------------------------------------------------
