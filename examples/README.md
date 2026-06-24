@@ -12,6 +12,7 @@ python examples/<name>.py
 | [`01_mcp_tools.py`](01_mcp_tools.py) | Calling the MCP tools in-process — `list_supported_formats`, `detect_format`, and `parse_statement` |
 | [`02_validate_pipeline.py`](02_validate_pipeline.py) | Chaining `validate_statement` and `summarize_statement` to vet a statement before trusting it |
 | [`03_parse_bank_replies.py`](03_parse_bank_replies.py) | Detecting and parsing an inline SWIFT MT940 statement via the MCP tools |
+| [`04_resource_and_prompt.py`](04_resource_and_prompt.py) | Reading the `bankstatementparser://formats` resource and the `analyze_statement` prompt |
 
 The examples import directly from `bankstatementparser_mcp.server`, so
 install this package (and the core `bankstatementparser` library it

@@ -178,7 +178,22 @@ print(parsed["transaction_count"], parsed["columns"])
 print(summarize_statement(csv, "statement.csv"))
 ```
 
-See the [`examples/`](examples/) folder for runnable walkthroughs.
+The resource and prompt are plain functions too: `formats_resource`
+backs `bankstatementparser://formats`, and `analyze_statement` returns
+the guided multi-step prompt.
+
+```python
+from bankstatementparser_mcp.server import (
+    analyze_statement,
+    formats_resource,
+)
+
+print(formats_resource())          # the supported-formats catalogue
+print(analyze_statement("statement.csv"))  # the guided analysis prompt
+```
+
+See the [`examples/`](examples/) folder for runnable walkthroughs,
+including [`04_resource_and_prompt.py`](examples/04_resource_and_prompt.py).
 
 ---
 
@@ -216,7 +231,7 @@ A `Makefile` orchestrates the quality gates (kept in lockstep with CI):
 | `make type-check` | `mypy --strict` |
 | `make docs` | `interrogate --fail-under=100` (docstring coverage) |
 
-Current state (v0.0.1): **100% line + branch coverage** against a 100%
+Current state (v0.0.10): **100% line + branch coverage** against a 100%
 enforced floor, mypy `--strict` clean, interrogate 100%.
 
 ---

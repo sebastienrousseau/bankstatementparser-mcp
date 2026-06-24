@@ -5,7 +5,7 @@ the [bankstatementparser](https://github.com/sebastienrousseau/bankstatementpars
 library. The versions are **target** windows; releases ship when the
 gates pass, not on a calendar.
 
-## v0.0.1 - Initial release (current)
+## v0.0.10 - Initial release (current)
 
 - Five MCP tools mirroring the bankstatementparser parser core
   (format discovery, format detection, parsing, validation, summary).

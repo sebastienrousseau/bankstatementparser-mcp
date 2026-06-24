@@ -33,12 +33,7 @@ jobs:
       - name: Install bankstatementparser (from PyPI) + this package
         run: |
           python -m pip install --upgrade pip
-          REF="${{ github.head_ref || github.ref_name }}"
-          if [[ "$REF" == feat/* ]]; then
-            pip install "bankstatementparser @ git+https://github.com/sebastienrousseau/bankstatementparser@${REF}"
-          else
-            pip install "bankstatementparser>=0.0.9"
-          fi
+          pip install "bankstatementparser>=0.0.9"
           pip install -e .
           pip install pytest pytest-cov interrogate
 
@@ -76,12 +71,7 @@ jobs:
       - name: Install bankstatementparser (from PyPI) + this package
         run: |
           python -m pip install --upgrade pip
-          REF="${{ github.head_ref || github.ref_name }}"
-          if [[ "$REF" == feat/* ]]; then
-            pip install "bankstatementparser @ git+https://github.com/sebastienrousseau/bankstatementparser@${REF}"
-          else
-            pip install "bankstatementparser>=0.0.9"
-          fi
+          pip install "bankstatementparser>=0.0.9"
           pip install -e .
           pip install ruff black mypy types-jsonschema
 
@@ -110,16 +100,9 @@ jobs:
       - name: Install bankstatementparser (from PyPI) + this package
         run: |
           python -m pip install --upgrade pip
-          REF="${{ github.head_ref || github.ref_name }}"
-          if [[ "$REF" == feat/* ]]; then
-            pip install "bankstatementparser @ git+https://github.com/sebastienrousseau/bankstatementparser@${REF}"
-          else
-            pip install "bankstatementparser>=0.0.9"
-          fi
+          pip install "bankstatementparser>=0.0.9"
           pip install -e .
 
       - name: Run examples
         run: |
-          python examples/01_mcp_tools.py
-          python examples/02_validate_pipeline.py
-          python examples/03_parse_bank_replies.py
+          for f in examples/*.py; do echo "=== $f ==="; python "$f"; done

@@ -214,6 +214,7 @@ def test_analyze_statement_prompt() -> None:
         "examples/01_mcp_tools.py",
         "examples/02_validate_pipeline.py",
         "examples/03_parse_bank_replies.py",
+        "examples/04_resource_and_prompt.py",
     ],
 )
 def test_example_scripts_run_without_error(module_path: str) -> None:
