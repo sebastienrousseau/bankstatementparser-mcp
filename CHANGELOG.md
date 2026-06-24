@@ -53,5 +53,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     `bankstatementparser_mcp/server.py`.
   - `interrogate --fail-under=100` for module and function docstring
     coverage.
+- **Runnable examples** under `examples/` covering every tool, the
+  `bankstatementparser://formats` resource (`formats_resource`), and the
+  `analyze_statement` prompt — each self-contained (inline fixtures, no
+  network) and exercised by the test suite.
+- **Documentation regression suite** keeping the docs honest:
+  - `tests/test_docs_accuracy.py` asserts the README, CHANGELOG, and
+    `examples/README.md` match the live tool/resource/prompt registry,
+    the package version, and the supported-format set.
+  - `tests/test_regression_examples.py` runs every `examples/*.py` as a
+    subprocess and asserts a clean exit.
+  - `tests/test_regression_docs.py` executes every fenced ``python``
+    block in the README (and `docs/*.md`) so no documented example can
+    silently rot.
 
 [0.0.1]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.1

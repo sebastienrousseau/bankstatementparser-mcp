@@ -135,7 +135,7 @@ def _summary_to_jsonable(summary: dict[str, Any]) -> dict[str, Any]:
     """
     jsonable: dict[str, Any] = {}
     for key, value in summary.items():
-        if value is None or isinstance(value, (str, int, bool)):
+        if value is None or isinstance(value, str | int | bool):
             jsonable[key] = value
         else:
             jsonable[key] = str(value)
