@@ -1,0 +1,5 @@
+# Safety CLI policy. bankstatementparser-mcp has a small dependency tree
+# (jsonschema, mcp, bankstatementparser + its transitive deps); pin known false
+# positives here with an expiry so they don't go stale.
+security:
+  ignore-vulnerabilities: {}
