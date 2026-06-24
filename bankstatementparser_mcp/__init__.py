@@ -19,4 +19,4 @@ Install with ``pip install bankstatementparser-mcp`` and run
 ``bankstatementparser-mcp`` (stdio transport).
 """
 
-__version__ = "0.0.1"
+__version__ = "0.0.10"
