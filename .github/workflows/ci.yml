@@ -106,3 +106,41 @@ jobs:
       - name: Run examples
         run: |
           for f in examples/*.py; do echo "=== $f ==="; python "$f"; done
+
+  smoke:
+    name: Smoke test (installed wheel)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      # Build the wheel and install it into a *clean* virtualenv so the
+      # only code on sys.path is the installed artifact (the source tree
+      # is deliberately excluded). This pulls bankstatementparser + mcp
+      # from PyPI and catches packaging / CI-vs-local divergence.
+      - name: Build the wheel
+        run: |
+          python -m pip install --upgrade pip
+          pip install build
+          python -m build
+
+      - name: Install the wheel into a clean venv
+        run: |
+          python -m venv "$RUNNER_TEMP/smoke"
+          "$RUNNER_TEMP/smoke/bin/pip" install --upgrade pip
+          "$RUNNER_TEMP/smoke/bin/pip" install dist/*.whl
+
+      - name: Verify the installed artifact
+        run: |
+          "$RUNNER_TEMP/smoke/bin/python" -c "import bankstatementparser_mcp; print(bankstatementparser_mcp.__version__)"
+
+      - name: Run an example against the installed package
+        run: |
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/smoke/bin/python" "$GITHUB_WORKSPACE/examples/01_mcp_tools.py"

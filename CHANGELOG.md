@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.11] - 2026-06-24
+
+### Added
+
+- **End-to-end install smoke test** - a new `smoke` job in `ci.yml`
+  ("Smoke test (installed wheel)") builds the wheel, installs it into a
+  clean virtual environment (pulling `bankstatementparser` and `mcp`
+  from PyPI), then imports the **installed** package and runs an example
+  from a neutral working directory so the source tree is not on
+  `sys.path`. This catches packaging and CI-vs-local divergence.
+- **Expanded edge-case tests** keeping the 100% line + branch coverage
+  honest: garbage/malformed payloads across the detect/parse/validate
+  paths, the `limit` parameter at its boundaries (`0` and larger than
+  the row count), an explicit-but-wrong `format`, and confirmation that
+  `validate_statement` returns a structured `{"is_valid": false, ...}`
+  error rather than raising.
+
+### Changed
+
+- **Pruned over-scaffolding CI** - removed the `nightly.yml` and
+  `docs.yml` workflows (redundant for a small thin-adapter package);
+  the kept workflows (`ci.yml`, `pr.yml`, `codeql.yml`, `security.yml`,
+  `release.yml`, `docker.yml`) already cover the full quality posture.
+
 ## [0.0.10] - 2026-06-24
 
 ### Added
@@ -67,4 +91,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     block in the README (and `docs/*.md`) so no documented example can
     silently rot.
 
+[0.0.11]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.11
 [0.0.10]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.10
