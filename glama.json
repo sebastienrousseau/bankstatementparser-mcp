@@ -4,7 +4,7 @@
   "title": "bankstatementparser-mcp",
   "display_name": "BankStatementParser MCP",
   "description": "Model Context Protocol server for the bankstatementparser bank statement parsing library. Exposes five tools spanning format discovery, format detection, statement parsing into structured transactions, dry-run validation, and statement summaries across ISO 20022 CAMT.053, pain.001, SWIFT MT940, OFX, QFX, and CSV inputs. 100% line + branch coverage.",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "repository": "https://github.com/sebastienrousseau/bankstatementparser-mcp",
   "homepage": "https://bankstatementparser.com",
   "license": "Apache-2.0",
@@ -34,6 +34,6 @@
   },
   "installation": {
     "pip": "pip install bankstatementparser-mcp",
-    "docker": "docker run --rm -i ghcr.io/sebastienrousseau/bankstatementparser-mcp:0.0.11"
+    "docker": "docker run --rm -i ghcr.io/sebastienrousseau/bankstatementparser-mcp:0.0.12"
   }
 }
