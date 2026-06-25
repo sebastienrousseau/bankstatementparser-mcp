@@ -69,8 +69,21 @@ def _run_example(script: Path, timeout: int = 180) -> str:
 
 
 def test_examples_discovered() -> None:
-    """At least one runnable example exists to regress against."""
+    """Every ``examples/*.py`` on disk is in the regressed set.
+
+    Guards against an example being silently dropped from the suite:
+    the discovered set must equal the on-disk set exactly (no skips),
+    and there must be at least one to regress against.
+    """
     assert EXAMPLE_SCRIPTS, "no examples/*.py scripts discovered"
+    on_disk = {
+        py for py in EXAMPLES_DIR.glob("*.py") if "__pycache__" not in str(py)
+    }
+    assert set(EXAMPLE_SCRIPTS) == on_disk, (
+        "discovered example set drifted from on-disk *.py files: "
+        f"missing={sorted(p.name for p in on_disk - set(EXAMPLE_SCRIPTS))} "
+        f"extra={sorted(p.name for p in set(EXAMPLE_SCRIPTS) - on_disk)}"
+    )
 
 
 @pytest.mark.parametrize(
