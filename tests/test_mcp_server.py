@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import importlib.util
 from pathlib import Path
+from unittest import mock
 
 import pytest
 
@@ -265,22 +266,42 @@ def test_analyze_statement_prompt() -> None:
 
 
 # --------------------------------------------------------------------------
+# main (console-script entry point)
+# --------------------------------------------------------------------------
+def test_main_runs_the_server() -> None:
+    """``main`` delegates straight to the FastMCP stdio run loop."""
+    with mock.patch.object(server.mcp, "run") as run:
+        server.main()
+    run.assert_called_once_with()
+
+
+# --------------------------------------------------------------------------
 # example scripts
 # --------------------------------------------------------------------------
-@pytest.mark.parametrize(
-    "module_path",
-    [
-        "examples/01_mcp_tools.py",
-        "examples/02_validate_pipeline.py",
-        "examples/03_parse_bank_replies.py",
-        "examples/04_resource_and_prompt.py",
-    ],
+_EXAMPLES_DIR = Path(__file__).resolve().parents[1] / "examples"
+_EXAMPLE_SCRIPTS = sorted(
+    py for py in _EXAMPLES_DIR.glob("*.py") if "__pycache__" not in str(py)
 )
-def test_example_scripts_run_without_error(module_path: str) -> None:
+
+
+def test_every_example_script_is_collected() -> None:
+    """The in-process example set equals the on-disk ``*.py`` set."""
+    on_disk = {
+        py for py in _EXAMPLES_DIR.glob("*.py") if "__pycache__" not in str(py)
+    }
+    assert _EXAMPLE_SCRIPTS, "no examples/*.py scripts discovered"
+    assert set(_EXAMPLE_SCRIPTS) == on_disk
+
+
+@pytest.mark.parametrize(
+    "script",
+    _EXAMPLE_SCRIPTS,
+    ids=[p.name for p in _EXAMPLE_SCRIPTS],
+)
+def test_example_scripts_run_without_error(script: Path) -> None:
     """Each example script imports and runs end-to-end."""
-    path = Path(__file__).resolve().parents[1] / module_path
     spec = importlib.util.spec_from_file_location(
-        f"_example_{path.stem}", path
+        f"_example_{script.stem}", script
     )
     assert spec is not None
     assert spec.loader is not None

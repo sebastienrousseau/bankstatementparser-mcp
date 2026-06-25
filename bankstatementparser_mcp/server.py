@@ -325,7 +325,7 @@ def analyze_statement(filename: str = "statement.xml") -> str:
     )
 
 
-def main() -> None:  # pragma: no cover - process entry point
+def main() -> None:
     """Run the BankStatementParser MCP server over stdio."""
     mcp.run()
 
