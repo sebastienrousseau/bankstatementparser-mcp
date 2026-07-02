@@ -144,5 +144,7 @@ Suite. No functional or API changes.
     block in the README (and `docs/*.md`) so no documented example can
     silently rot.
 
+[0.0.13]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.13
+[0.0.12]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.12
 [0.0.11]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.11
 [0.0.10]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.10
