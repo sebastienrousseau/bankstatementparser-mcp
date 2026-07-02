@@ -271,6 +271,12 @@ who have helped build `bankstatementparser-mcp`.
 
 ---
 
+## MCP Registry
+
+`mcp-name: io.github.sebastienrousseau/bankstatementparser-mcp`
+
+---
+
 ## License
 
 Licensed under the [Apache License, Version 2.0](https://opensource.org/license/apache-2-0/).
