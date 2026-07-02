@@ -5,6 +5,53 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.13] - 2026-07-02
+
+The **discoverability** cut. Registers `bankstatementparser-mcp` with
+the official Model Context Protocol Registry, adds MCP-spec
+conformance CI, and positions the server as part of the ISO 20022 MCP
+Suite. No functional or API changes.
+
+### Added
+
+- **Official MCP Registry integration.** `bankstatementparser-mcp` is
+  now registered with the official Model Context Protocol Registry
+  (`registry.modelcontextprotocol.io`) as
+  `io.github.sebastienrousseau/bankstatementparser-mcp`. A new
+  `server.json` at the repo root provides the registry metadata (PyPI
+  package identifier, stdio transport), and the README carries an
+  `mcp-name: io.github.sebastienrousseau/bankstatementparser-mcp`
+  marker that the registry uses to verify PyPI package ownership.
+- **Auto-publish workflow** (`.github/workflows/publish-mcp.yml`).
+  Authenticates to the MCP Registry via GitHub OIDC (no secrets
+  required) on every `v*.*.*` tag push, syncs the tag version into
+  `server.json`, and runs `mcp-publisher publish`. Registry metadata
+  now stays in lockstep with each PyPI release automatically.
+- **Protocol conformance CI** (`.github/workflows/mcp-inspect.yml`).
+  Runs `@modelcontextprotocol/inspector --cli` against `tools/list`
+  on every push and PR. Green run is the spec-compliance evidence
+  bank buyers routinely ask for.
+- **Suite discoverability.** The README now cross-links the sibling
+  banking MCP servers under a "Related MCP Servers" section,
+  positioning `bankstatementparser-mcp` as part of the ISO 20022 MCP
+  Suite alongside `pain001-mcp`, `camt053-mcp`, `acmt001-mcp`, and
+  `noyalib-mcp`.
+
+### Changed
+
+- GitHub repository description and topics refreshed: description now
+  positions the server as part of the ISO 20022 MCP Suite; topics
+  extended with `mcp`, `mcp-server`, `model-context-protocol`, `iso20022`,
+  `camt053`, `mt940`, `ofx`, `bank-statement`, `banking`, `fintech`,
+  `financial-services`, `claude`, `ai-agents`, `python`,
+  `bankstatementparser` (topics were empty before).
+- Glama manifest version bumped to `0.0.13`.
+
+### No functional / API changes
+
+- Same 5 MCP tools as v0.0.12. This release is metadata, CI, and
+  discoverability only.
+
 ## [0.0.12] - 2026-06-25
 
 ### Changed
