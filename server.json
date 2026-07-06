@@ -1,0 +1,20 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.sebastienrousseau/bankstatementparser-mcp",
+  "description": "MCP server for parsing bank statements in BAI2 and MT942 formats, exposing structured financial data to AI agents.",
+  "repository": {
+    "url": "https://github.com/sebastienrousseau/bankstatementparser-mcp",
+    "source": "github"
+  },
+  "version": "0.0.13",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "bankstatementparser-mcp",
+      "version": "0.0.13",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

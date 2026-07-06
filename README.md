@@ -231,7 +231,7 @@ A `Makefile` orchestrates the quality gates (kept in lockstep with CI):
 | `make type-check` | `mypy --strict` |
 | `make docs` | `interrogate --fail-under=100` (docstring coverage) |
 
-Current state (v0.0.12): **100% line + branch coverage** against a 100%
+Current state (v0.0.13): **100% line + branch coverage** against a 100%
 enforced floor, mypy `--strict` clean, interrogate 100%.
 
 ---
@@ -268,6 +268,25 @@ Contributions are welcome — see the
 Thanks to all the
 [contributors](https://github.com/sebastienrousseau/bankstatementparser-mcp/graphs/contributors)
 who have helped build `bankstatementparser-mcp`.
+
+---
+
+## Related MCP Servers
+
+Part of the **ISO 20022 MCP Suite** — open-source, Apache-2.0 licensed MCP servers for banking and financial-services AI agents:
+
+| Server | Purpose |
+|---|---|
+| [`pain001-mcp`](https://github.com/sebastienrousseau/pain001-mcp) | Generate & validate ISO 20022 pain.001 payment initiation files (Customer Credit Transfer) |
+| [`camt053-mcp`](https://github.com/sebastienrousseau/camt053-mcp) | Parse & reconcile ISO 20022 camt.053 bank-to-customer statements — CBPR+/HVPS+ ready |
+| [`acmt001-mcp`](https://github.com/sebastienrousseau/acmt001-mcp) | Generate & validate ISO 20022 acmt.001 account management messages |
+| [`noyalib-mcp`](https://github.com/sebastienrousseau/noyalib) | Lossless YAML 1.2 parsing, formatting & validation (Rust, 100% spec compliance) |
+
+---
+
+## MCP Registry
+
+`mcp-name: io.github.sebastienrousseau/bankstatementparser-mcp`
 
 ---
 
