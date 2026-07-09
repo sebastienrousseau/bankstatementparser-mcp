@@ -42,8 +42,39 @@ from bankstatementparser.additional_parsers import (
     detect_statement_format,
 )
 from mcp.server.fastmcp import FastMCP
+from mcp.types import ToolAnnotations
 
 mcp = FastMCP("bankstatementparser")
+
+# Shared MCP tool annotations. Every tool in this server is a pure,
+# side-effect-free reader: it takes the statement text **inline** as an
+# argument, materialises it in a private, server-controlled temporary
+# file for the duration of one call, and returns JSON-serialisable data.
+# None of them read a caller-supplied filesystem path, mutate state, or
+# write any output the caller can observe, so all are marked
+# ``readOnlyHint`` + ``idempotentHint`` and never ``destructiveHint``.
+#
+# The only axis that would ever vary is ``openWorldHint`` — whether a
+# tool reaches out to an arbitrary, caller-controlled path or external
+# system. These tools do not (the temp file is closed-world and
+# deterministic over the input), so every tool uses ``_PURE_READ``.
+# ``_FS_READ`` is kept as the shared vocabulary for any future tool that
+# opens a caller-supplied path.
+#
+# These hints let MCP clients (and the Glama quality grader) reason about
+# safety, caching, and auto-approval without executing the tool.
+_PURE_READ = ToolAnnotations(
+    readOnlyHint=True,
+    destructiveHint=False,
+    idempotentHint=True,
+    openWorldHint=False,
+)
+_FS_READ = ToolAnnotations(
+    readOnlyHint=True,
+    destructiveHint=False,
+    idempotentHint=True,
+    openWorldHint=True,
+)
 
 _FORMAT_SUFFIX: dict[str, str] = {
     "camt": ".xml",
@@ -142,9 +173,14 @@ def _summary_to_jsonable(summary: dict[str, Any]) -> dict[str, Any]:
     return jsonable
 
 
-@mcp.tool()
+@mcp.tool(title="List supported statement formats", annotations=_PURE_READ)
 def list_supported_formats() -> list[str]:
-    """List every bank statement format the parser can read.
+    """List every bank statement format identifier this server can parse.
+
+    Use this first to discover the valid ``format`` strings before calling
+    ``detect_format`` or ``parse_statement``. For the file extensions and a
+    human-readable description of each format, read the
+    ``bankstatementparser://formats`` resource instead.
 
     Returns:
         The supported format identifiers.
@@ -152,9 +188,14 @@ def list_supported_formats() -> list[str]:
     return list(_FORMAT_SUFFIX)
 
 
-@mcp.tool()
+@mcp.tool(title="Detect statement format", annotations=_PURE_READ)
 def detect_format(content: str, filename: str = "statement.xml") -> str:
-    """Detect which statement format a payload is.
+    """Detect which bank statement format an inline payload is.
+
+    Use this when you hold statement text but do not yet know its format,
+    to resolve the ``format`` identifier from the content plus filename
+    hint. Once the format is known, call ``parse_statement`` to read the
+    transactions instead of calling this again.
 
     Args:
         content: The raw statement text.
@@ -171,14 +212,21 @@ def detect_format(content: str, filename: str = "statement.xml") -> str:
         return detect_statement_format(path)
 
 
-@mcp.tool()
+@mcp.tool(
+    title="Parse statement transactions and summary", annotations=_PURE_READ
+)
 def parse_statement(
     content: str,
     filename: str = "statement.xml",
     format: str | None = None,
     limit: int | None = None,
 ) -> dict[str, Any]:
-    """Parse a statement into structured transactions and a summary.
+    """Parse an inline statement payload into transaction rows and a summary.
+
+    Use this to read the full transaction detail plus the statement
+    balances from a payload. When you only need the balances/totals use
+    ``summarize_statement`` instead, and to merely confirm a payload parses
+    without returning any rows use ``validate_statement``.
 
     Args:
         content: The raw statement text.
@@ -218,13 +266,18 @@ def parse_statement(
         }
 
 
-@mcp.tool()
+@mcp.tool(title="Validate statement (dry run)", annotations=_PURE_READ)
 def validate_statement(
     content: str,
     filename: str = "statement.xml",
     format: str | None = None,
 ) -> dict[str, Any]:
-    """Check whether a statement parses cleanly (a dry run).
+    """Dry-run parse an inline statement to check it parses cleanly.
+
+    Use this to confirm a payload is well-formed and parseable before
+    committing to a full read; it returns a structured pass/fail with the
+    transaction count but never the rows themselves, and never raises on a
+    parse error. To actually read the transactions use ``parse_statement``.
 
     Args:
         content: The raw statement text.
@@ -258,13 +311,18 @@ def validate_statement(
         }
 
 
-@mcp.tool()
+@mcp.tool(title="Summarize statement balances", annotations=_PURE_READ)
 def summarize_statement(
     content: str,
     filename: str = "statement.xml",
     format: str | None = None,
 ) -> dict[str, Any]:
-    """Return only the statement summary (no per-transaction rows).
+    """Summarize an inline statement's balances and totals only.
+
+    Use this when you need just the opening/closing balances, currency, and
+    other summary fields without the per-transaction rows. For the full
+    transaction detail alongside the summary, use ``parse_statement``
+    instead.
 
     Args:
         content: The raw statement text.
@@ -285,7 +343,9 @@ def summarize_statement(
         return _summary_to_jsonable(dict(parser.get_summary()))
 
 
-@mcp.resource("bankstatementparser://formats")
+@mcp.resource(
+    "bankstatementparser://formats", title="Supported formats catalogue"
+)
 def formats_resource() -> str:
     """Describe each supported statement format and its file extensions.
 
@@ -305,7 +365,7 @@ def formats_resource() -> str:
     return "\n".join(lines)
 
 
-@mcp.prompt()
+@mcp.prompt(title="Analyse a bank statement")
 def analyze_statement(filename: str = "statement.xml") -> str:
     """Guided prompt for reading and reconciling a bank statement.
 
