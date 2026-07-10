@@ -86,6 +86,28 @@ _FORMAT_SUFFIX: dict[str, str] = {
     "mt940": ".mt940",
 }
 
+# Enumerated value list for the ``format`` MCP parameter. Surfacing the
+# concrete allowed values as a JSON Schema ``enum`` (and in the description)
+# lets clients — and the Glama TDQS grader — see the valid inputs without a
+# tool call. Derived from ``_FORMAT_SUFFIX`` (the parser source of truth) so
+# it never drifts. The enum is schema metadata only; ``_require_format``
+# remains the runtime guard.
+_FORMAT_VALUES: list[str] = sorted(_FORMAT_SUFFIX)
+_FORMAT_LIST = ", ".join(f"'{v}'" for v in _FORMAT_VALUES)
+
+_Format = Annotated[
+    str | None,
+    Field(
+        description=(
+            "Explicit format identifier that overrides detection from the "
+            "filename. Must be exactly one of: "
+            f"{_FORMAT_LIST} (see list_supported_formats). When omitted, the "
+            "format is inferred from the filename extension."
+        ),
+        json_schema_extra={"enum": _FORMAT_VALUES},
+    ),
+]
+
 
 def _require_format(format_name: str) -> None:
     """Reject an unsupported statement format.
@@ -260,17 +282,7 @@ def parse_statement(
             ),
         ),
     ] = "statement.xml",
-    format: Annotated[
-        str | None,
-        Field(
-            description=(
-                "Explicit format identifier that overrides detection "
-                "from the filename. One of: 'camt' (CAMT.053), "
-                "'pain001', 'csv', 'ofx', 'qfx', 'mt940'. When omitted, "
-                "the format is inferred from the filename extension."
-            ),
-        ),
-    ] = None,
+    format: _Format = None,
     limit: Annotated[
         int | None,
         Field(
@@ -351,17 +363,7 @@ def validate_statement(
             ),
         ),
     ] = "statement.xml",
-    format: Annotated[
-        str | None,
-        Field(
-            description=(
-                "Explicit format identifier that overrides detection "
-                "from the filename. One of: 'camt' (CAMT.053), "
-                "'pain001', 'csv', 'ofx', 'qfx', 'mt940'. When omitted, "
-                "the format is inferred from the filename extension."
-            ),
-        ),
-    ] = None,
+    format: _Format = None,
 ) -> dict[str, Any]:
     """Dry-run parse an inline statement to check it parses cleanly.
 
@@ -425,17 +427,7 @@ def summarize_statement(
             ),
         ),
     ] = "statement.xml",
-    format: Annotated[
-        str | None,
-        Field(
-            description=(
-                "Explicit format identifier that overrides detection "
-                "from the filename. One of: 'camt' (CAMT.053), "
-                "'pain001', 'csv', 'ofx', 'qfx', 'mt940'. When omitted, "
-                "the format is inferred from the filename extension."
-            ),
-        ),
-    ] = None,
+    format: _Format = None,
 ) -> dict[str, Any]:
     """Summarize an inline statement's balances and totals only.
 
