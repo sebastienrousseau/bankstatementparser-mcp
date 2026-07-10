@@ -35,7 +35,7 @@ import tempfile
 from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Any
+from typing import Annotated, Any
 
 from bankstatementparser.additional_parsers import (
     create_parser,
@@ -43,6 +43,7 @@ from bankstatementparser.additional_parsers import (
 )
 from mcp.server.fastmcp import FastMCP
 from mcp.types import ToolAnnotations
+from pydantic import Field
 
 mcp = FastMCP("bankstatementparser")
 
@@ -189,7 +190,29 @@ def list_supported_formats() -> list[str]:
 
 
 @mcp.tool(title="Detect statement format", annotations=_PURE_READ)
-def detect_format(content: str, filename: str = "statement.xml") -> str:
+def detect_format(
+    content: Annotated[
+        str,
+        Field(
+            description=(
+                "The raw statement text to inspect, inline (not a file "
+                "path). Supported formats include ISO 20022 CAMT.053 and "
+                "pain.001 XML, SWIFT MT940, CSV exports, and OFX/QFX."
+            ),
+        ),
+    ],
+    filename: Annotated[
+        str,
+        Field(
+            description=(
+                "Original filename of the payload; its extension is the "
+                "primary detection hint. Recognised extensions: .xml, "
+                ".csv, .ofx, .qfx, .mt940, .sta. Defaults to "
+                "'statement.xml'."
+            ),
+        ),
+    ] = "statement.xml",
+) -> str:
     """Detect which bank statement format an inline payload is.
 
     Use this when you hold statement text but do not yet know its format,
@@ -216,10 +239,49 @@ def detect_format(content: str, filename: str = "statement.xml") -> str:
     title="Parse statement transactions and summary", annotations=_PURE_READ
 )
 def parse_statement(
-    content: str,
-    filename: str = "statement.xml",
-    format: str | None = None,
-    limit: int | None = None,
+    content: Annotated[
+        str,
+        Field(
+            description=(
+                "The raw statement text to parse, inline (not a file "
+                "path). Accepts ISO 20022 CAMT.053 and pain.001 XML, "
+                "SWIFT MT940, CSV exports, and OFX/QFX payloads."
+            ),
+        ),
+    ],
+    filename: Annotated[
+        str,
+        Field(
+            description=(
+                "Original filename of the payload; its extension "
+                "(.xml, .csv, .ofx, .qfx, .mt940, .sta) selects the "
+                "format when 'format' is omitted. Defaults to "
+                "'statement.xml'."
+            ),
+        ),
+    ] = "statement.xml",
+    format: Annotated[
+        str | None,
+        Field(
+            description=(
+                "Explicit format identifier that overrides detection "
+                "from the filename. One of: 'camt' (CAMT.053), "
+                "'pain001', 'csv', 'ofx', 'qfx', 'mt940'. When omitted, "
+                "the format is inferred from the filename extension."
+            ),
+        ),
+    ] = None,
+    limit: Annotated[
+        int | None,
+        Field(
+            description=(
+                "Optional maximum number of transaction rows to return. "
+                "The full 'transaction_count' is always reported even "
+                "when the returned rows are truncated. When omitted, all "
+                "rows are returned."
+            ),
+        ),
+    ] = None,
 ) -> dict[str, Any]:
     """Parse an inline statement payload into transaction rows and a summary.
 
@@ -268,9 +330,38 @@ def parse_statement(
 
 @mcp.tool(title="Validate statement (dry run)", annotations=_PURE_READ)
 def validate_statement(
-    content: str,
-    filename: str = "statement.xml",
-    format: str | None = None,
+    content: Annotated[
+        str,
+        Field(
+            description=(
+                "The raw statement text to validate, inline (not a file "
+                "path). Accepts ISO 20022 CAMT.053 and pain.001 XML, "
+                "SWIFT MT940, CSV exports, and OFX/QFX payloads."
+            ),
+        ),
+    ],
+    filename: Annotated[
+        str,
+        Field(
+            description=(
+                "Original filename of the payload; its extension "
+                "(.xml, .csv, .ofx, .qfx, .mt940, .sta) selects the "
+                "format when 'format' is omitted. Defaults to "
+                "'statement.xml'."
+            ),
+        ),
+    ] = "statement.xml",
+    format: Annotated[
+        str | None,
+        Field(
+            description=(
+                "Explicit format identifier that overrides detection "
+                "from the filename. One of: 'camt' (CAMT.053), "
+                "'pain001', 'csv', 'ofx', 'qfx', 'mt940'. When omitted, "
+                "the format is inferred from the filename extension."
+            ),
+        ),
+    ] = None,
 ) -> dict[str, Any]:
     """Dry-run parse an inline statement to check it parses cleanly.
 
@@ -313,9 +404,38 @@ def validate_statement(
 
 @mcp.tool(title="Summarize statement balances", annotations=_PURE_READ)
 def summarize_statement(
-    content: str,
-    filename: str = "statement.xml",
-    format: str | None = None,
+    content: Annotated[
+        str,
+        Field(
+            description=(
+                "The raw statement text to summarize, inline (not a "
+                "file path). Accepts ISO 20022 CAMT.053 and pain.001 "
+                "XML, SWIFT MT940, CSV exports, and OFX/QFX payloads."
+            ),
+        ),
+    ],
+    filename: Annotated[
+        str,
+        Field(
+            description=(
+                "Original filename of the payload; its extension "
+                "(.xml, .csv, .ofx, .qfx, .mt940, .sta) selects the "
+                "format when 'format' is omitted. Defaults to "
+                "'statement.xml'."
+            ),
+        ),
+    ] = "statement.xml",
+    format: Annotated[
+        str | None,
+        Field(
+            description=(
+                "Explicit format identifier that overrides detection "
+                "from the filename. One of: 'camt' (CAMT.053), "
+                "'pain001', 'csv', 'ofx', 'qfx', 'mt940'. When omitted, "
+                "the format is inferred from the filename extension."
+            ),
+        ),
+    ] = None,
 ) -> dict[str, Any]:
     """Summarize an inline statement's balances and totals only.
 
@@ -366,7 +486,18 @@ def formats_resource() -> str:
 
 
 @mcp.prompt(title="Analyse a bank statement")
-def analyze_statement(filename: str = "statement.xml") -> str:
+def analyze_statement(
+    filename: Annotated[
+        str,
+        Field(
+            description=(
+                "The statement filename being analysed; its extension "
+                "(.xml, .csv, .ofx, .qfx, .mt940, .sta) hints at the "
+                "format. Defaults to 'statement.xml'."
+            ),
+        ),
+    ] = "statement.xml",
+) -> str:
     """Guided prompt for reading and reconciling a bank statement.
 
     Args:
