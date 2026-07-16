@@ -32,6 +32,7 @@
 **Getting started**
 
 - [What is bankstatementparser-mcp?](#what-is-bankstatementparser-mcp) — the problem it solves
+- [The ISO 20022 MCP Suite](#the-iso-20022-mcp-suite) — the four coordinated servers and when to use each
 - [Install](#install) — PyPI, virtualenv, Docker
 - [Quick start](#quick-start) — register with Claude Desktop in 30 seconds
 
@@ -76,6 +77,32 @@ duration of a single call. Tools return JSON-serialisable data.
 | Format detection | `detect_format` mirrors the library's `detect_statement_format` |
 | Validation | `validate_statement` is a dry run that returns structured results |
 | Isolation | Each call writes to a private temp file that is deleted on exit |
+
+---
+
+## The ISO 20022 MCP Suite
+
+`bankstatementparser-mcp` is the **ingestion layer** of four coordinated,
+vendor-neutral MCP servers that together cover the ISO 20022
+bank-statement workflow — statement depth, whole-catalogue routing,
+reconciliation, and multi-format ingestion. Dependency ranges are kept
+aligned across the suite, so the servers co-install cleanly in a single
+Python environment: start with one, add the rest as your workflow grows.
+
+| Server | Scope | Surface | Install | Use it when |
+| :--- | :--- | :--- | :--- | :--- |
+| [`camt053-mcp`](https://github.com/sebastienrousseau/camt053-mcp) | ISO 20022 `camt.053`/`camt.052` bank statements: parse, validate, filter, reverse; MT940/MT942 migration; CBPR+ readiness; journal export | 22 MCP tools · 4 prompts · 3 resources | `pip install camt053-mcp` | You work with bank-to-customer statements end to end — the suite's flagship |
+| [`iso20022-mcp`](https://github.com/sebastienrousseau/iso20022-mcp) | Unified gateway: `search` / `describe` / `validate` / `generate` / `parse` meta-tools routed across the `pain` · `pacs` · `camt` · `acmt` families | 7 meta-tools | `pip install "iso20022-mcp[all]"` | You want one entry point to every message family |
+| [`reconcile-mcp`](https://github.com/sebastienrousseau/reconcile-mcp) | Matches expected `pain.001` payments against observed `camt.053` entries — exact, partial, one-to-many, many-to-one, every match scored and explained | 7 MCP tools | `pip install reconcile-mcp` | You need explainable statement/payment reconciliation |
+| [`bankstatementparser-mcp`](#install) | Multi-format statement ingestion: ISO 20022 CAMT.053 and pain.001, SWIFT MT940, OFX/QFX, CSV | 5 MCP tools · 1 prompt · 1 resource | `pip install bankstatementparser-mcp` | Your statements arrive in mixed or legacy formats — **this package** |
+
+In one line each: **`camt053-mcp`** is the bank-statement flagship
+(deepest camt.05x surface, stdio + authenticated streamable HTTP);
+**`iso20022-mcp`** is the generic message toolkit (a handful of verbs
+over the whole catalogue); **`reconcile-mcp`** is the reconciliation
+workflow (did the money we expected actually arrive?); and
+**`bankstatementparser-mcp`** is the ingestion layer (many formats in,
+one transaction shape out).
 
 ---
 
@@ -273,13 +300,15 @@ who have helped build `bankstatementparser-mcp`.
 
 ## Related MCP Servers
 
-Part of the **ISO 20022 MCP Suite** — open-source, Apache-2.0 licensed MCP servers for banking and financial-services AI agents:
+The four core servers of the **ISO 20022 MCP Suite** are compared in
+[The ISO 20022 MCP Suite](#the-iso-20022-mcp-suite) above. The wider
+family — open-source, Apache-2.0 licensed MCP servers for banking and
+financial-services AI agents — also includes:
 
 | Server | Purpose |
 |---|---|
 | [`pain001-mcp`](https://github.com/sebastienrousseau/pain001-mcp) | Generate & validate ISO 20022 pain.001 payment files (v03–v12, pain.008, SEPA) with rulebook checks |
 | [`pacs008-mcp`](https://github.com/sebastienrousseau/pacs008-mcp) | Generate, validate, parse & scheme-check ISO 20022 pacs.008 FI-to-FI credit transfers + Nov-2026 address linting |
-| [`camt053-mcp`](https://github.com/sebastienrousseau/camt053-mcp) | Parse & reconcile ISO 20022 camt.053 bank-to-customer statements — CBPR+/HVPS+ ready |
 | [`acmt001-mcp`](https://github.com/sebastienrousseau/acmt001-mcp) | Generate & validate ISO 20022 acmt account-management messages |
 | [`noyalib-mcp`](https://github.com/sebastienrousseau/noyalib) | Lossless YAML 1.2 parsing, formatting & validation (Rust, 100% spec compliance) |
 
