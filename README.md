@@ -154,20 +154,16 @@ launched by an MCP client, not used interactively.
 All tools delegate to the `bankstatementparser` parser core, so they
 behave identically to the library.
 
-| Tool | Purpose |
-| :--- | :--- |
-| `list_supported_formats` | List every bank statement format the parser can read |
-| `detect_format` | Detect which statement format an inline payload is |
-| `parse_statement` | Parse a statement into structured transactions plus a summary |
-| `validate_statement` | Dry-run check whether a statement parses cleanly |
-| `summarize_statement` | Return only the statement summary (no per-transaction rows) |
+- `list_supported_formats` — List every bank statement format the parser can read
+- `detect_format` — Detect which statement format an inline payload is
+- `parse_statement` — Parse a statement into structured transactions plus a summary
+- `validate_statement` — Dry-run check whether a statement parses cleanly
+- `summarize_statement` — Return only the statement summary (no per-transaction rows)
 
 Plus one resource and one prompt:
 
-| Kind | Name | Purpose |
-| :--- | :--- | :--- |
-| Resource | `bankstatementparser://formats` | Read-only catalogue of supported formats and their file extensions |
-| Prompt | `analyze_statement` | Guided multi-step prompt that walks an agent through reading and reconciling a statement |
+- Resource `bankstatementparser://formats` — Read-only catalogue of supported formats and their file extensions
+- Prompt `analyze_statement` — Guided multi-step prompt that walks an agent through reading and reconciling a statement
 
 Supported formats: `camt` (ISO 20022 CAMT.053, `.xml`), `pain001`
 (ISO 20022 pain.001, `.xml`), `csv` (`.csv`), `ofx` (`.ofx`), `qfx`
