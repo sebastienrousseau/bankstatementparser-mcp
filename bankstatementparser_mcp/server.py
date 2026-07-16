@@ -59,8 +59,8 @@ mcp = FastMCP("bankstatementparser")
 # tool reaches out to an arbitrary, caller-controlled path or external
 # system. These tools do not (the temp file is closed-world and
 # deterministic over the input), so every tool uses ``_PURE_READ``.
-# ``_FS_READ`` is kept as the shared vocabulary for any future tool that
-# opens a caller-supplied path.
+# Any future tool that opens a caller-supplied path should declare its
+# own annotations with ``openWorldHint=True``.
 #
 # These hints let MCP clients (and the Glama quality grader) reason about
 # safety, caching, and auto-approval without executing the tool.
@@ -69,12 +69,6 @@ _PURE_READ = ToolAnnotations(
     destructiveHint=False,
     idempotentHint=True,
     openWorldHint=False,
-)
-_FS_READ = ToolAnnotations(
-    readOnlyHint=True,
-    destructiveHint=False,
-    idempotentHint=True,
-    openWorldHint=True,
 )
 
 _FORMAT_SUFFIX: dict[str, str] = {
