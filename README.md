@@ -82,10 +82,11 @@ duration of a single call. Tools return JSON-serialisable data.
 
 ## The ISO 20022 MCP Suite
 
-`bankstatementparser-mcp` is the **ingestion layer** of four coordinated,
+`bankstatementparser-mcp` is the **ingestion layer** of five coordinated,
 vendor-neutral MCP servers that together cover the ISO 20022
-bank-statement workflow — statement depth, whole-catalogue routing,
-reconciliation, and multi-format ingestion. Dependency ranges are kept
+bank-statement workflow and the November 2026 structured-address
+cutover — statement depth, whole-catalogue routing, reconciliation,
+multi-format ingestion, and address remediation. Dependency ranges are kept
 aligned across the suite, so the servers co-install cleanly in a single
 Python environment: start with one, add the rest as your workflow grows.
 
@@ -95,14 +96,17 @@ Python environment: start with one, add the rest as your workflow grows.
 | [`iso20022-mcp`](https://github.com/sebastienrousseau/iso20022-mcp) | Unified gateway: `search` / `describe` / `validate` / `generate` / `parse` meta-tools routed across the `pain` · `pacs` · `camt` · `acmt` families | 7 meta-tools | `pip install "iso20022-mcp[all]"` | You want one entry point to every message family |
 | [`reconcile-mcp`](https://github.com/sebastienrousseau/reconcile-mcp) | Matches expected `pain.001` payments against observed `camt.053` entries — exact, partial, one-to-many, many-to-one, every match scored and explained | 7 MCP tools | `pip install reconcile-mcp` | You need explainable statement/payment reconciliation |
 | [`bankstatementparser-mcp`](#install) | Multi-format statement ingestion: ISO 20022 CAMT.053 and pain.001, SWIFT MT940, OFX/QFX, CSV | 5 MCP tools · 1 prompt · 1 resource | `pip install bankstatementparser-mcp` | Your statements arrive in mixed or legacy formats — **this package** |
+| [`structured-address-fix-mcp`](https://github.com/sebastienrousseau/structured-address-fix-mcp) | ISO 20022 postal-address classification, assessment & remediation for the November 2026 structured-address cutover (`pacs.008` / `pain.001` debtor & creditor addresses) | 9 MCP tools | `pip install structured-address-fix-mcp` | You need debtor/creditor addresses cliff-ready ahead of 14 Nov 2026 |
 
 In one line each: **`camt053-mcp`** is the bank-statement flagship
 (deepest camt.05x surface, stdio + authenticated streamable HTTP);
 **`iso20022-mcp`** is the generic message toolkit (a handful of verbs
 over the whole catalogue); **`reconcile-mcp`** is the reconciliation
-workflow (did the money we expected actually arrive?); and
+workflow (did the money we expected actually arrive?);
 **`bankstatementparser-mcp`** is the ingestion layer (many formats in,
-one transaction shape out).
+one transaction shape out); and **`structured-address-fix-mcp`** is the
+postal-address specialist (debtor/creditor addresses cliff-ready for the
+Nov 2026 cutover).
 
 ---
 
