@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.14] - 2026-07-18
+
+### Changed
+
+- chore(deps): require `bankstatementparser>=0.0.11` (was `>=0.0.9`),
+  keeping the ISO 20022 MCP Suite in lockstep with the 0.0.11 core
+  release. No functional or API changes.
+
 ## [0.0.13] - 2026-07-02
 
 The **discoverability** cut. Registers `bankstatementparser-mcp` with
@@ -144,6 +152,7 @@ Suite. No functional or API changes.
     block in the README (and `docs/*.md`) so no documented example can
     silently rot.
 
+[0.0.14]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.14
 [0.0.13]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.13
 [0.0.12]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.12
 [0.0.11]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.11
