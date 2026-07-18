@@ -16,7 +16,7 @@ ENV PIP_NO_CACHE_DIR=1 \
 # PyPI; the default resolves the published version once available. The
 # git client is needed only when the override spec is a git+ URL; it
 # stays in this build stage and never ships in the final image.
-ARG BANKSTATEMENTPARSER_PIP_SPEC="bankstatementparser>=0.0.9"
+ARG BANKSTATEMENTPARSER_PIP_SPEC="bankstatementparser>=0.0.11"
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git \
     && rm -rf /var/lib/apt/lists/*

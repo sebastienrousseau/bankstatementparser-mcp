@@ -33,7 +33,7 @@ jobs:
       - name: Install bankstatementparser (from PyPI) + this package
         run: |
           python -m pip install --upgrade pip
-          pip install "bankstatementparser>=0.0.9"
+          pip install "bankstatementparser>=0.0.11"
           pip install -e .
           pip install pytest pytest-cov interrogate
 
@@ -71,7 +71,7 @@ jobs:
       - name: Install bankstatementparser (from PyPI) + this package
         run: |
           python -m pip install --upgrade pip
-          pip install "bankstatementparser>=0.0.9"
+          pip install "bankstatementparser>=0.0.11"
           pip install -e .
           pip install ruff black mypy types-jsonschema
 
@@ -100,7 +100,7 @@ jobs:
       - name: Install bankstatementparser (from PyPI) + this package
         run: |
           python -m pip install --upgrade pip
-          pip install "bankstatementparser>=0.0.9"
+          pip install "bankstatementparser>=0.0.11"
           pip install -e .
 
       - name: Run examples
