@@ -107,9 +107,9 @@ class TestVersionConsistency:
 
     def test_changelog_has_current_version_entry(self) -> None:
         version = _pyproject_version()
-        assert f"[{version}]" in _read(CHANGELOG), (
-            f"CHANGELOG has no entry for current version {version}"
-        )
+        assert f"[{version}]" in _read(
+            CHANGELOG
+        ), f"CHANGELOG has no entry for current version {version}"
 
     def test_version_pinned_at_expected_release(self) -> None:
         """``__version__`` must track pyproject, not a hardcoded literal.
@@ -133,21 +133,21 @@ class TestReadmeApiSurface:
 
     def test_all_public_symbols_mentioned(self) -> None:
         for sym in _public_symbols():
-            assert sym in self.readme_text, (
-                f"README doesn't mention public symbol '{sym}'"
-            )
+            assert (
+                sym in self.readme_text
+            ), f"README doesn't mention public symbol '{sym}'"
 
     def test_resource_uri_mentioned(self) -> None:
         for uri in _resource_uris():
-            assert uri in self.readme_text, (
-                f"README doesn't mention resource URI '{uri}'"
-            )
+            assert (
+                uri in self.readme_text
+            ), f"README doesn't mention resource URI '{uri}'"
 
     def test_supported_formats_all_mentioned(self) -> None:
         for fmt in server.list_supported_formats():
-            assert fmt in self.readme_text, (
-                f"README doesn't mention supported format '{fmt}'"
-            )
+            assert (
+                fmt in self.readme_text
+            ), f"README doesn't mention supported format '{fmt}'"
 
 
 # ---------------------------------------------------------------------------
@@ -163,9 +163,9 @@ class TestReadmeCounts:
     def test_tool_count_word_matches(self) -> None:
         actual = len(_tool_names())
         word = _NUMBER_WORDS[actual]
-        assert f"{word} tools" in self.readme_text, (
-            f"README should say '{word} tools' (there are {actual})"
-        )
+        assert (
+            f"{word} tools" in self.readme_text
+        ), f"README should say '{word} tools' (there are {actual})"
 
     def test_one_resource_one_prompt_claim(self) -> None:
         assert "one resource and one prompt" in self.readme_text
@@ -175,9 +175,9 @@ class TestReadmeCounts:
         # the word claim verified above.
         actual = len(_tool_names())
         for claimed in re.findall(r"(\d+)\s+tools", self.readme_text):
-            assert int(claimed) == actual, (
-                f"README claims {claimed} tools but there are {actual}"
-            )
+            assert (
+                int(claimed) == actual
+            ), f"README claims {claimed} tools but there are {actual}"
 
 
 # ---------------------------------------------------------------------------
@@ -200,7 +200,9 @@ class TestExamplesExist:
 
     def test_examples_readme_scripts_exist(self) -> None:
         for script in self._referenced_scripts(self.examples_readme_text):
-            assert (EXAMPLES_DIR / script).exists(), (
+            assert (
+                EXAMPLES_DIR / script
+            ).exists(), (
                 f"examples/README.md references {script} but it is missing"
             )
 
@@ -227,9 +229,9 @@ class TestExamplesCoverSurface:
     def test_every_public_symbol_demonstrated(self) -> None:
         source = self._examples_source()
         for sym in _public_symbols():
-            assert sym in source, (
-                f"No example exercises the public symbol '{sym}'"
-            )
+            assert (
+                sym in source
+            ), f"No example exercises the public symbol '{sym}'"
 
 
 # ---------------------------------------------------------------------------
@@ -250,9 +252,9 @@ class TestDevelopmentClaims:
     def test_python_minimum_matches_pyproject(self) -> None:
         pyproject = _read(PYPROJECT)
         if ">=3.10" in pyproject:
-            assert "3.10" in self.readme_text, (
-                "README should mention the Python 3.10 minimum"
-            )
+            assert (
+                "3.10" in self.readme_text
+            ), "README should mention the Python 3.10 minimum"
 
     def test_core_dependency_floor_matches(self) -> None:
         pyproject = _read(PYPROJECT)
@@ -261,6 +263,6 @@ class TestDevelopmentClaims:
         )
         assert match is not None
         floor = match.group(1)
-        assert floor in self.readme_text, (
-            f"README should mention the bankstatementparser >= {floor} floor"
-        )
+        assert (
+            floor in self.readme_text
+        ), f"README should mention the bankstatementparser >= {floor} floor"
