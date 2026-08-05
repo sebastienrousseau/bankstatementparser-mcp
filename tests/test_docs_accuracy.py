@@ -112,8 +112,13 @@ class TestVersionConsistency:
         ), f"CHANGELOG has no entry for current version {version}"
 
     def test_version_pinned_at_expected_release(self) -> None:
-        # The companion package stays at 0.0.14 until a real release.
-        assert bankstatementparser_mcp.__version__ == "0.0.14"
+        """``__version__`` must track pyproject, not a hardcoded literal.
+
+        This previously asserted a fixed "0.0.14" and had already gone
+        stale against the 0.0.15 release, failing on main. The invariant
+        worth enforcing is that the two declarations agree.
+        """
+        assert bankstatementparser_mcp.__version__ == _pyproject_version()
 
 
 # ---------------------------------------------------------------------------

@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.16] - 2026-08-05
+
+### Changed
+
+- **chore(deps): fold the open Dependabot updates.** cryptography
+  49.0.0 -> 50.0.0 across the pinned requirement sets.
+- **chore(mcp): adopt the shared mcp 1.x/2.x compatibility layer.**
+  `mcp` widened to `>=1.2,<3`. mcp 2.0 removes `mcp.server.fastmcp`
+  and renames `FastMCP` to `MCPServer`, so the previous `<2` pin was
+  the only thing keeping this server importable.
+
+### Fixed
+
+- **`test_version_pinned_at_expected_release` no longer hardcodes a
+  version.** It asserted `0.0.14` and had gone stale against 0.0.15,
+  failing on main; it now checks `__version__` against pyproject.
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),

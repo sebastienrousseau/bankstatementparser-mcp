@@ -41,11 +41,13 @@ from bankstatementparser.additional_parsers import (
     create_parser,
     detect_statement_format,
 )
-from mcp.server.fastmcp import FastMCP
 from mcp.types import ToolAnnotations
 from pydantic import Field
 
-mcp = FastMCP("bankstatementparser")
+from bankstatementparser_mcp import __version__
+from bankstatementparser_mcp._mcp_compat import build_server
+
+mcp = build_server("bankstatementparser", __version__)
 
 # Shared MCP tool annotations. Every tool in this server is a pure,
 # side-effect-free reader: it takes the statement text **inline** as an
@@ -64,7 +66,12 @@ mcp = FastMCP("bankstatementparser")
 #
 # These hints let MCP clients (and the Glama quality grader) reason about
 # safety, caching, and auto-approval without executing the tool.
-_PURE_READ = ToolAnnotations(
+# camelCase is deliberate: mcp 1.x names these fields
+# `readOnlyHint` etc.; 2.x renamed them to snake_case and kept
+# camelCase as aliases. camelCase is the only spelling correct on
+# both majors -- snake_case on 1.x lands in an extra attribute and
+# silently leaves the real field None. mypy resolves against 2.x.
+_PURE_READ = ToolAnnotations(  # type: ignore[call-arg]
     readOnlyHint=True,
     destructiveHint=False,
     idempotentHint=True,
