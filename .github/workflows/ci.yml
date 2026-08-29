@@ -44,6 +44,11 @@ jobs:
             --cov-report=term-missing \
             --cov-report=xml \
             --cov-fail-under=100 -v
+          # Not a timing gate -- wall-clock is not comparable between
+          # runners. This proves the benchmark still runs against the
+          # current API rather than rotting into a file that reads as
+          # verified and is not.
+          python benches/bench_detect_and_parse.py --quick
 
       - name: Enforce 100% docstring coverage
         run: interrogate -c pyproject.toml bankstatementparser_mcp
@@ -79,7 +84,7 @@ jobs:
         run: ruff check bankstatementparser_mcp/ tests/
 
       - name: Black check
-        run: black --check bankstatementparser_mcp/ tests/
+        run: black --check bankstatementparser_mcp/ tests/ benches/
 
       - name: Mypy
         run: mypy bankstatementparser_mcp/
