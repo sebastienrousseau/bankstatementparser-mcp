@@ -70,7 +70,9 @@ CAMT_HEAD = """<?xml version="1.0" encoding="UTF-8"?>
 """
 CAMT_NTRY = """   <Ntry><Amt Ccy="EUR">{amount}.00</Amt><CdtDbtInd>CRDT</CdtDbtInd>
     <Sts><Cd>BOOK</Cd></Sts><BookgDt><Dt>2026-06-21</Dt></BookgDt>
-    <ValDt><Dt>2026-06-21</Dt></ValDt></Ntry>
+    <ValDt><Dt>2026-06-21</Dt></ValDt>
+    <NtryDtls><TxDtls><Refs><EndToEndId>E2E-{i}</EndToEndId></Refs>
+     </TxDtls></NtryDtls></Ntry>
 """
 CAMT_TAIL = "  </Stmt>\n </BkToCstmrStmt>\n</Document>\n"
 
