@@ -117,7 +117,7 @@ Nov 2026 cutover).
 
 | Channel | Command | Notes |
 | :--- | :--- | :--- |
-| PyPI | `pip install bankstatementparser-mcp` | Pulls in `bankstatementparser >= 0.0.19` + MCP SDK |
+| PyPI | `pip install bankstatementparser-mcp` | Pulls in `bankstatementparser >= 0.0.18` + MCP SDK |
 | Source | `git clone https://github.com/sebastienrousseau/bankstatementparser-mcp && cd bankstatementparser-mcp && poetry install` | For development |
 | Docker (GHCR) | `docker pull ghcr.io/sebastienrousseau/bankstatementparser-mcp:latest` | Multi-arch (linux/amd64, linux/arm64); runs `bankstatementparser-mcp` over stdio |
 

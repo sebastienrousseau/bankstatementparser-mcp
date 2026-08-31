@@ -16,7 +16,7 @@ bankstatementparser-mcp = "bankstatementparser_mcp.server:main"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-bankstatementparser = ">=0.0.19"
+bankstatementparser = ">=0.0.18"
 mcp = ">=1.2,<3"
 langchain-core = { version = ">=0.3,<1", optional = true }
 crewai = { version = ">=0.100,<1", optional = true }
