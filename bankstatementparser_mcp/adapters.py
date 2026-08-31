@@ -78,19 +78,23 @@ def _wrap_with_tool_exception(
 
 
 def _tool_func(tool: Any) -> Callable[..., Any]:
+    """Extract underlying callable from tool object."""
     fn: Any = getattr(tool, "fn", getattr(tool, "func", tool))
     return cast(Callable[..., Any], fn)
 
 
 def _tool_name(tool: Any) -> str:
+    """Extract name attribute from tool object."""
     return getattr(tool, "name", "")
 
 
 def _tool_desc(tool: Any) -> str:
+    """Extract description attribute from tool object."""
     return getattr(tool, "description", "") or ""
 
 
 def _tool_schema(tool: Any) -> Any:
+    """Extract parameters or input schema from tool object."""
     return getattr(
         tool,
         "parameters",
