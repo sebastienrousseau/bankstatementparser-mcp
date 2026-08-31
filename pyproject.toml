@@ -142,7 +142,13 @@ module = "bankstatementparser_mcp.server"
 disallow_untyped_decorators = false
 
 [[tool.mypy.overrides]]
-module = "mcp.*"
+module = [
+    "mcp.*",
+    "pydantic.*",
+    "langchain_core.*",
+    "crewai.*",
+    "llama_index.*",
+]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
@@ -157,6 +163,7 @@ ignore_missing_imports = true
 module = "bankstatementparser_mcp.*"
 disallow_any_generics = false
 warn_return_any = false
+warn_unused_ignores = false
 
 [[tool.mypy.overrides]]
 module = "tests.*"

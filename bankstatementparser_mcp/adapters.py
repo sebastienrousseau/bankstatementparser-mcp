@@ -35,7 +35,7 @@ through to each framework's schema argument.
 """
 
 from collections.abc import Callable
-from typing import Any
+from typing import Any, cast
 
 from bankstatementparser_mcp.server import mcp
 
@@ -78,7 +78,8 @@ def _wrap_with_tool_exception(
 
 
 def _tool_func(tool: Any) -> Callable[..., Any]:
-    return getattr(tool, "fn", getattr(tool, "func", None))
+    fn: Any = getattr(tool, "fn", getattr(tool, "func", tool))
+    return cast(Callable[..., Any], fn)
 
 
 def _tool_name(tool: Any) -> str:
@@ -91,7 +92,9 @@ def _tool_desc(tool: Any) -> str:
 
 def _tool_schema(tool: Any) -> Any:
     return getattr(
-        tool, "parameters", getattr(tool, "input_schema", getattr(tool, "args_schema", None))
+        tool,
+        "parameters",
+        getattr(tool, "input_schema", getattr(tool, "args_schema", None)),
     )
 
 

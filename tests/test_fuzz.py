@@ -21,11 +21,8 @@ from hypothesis import given, settings
 from hypothesis import strategies as st
 
 from bankstatementparser_mcp.server import (
-    _require_format,
-    _suffix_for,
     _summary_to_jsonable,
     detect_format,
-    list_supported_formats,
     parse_statement,
     summarize_statement,
     validate_statement,
@@ -35,9 +32,23 @@ from bankstatementparser_mcp.server import (
 @settings(max_examples=50, deadline=None)
 @given(
     st.text(min_size=0, max_size=1000),
-    st.one_of(st.none(), st.sampled_from(["statement.csv", "statement.xml", "statement.mt940", "statement.ofx", "statement.qfx", "test.txt"])),
+    st.one_of(
+        st.none(),
+        st.sampled_from(
+            [
+                "statement.csv",
+                "statement.xml",
+                "statement.mt940",
+                "statement.ofx",
+                "statement.qfx",
+                "test.txt",
+            ]
+        ),
+    ),
 )
-def test_fuzz_detect_format_arbitrary_inputs(content: str, filename: str | None) -> None:
+def test_fuzz_detect_format_arbitrary_inputs(
+    content: str, filename: str | None
+) -> None:
     """detect_format never crashes on arbitrary input text."""
     try:
         res = detect_format(content=content, filename=filename)
@@ -50,8 +61,16 @@ def test_fuzz_detect_format_arbitrary_inputs(content: str, filename: str | None)
 @settings(max_examples=30, deadline=None)
 @given(
     st.text(min_size=0, max_size=1000),
-    st.one_of(st.none(), st.sampled_from(["statement.csv", "statement.xml", "statement.mt940"])),
-    st.one_of(st.none(), st.sampled_from(["csv", "camt", "mt940", "ofx", "qfx", "pain001", "unknown"])),
+    st.one_of(
+        st.none(),
+        st.sampled_from(["statement.csv", "statement.xml", "statement.mt940"]),
+    ),
+    st.one_of(
+        st.none(),
+        st.sampled_from(
+            ["csv", "camt", "mt940", "ofx", "qfx", "pain001", "unknown"]
+        ),
+    ),
 )
 def test_fuzz_parse_statement_arbitrary_inputs(
     content: str, filename: str | None, fmt: str | None
@@ -67,15 +86,25 @@ def test_fuzz_parse_statement_arbitrary_inputs(
 @settings(max_examples=30, deadline=None)
 @given(
     st.text(min_size=0, max_size=1000),
-    st.one_of(st.none(), st.sampled_from(["statement.csv", "statement.xml", "statement.mt940"])),
-    st.one_of(st.none(), st.sampled_from(["csv", "camt", "mt940", "ofx", "qfx", "pain001", "unknown"])),
+    st.one_of(
+        st.none(),
+        st.sampled_from(["statement.csv", "statement.xml", "statement.mt940"]),
+    ),
+    st.one_of(
+        st.none(),
+        st.sampled_from(
+            ["csv", "camt", "mt940", "ofx", "qfx", "pain001", "unknown"]
+        ),
+    ),
 )
 def test_fuzz_validate_statement_arbitrary_inputs(
     content: str, filename: str | None, fmt: str | None
 ) -> None:
     """validate_statement handles arbitrary payloads safely returning validation result dict."""
     try:
-        res = validate_statement(content=content, filename=filename, format=fmt)
+        res = validate_statement(
+            content=content, filename=filename, format=fmt
+        )
         assert isinstance(res, dict)
     except (ValueError, Exception):
         pass
@@ -84,22 +113,38 @@ def test_fuzz_validate_statement_arbitrary_inputs(
 @settings(max_examples=30, deadline=None)
 @given(
     st.text(min_size=0, max_size=1000),
-    st.one_of(st.none(), st.sampled_from(["statement.csv", "statement.xml", "statement.mt940"])),
-    st.one_of(st.none(), st.sampled_from(["csv", "camt", "mt940", "ofx", "qfx", "pain001", "unknown"])),
+    st.one_of(
+        st.none(),
+        st.sampled_from(["statement.csv", "statement.xml", "statement.mt940"]),
+    ),
+    st.one_of(
+        st.none(),
+        st.sampled_from(
+            ["csv", "camt", "mt940", "ofx", "qfx", "pain001", "unknown"]
+        ),
+    ),
 )
 def test_fuzz_summarize_statement_arbitrary_inputs(
     content: str, filename: str | None, fmt: str | None
 ) -> None:
     """summarize_statement handles arbitrary payloads safely."""
     try:
-        res = summarize_statement(content=content, filename=filename, format=fmt)
+        res = summarize_statement(
+            content=content, filename=filename, format=fmt
+        )
         assert isinstance(res, dict)
     except (ValueError, Exception):
         pass
 
 
 @settings(max_examples=50, deadline=None)
-@given(st.dictionaries(st.text(max_size=20), st.one_of(st.text(max_size=50), st.integers(), st.none()), max_size=10))
+@given(
+    st.dictionaries(
+        st.text(max_size=20),
+        st.one_of(st.text(max_size=50), st.integers(), st.none()),
+        max_size=10,
+    )
+)
 def test_fuzz_summary_to_jsonable(mapping: dict) -> None:
     """_summary_to_jsonable safely converts mappings to JSON primitives."""
     jsonable = _summary_to_jsonable(mapping)

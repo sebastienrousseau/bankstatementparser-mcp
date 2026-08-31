@@ -181,9 +181,7 @@ def test_as_langchain_tools_wraps_every_tool(monkeypatch):
 
     # The recorded callable is the ToolException-wrapping closure; calling it
     # runs the real server tool and returns its payload.
-    formats_tool = next(
-        i for i in built if i.name == "list_supported_formats"
-    )
+    formats_tool = next(i for i in built if i.name == "list_supported_formats")
     out = formats_tool.func()
     assert out == ["camt", "pain001", "csv", "ofx", "qfx", "mt940"]
 
