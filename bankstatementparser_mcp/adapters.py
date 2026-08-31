@@ -177,6 +177,7 @@ def as_llamaindex_tools() -> list[Any]:
             fn=_tool_func(tool),
             name=_tool_name(tool),
             description=_tool_desc(tool),
+            fn_schema=_tool_schema(tool),
         )
         for tool in _gateway_tools()
     ]

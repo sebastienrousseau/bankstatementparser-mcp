@@ -122,6 +122,26 @@ def test_gateway_tools_returns_all_registered_tools():
     assert names == EXPECTED_TOOLS
 
 
+def test_gateway_tools_fallback_branches(monkeypatch):
+    class FakeMCPDict:
+        _tools = {"t1": types.SimpleNamespace(name="t1")}
+
+    monkeypatch.setattr(adapters, "mcp", FakeMCPDict())
+    assert len(adapters._gateway_tools()) == 1
+
+    class FakeMCPList:
+        _tools = [types.SimpleNamespace(name="t1")]
+
+    monkeypatch.setattr(adapters, "mcp", FakeMCPList())
+    assert len(adapters._gateway_tools()) == 1
+
+    class FakeMCPEmpty:
+        pass
+
+    monkeypatch.setattr(adapters, "mcp", FakeMCPEmpty())
+    assert adapters._gateway_tools() == []
+
+
 # ---------------------------------------------------------------------------
 # _wrap_with_tool_exception: both branches (success + error mapping)
 # ---------------------------------------------------------------------------
