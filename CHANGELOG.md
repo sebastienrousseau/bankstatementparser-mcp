@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.0.19] - 2026-08-31
+
+### Added
+
+- Native framework adapters for LangChain, CrewAI, and LlamaIndex.
+- Support for BAI2 and MT942 format detection and parsing tools.
+
+### Changed
+
+- Updated `bankstatementparser` dependency floor to `>=0.0.19`.
+
 ## [0.0.18] - 2026-08-29
 
 Aligns the `bankstatementparser` suite on one version number, and adds
@@ -236,3 +247,5 @@ Suite. No functional or API changes.
 [0.0.12]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.12
 [0.0.11]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.11
 [0.0.10]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.10
+
+[0.0.19]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.19

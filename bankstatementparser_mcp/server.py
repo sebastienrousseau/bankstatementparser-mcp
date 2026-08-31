@@ -79,12 +79,14 @@ _PURE_READ = ToolAnnotations(  # type: ignore[call-arg]
 )
 
 _FORMAT_SUFFIX: dict[str, str] = {
+    "bai2": ".bai2",
     "camt": ".xml",
-    "pain001": ".xml",
     "csv": ".csv",
-    "ofx": ".ofx",
-    "qfx": ".qfx",
     "mt940": ".mt940",
+    "mt942": ".mt942",
+    "ofx": ".ofx",
+    "pain001": ".xml",
+    "qfx": ".qfx",
 }
 
 # Enumerated value list for the ``format`` MCP parameter. Surfacing the
@@ -151,7 +153,7 @@ def _suffix_for(filename: str | None, format_name: str | None) -> str:
         return _FORMAT_SUFFIX[format_name]
     raise ValueError(
         "Provide a 'filename' with a supported extension "
-        "(.xml/.csv/.ofx/.qfx/.mt940/.sta) or an explicit 'format'."
+        "(.xml/.csv/.ofx/.qfx/.mt940/.sta/.bai2/.mt942) or an explicit 'format'."
     )
 
 
