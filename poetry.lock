@@ -624,7 +624,7 @@ description = "Python package for providing Mozilla's CA Bundle."
 optional = true
 python-versions = ">=3.7"
 groups = ["main"]
-markers = "extra == \"langchain\" or extra == \"llamaindex\" or (extra == \"crewai\" or extra == \"langchain\" or extra == \"llamaindex\") and python_version < \"3.14\""
+markers = "extra == \"langchain\" or extra == \"llamaindex\" or (extra == \"crewai\" or extra == \"llamaindex\" or extra == \"langchain\") and python_version < \"3.14\""
 files = [
     {file = "certifi-2026.7.22-py3-none-any.whl", hash = "sha256:62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775"},
     {file = "certifi-2026.7.22.tar.gz", hash = "sha256:741e2c3b351ddf169a738da9f2c048608ff7f2c5cc02f1ebc6b118bb090d5d55"},
@@ -735,7 +735,7 @@ description = "The Real First Universal Charset Detector. Open, modern and activ
 optional = true
 python-versions = ">=3.7"
 groups = ["main"]
-markers = "extra == \"langchain\" or extra == \"llamaindex\" or (extra == \"crewai\" or extra == \"langchain\" or extra == \"llamaindex\") and python_version < \"3.14\""
+markers = "extra == \"langchain\" or extra == \"llamaindex\" or (extra == \"crewai\" or extra == \"llamaindex\" or extra == \"langchain\") and python_version < \"3.14\""
 files = [
     {file = "charset_normalizer-3.5.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:d1ee1e296209fdce05b81b663250eefa02213a2da7b41bf26f7829b8ba3545aa"},
     {file = "charset_normalizer-3.5.1-cp310-cp310-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:e9fbdce1e47394b09bc9f26ab117dfc8d6491977a11d86f592bb42c779db2fda"},
@@ -2413,7 +2413,7 @@ description = "IPython: Productive Interactive Computing"
 optional = true
 python-versions = ">=3.11"
 groups = ["main"]
-markers = "python_version >= \"3.11\" and extra == \"crewai\" and python_version < \"3.14\""
+markers = "python_version >= \"3.11\" and extra == \"crewai\" and python_version <= \"3.13\""
 files = [
     {file = "ipython-9.17.1-py3-none-any.whl", hash = "sha256:6d1645743cfd1a07eb695d85aa2b5fa66721f8cbae9431d4049f7084bbf06509"},
     {file = "ipython-9.17.1.tar.gz", hash = "sha256:8919be8c27f20a6f4423145028063f6637b42a03ce57665bb12015ee1f073529"},
@@ -2447,7 +2447,7 @@ description = "Defines a variety of Pygments lexers for highlighting IPython cod
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "python_version >= \"3.11\" and extra == \"crewai\" and python_version < \"3.14\""
+markers = "python_version >= \"3.11\" and extra == \"crewai\" and python_version <= \"3.13\""
 files = [
     {file = "ipython_pygments_lexers-1.1.1-py3-none-any.whl", hash = "sha256:a9462224a505ade19a605f71f8fa63c2048833ce50abc86768a0d81d876dc81c"},
     {file = "ipython_pygments_lexers-1.1.1.tar.gz", hash = "sha256:09c0138009e56b6854f9535736f4171d855c8c08a563a0dcd8022f78355c7e81"},
@@ -2790,25 +2790,43 @@ google-auth = ["google-auth (>=1.0.1)"]
 
 [[package]]
 name = "langchain-core"
-version = "0.3.76"
+version = "1.3.3"
 description = "Building applications with LLMs through composability"
 optional = true
-python-versions = ">=3.9"
+python-versions = "<4.0.0,>=3.10.0"
 groups = ["main"]
 markers = "extra == \"langchain\""
 files = [
-    {file = "langchain_core-0.3.76-py3-none-any.whl", hash = "sha256:46e0eb48c7ac532432d51f8ca1ece1804c82afe9ae3dcf027b867edadf82b3ec"},
-    {file = "langchain_core-0.3.76.tar.gz", hash = "sha256:71136a122dd1abae2c289c5809d035cf12b5f2bb682d8a4c1078cd94feae7419"},
+    {file = "langchain_core-1.3.3-py3-none-any.whl", hash = "sha256:18aae8506f37da7f74398492279a7d6efcee4f8e23c4c41c7af080eeb7ef7bd1"},
+    {file = "langchain_core-1.3.3.tar.gz", hash = "sha256:fa510a5db8efdc0c6ff41c0939fb5c00a0183c11f6b84233e892e3227ff69182"},
 ]
 
 [package.dependencies]
-jsonpatch = ">=1.33,<2.0"
-langsmith = ">=0.3.45"
-packaging = ">=23.2"
-pydantic = ">=2.7.4"
-PyYAML = ">=5.3"
+jsonpatch = ">=1.33.0,<2.0.0"
+langchain-protocol = ">=0.0.10"
+langsmith = ">=0.3.45,<1.0.0"
+packaging = ">=23.2.0"
+pydantic = ">=2.7.4,<3.0.0"
+pyyaml = ">=5.3.0,<7.0.0"
 tenacity = ">=8.1.0,<8.4.0 || >8.4.0,<10.0.0"
-typing-extensions = ">=4.7"
+typing-extensions = ">=4.7.0,<5.0.0"
+uuid-utils = ">=0.12.0,<1.0"
+
+[[package]]
+name = "langchain-protocol"
+version = "0.0.19"
+description = "Python bindings for the LangChain agent streaming protocol"
+optional = true
+python-versions = "<4.0.0,>=3.10.0"
+groups = ["main"]
+markers = "extra == \"langchain\""
+files = [
+    {file = "langchain_protocol-0.0.19-py3-none-any.whl", hash = "sha256:4cdf879a492a35980fd859ae792d3c65458ccaae504e183c9a10d7eac1f0720f"},
+    {file = "langchain_protocol-0.0.19.tar.gz", hash = "sha256:79d90a1425122ac87e8052e2ec054fbd09c3edbf341bdfb6397112a495c7bf8c"},
+]
+
+[package.dependencies]
+typing-extensions = ">=4.13.0,<5.0.0"
 
 [[package]]
 name = "langsmith"
@@ -3999,7 +4017,7 @@ description = "Python package for creating and manipulating graphs and networks"
 optional = true
 python-versions = "!=3.14.1,>=3.11"
 groups = ["main"]
-markers = "python_version >= \"3.11\" and python_version < \"3.14\" and (extra == \"crewai\" or extra == \"llamaindex\") or python_version >= \"3.15\" and extra == \"llamaindex\""
+markers = "python_version >= \"3.11\" and python_version <= \"3.13\" and (extra == \"crewai\" or extra == \"llamaindex\") or python_version >= \"3.15\" and extra == \"llamaindex\""
 files = [
     {file = "networkx-3.6.1-py3-none-any.whl", hash = "sha256:d47fbf302e7d9cbbb9e2555a0d267983d2aa476bac30e90dfbe5669bd57f3762"},
     {file = "networkx-3.6.1.tar.gz", hash = "sha256:26b7c357accc0c8cde558ad486283728b65b6a95d85ee1cd66bafab4c8168509"},
@@ -4315,7 +4333,7 @@ description = "ONNX Runtime is a runtime accelerator for Machine Learning models
 optional = true
 python-versions = ">=3.11"
 groups = ["main"]
-markers = "python_version >= \"3.11\" and extra == \"crewai\" and python_version < \"3.14\""
+markers = "python_version >= \"3.11\" and extra == \"crewai\" and python_version <= \"3.13\""
 files = [
     {file = "onnxruntime-1.29.0-cp311-cp311-macosx_14_0_arm64.whl", hash = "sha256:07c5907474dec4a2792fd7626b753dc66707808385a6d9eecf993db0066a9d0f"},
     {file = "onnxruntime-1.29.0-cp311-cp311-manylinux_2_28_aarch64.whl", hash = "sha256:16925ef8497e2c07e4b5ae15b504079b3ab3f65e22c58efd10dde0f3caea969a"},
@@ -4545,7 +4563,7 @@ description = "Fast, correct Python JSON library supporting dataclasses, datetim
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "(extra == \"langchain\" or extra == \"crewai\") and (extra == \"langchain\" or python_version < \"3.14\") and (platform_python_implementation != \"PyPy\" or extra == \"crewai\") and (platform_python_implementation != \"PyPy\" or python_version < \"3.14\")"
+markers = "extra == \"langchain\" and platform_python_implementation != \"PyPy\" or python_version < \"3.14\" and extra == \"crewai\" or python_version < \"3.14\" and platform_python_implementation != \"PyPy\" and (extra == \"langchain\" or extra == \"crewai\")"
 files = [
     {file = "orjson-3.12.0-cp310-cp310-macosx_10_15_x86_64.macosx_11_0_arm64.macosx_10_15_universal2.whl", hash = "sha256:747843254519dd43b93eee3153a19e5a509334320c4d2f823ec879232db5c796"},
     {file = "orjson-3.12.0-cp310-cp310-manylinux2014_armv7l.manylinux_2_17_armv7l.whl", hash = "sha256:7c2ad193c8004254f34b499f3bd2c80f043d10754aff2b38f93da574f4883f98"},
@@ -5183,7 +5201,7 @@ description = "Cross-platform lib for process and system monitoring."
 optional = true
 python-versions = ">=3.6"
 groups = ["main"]
-markers = "python_version >= \"3.11\" and extra == \"crewai\" and sys_platform != \"emscripten\" and sys_platform != \"cygwin\" and python_version < \"3.14\""
+markers = "python_version >= \"3.11\" and extra == \"crewai\" and sys_platform != \"emscripten\" and sys_platform != \"cygwin\" and python_version <= \"3.13\""
 files = [
     {file = "psutil-7.2.2-cp313-cp313t-macosx_10_13_x86_64.whl", hash = "sha256:2edccc433cbfa046b980b0df0171cd25bcaeb3a68fe9022db0979e7aa74a826b"},
     {file = "psutil-7.2.2-cp313-cp313t-macosx_11_0_arm64.whl", hash = "sha256:e78c8603dcd9a04c7364f1a3e670cea95d51ee865e4efb3556a3a63adef958ea"},
@@ -6220,7 +6238,7 @@ description = "Python HTTP for Humans."
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"langchain\" or extra == \"llamaindex\" or (extra == \"crewai\" or extra == \"langchain\" or extra == \"llamaindex\") and python_version < \"3.14\""
+markers = "extra == \"langchain\" or extra == \"llamaindex\" or (extra == \"crewai\" or extra == \"llamaindex\" or extra == \"langchain\") and python_version < \"3.14\""
 files = [
     {file = "requests-2.34.2-py3-none-any.whl", hash = "sha256:2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0"},
     {file = "requests-2.34.2.tar.gz", hash = "sha256:f288924cae4e29463698d6d60bc6a4da69c89185ad1e0bcc4104f584e960b9ed"},
@@ -7236,7 +7254,7 @@ description = "HTTP library with thread-safe connection pooling, file post, and 
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"langchain\" or extra == \"llamaindex\" or (extra == \"crewai\" or extra == \"langchain\" or extra == \"llamaindex\") and python_version < \"3.14\""
+markers = "extra == \"langchain\" or extra == \"llamaindex\" or (extra == \"crewai\" or extra == \"llamaindex\" or extra == \"langchain\") and python_version < \"3.14\""
 files = [
     {file = "urllib3-2.7.0-py3-none-any.whl", hash = "sha256:9fb4c81ebbb1ce9531cce37674bbc6f1360472bc18ca9a553ede278ef7276897"},
     {file = "urllib3-2.7.0.tar.gz", hash = "sha256:231e0ec3b63ceb14667c67be60f2f2c40a518cb38b03af60abc813da26505f4c"},
@@ -7755,7 +7773,7 @@ description = "An implementation of the WebSocket Protocol (RFC 6455 & 7692)"
 optional = true
 python-versions = ">=3.11"
 groups = ["main"]
-markers = "extra == \"langchain\" and python_version >= \"3.11\" or python_version >= \"3.11\" and (extra == \"crewai\" or extra == \"langchain\") and python_version < \"3.14\""
+markers = "extra == \"langchain\" and python_version >= \"3.11\" or python_version >= \"3.11\" and (extra == \"crewai\" or extra == \"langchain\") and python_version <= \"3.13\""
 files = [
     {file = "websockets-17.1-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:88b882764ef65147a7a5ae13168dedbe225a04e2ff4858fe543f2c402f093e9c"},
     {file = "websockets-17.1-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:98a5b2589a56a4b4f098b0a958099a4356ab904a7844f1da3841efca469af7e9"},
@@ -8509,4 +8527,4 @@ llamaindex = ["llama-index-core"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "28509338c27d594b49ba3ee1ffb2d5e6126881a871a3bc313def5adf753466f5"
+content-hash = "7108d86388a139dcfda0ef4067dc38e4e15bcdd10a60fd8579557a43d91d10b4"

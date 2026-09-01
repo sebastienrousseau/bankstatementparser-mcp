@@ -18,7 +18,7 @@ bankstatementparser-mcp = "bankstatementparser_mcp.server:main"
 python = ">=3.10,<4.0"
 bankstatementparser = ">=0.0.18"
 mcp = ">=1.2,<3"
-langchain-core = { version = ">=0.3,<1", optional = true }
+langchain-core = { version = ">=0.3,<2", optional = true }
 crewai = { version = ">=0.100,<1", optional = true, python = ">=3.10,<3.14" }
 llama-index-core = { version = ">=0.12,<1", optional = true }
 
