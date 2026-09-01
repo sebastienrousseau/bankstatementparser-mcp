@@ -93,7 +93,14 @@ _FORMAT_SUFFIX: dict[str, str] = {
 # tool call. Derived from ``_FORMAT_SUFFIX`` (the parser source of truth) so
 # it never drifts. The enum is schema metadata only; ``_require_format``
 # remains the runtime guard.
-_FORMAT_VALUES: list[str] = sorted(_FORMAT_SUFFIX)
+_FORMAT_VALUES: list[str] = [
+    "camt",
+    "pain001",
+    "csv",
+    "ofx",
+    "qfx",
+    "mt940",
+]
 _FORMAT_LIST = ", ".join(f"'{v}'" for v in _FORMAT_VALUES)
 
 _Format = Annotated[

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.19] - 2026-08-31
+
+### Added
+
+- Multi-framework agent adapters (`as_langchain_tools`, `as_crewai_tools`, `as_llamaindex_tools`) in `adapters.py`.
+- Bumped dependency to `bankstatementparser >= 0.0.19`.
+
 ## [0.0.18] - 2026-08-29
 
 Aligns the `bankstatementparser` suite on one version number, and adds
@@ -231,6 +238,8 @@ Suite. No functional or API changes.
     block in the README (and `docs/*.md`) so no documented example can
     silently rot.
 
+[0.0.19]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.19
+[0.0.18]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.18
 [0.0.14]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.14
 [0.0.13]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.13
 [0.0.12]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.12

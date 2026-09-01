@@ -24,7 +24,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install "bankstatementparser>=0.0.11"
           pip install -e .
-          pip install pytest pytest-cov interrogate ruff black mypy types-jsonschema
+          pip install pytest pytest-cov interrogate hypothesis 'tomli; python_version<"3.11"' ruff black mypy types-jsonschema
 
       - name: Lint
         run: |
