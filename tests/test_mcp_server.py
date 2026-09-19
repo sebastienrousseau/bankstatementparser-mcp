@@ -273,9 +273,9 @@ def test_analyze_statement_prompt() -> None:
 # main (console-script entry point)
 # --------------------------------------------------------------------------
 def test_main_runs_the_server() -> None:
-    """``main`` delegates straight to the MCPServer stdio run loop."""
+    """``main`` with no flags delegates to the MCPServer stdio run loop."""
     with mock.patch.object(server.mcp, "run") as run:
-        server.main()
+        server.main([])
     run.assert_called_once_with()
 
 

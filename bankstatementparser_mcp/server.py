@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""BankStatementParser MCP server (stdio transport).
+"""BankStatementParser MCP server.
 
 Tools, the resource, and the prompt are thin adapters over the
 bankstatementparser parser core. The tools take **inline content**
@@ -25,7 +25,9 @@ JSON-serialisable data.
 
 Run it with::
 
-    bankstatementparser-mcp
+    bankstatementparser-mcp                               # stdio (default)
+    bankstatementparser-mcp --transport streamable-http   # HTTP at /mcp
+    bankstatementparser-mcp --transport sse               # HTTP+SSE
 """
 
 from __future__ import annotations
@@ -45,7 +47,7 @@ from bankstatementparser.exceptions import BankStatementParserError
 from mcp.types import ToolAnnotations
 from pydantic import Field
 
-from bankstatementparser_mcp import __version__
+from bankstatementparser_mcp import __version__, _cli
 from bankstatementparser_mcp._mcp_compat import ToolError, build_server
 
 mcp = build_server("bankstatementparser", __version__)
@@ -540,9 +542,17 @@ def analyze_statement(
     )
 
 
-def main() -> None:
-    """Run the BankStatementParser MCP server over stdio."""
-    mcp.run()
+def main(argv: list[str] | None = None) -> None:
+    """Run the BankStatementParser MCP server (the ``bankstatementparser-mcp`` entry point).
+
+    stdio by default; ``--transport streamable-http`` or ``--transport sse``
+    listens on ``--host``/``--port`` instead. See
+    :mod:`bankstatementparser_mcp._cli`.
+
+    Args:
+        argv: Command-line arguments; ``None`` reads ``sys.argv[1:]``.
+    """
+    _cli.serve(mcp, argv, "bankstatementparser-mcp", __version__)
 
 
 if __name__ == "__main__":  # pragma: no cover
