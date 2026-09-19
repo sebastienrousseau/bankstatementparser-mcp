@@ -41,11 +41,12 @@ from bankstatementparser.additional_parsers import (
     create_parser,
     detect_statement_format,
 )
+from bankstatementparser.exceptions import BankStatementParserError
 from mcp.types import ToolAnnotations
 from pydantic import Field
 
 from bankstatementparser_mcp import __version__
-from bankstatementparser_mcp._mcp_compat import build_server
+from bankstatementparser_mcp._mcp_compat import ToolError, build_server
 
 mcp = build_server("bankstatementparser", __version__)
 
@@ -124,11 +125,11 @@ def _require_format(format_name: str) -> None:
         format_name: The statement format to check.
 
     Raises:
-        ValueError: If the format is not supported.
+        ToolError: If the format is not supported.
     """
     if format_name not in _FORMAT_SUFFIX:
         supported = ", ".join(_FORMAT_SUFFIX)
-        raise ValueError(
+        raise ToolError(
             f"Unsupported format '{format_name}'. Supported: {supported}"
         )
 
@@ -146,7 +147,7 @@ def _suffix_for(filename: str | None, format_name: str | None) -> str:
         A file suffix (including the leading dot) for the temp file.
 
     Raises:
-        ValueError: If neither a usable extension nor a supported
+        ToolError: If neither a usable extension nor a supported
             format is provided.
     """
     if filename:
@@ -156,7 +157,7 @@ def _suffix_for(filename: str | None, format_name: str | None) -> str:
     if format_name:
         _require_format(format_name)
         return _FORMAT_SUFFIX[format_name]
-    raise ValueError(
+    raise ToolError(
         "Provide a 'filename' with a supported extension "
         "(.xml/.csv/.ofx/.qfx/.mt940/.sta) or an explicit 'format'."
     )
@@ -184,6 +185,18 @@ def _materialise(content: str, suffix: str) -> Iterator[Path]:
         yield Path(name)
     finally:
         os.unlink(name)
+
+
+def _refused(exc: Exception, path: Path, filename: str | None) -> ToolError:
+    """Turn a parser failure into an error the caller can act on.
+
+    The parsers read a private temp file, so their messages name a path
+    that means nothing to the caller; the original filename takes its
+    place. Raising ``ToolError`` is what makes the SDK relay the text:
+    any other exception is reported as a bare "Error executing tool".
+    """
+    message = str(exc).replace(str(path), filename or "<inline payload>")
+    return ToolError(message)
 
 
 def _summary_to_jsonable(summary: dict[str, Any]) -> dict[str, Any]:
@@ -258,11 +271,14 @@ def detect_format(
         The detected format identifier.
 
     Raises:
-        ValueError: If the format cannot be detected.
+        ToolError: If the format cannot be detected.
     """
     suffix = _suffix_for(filename, None)
     with _materialise(content, suffix) as path:
-        return detect_statement_format(path)
+        try:
+            return detect_statement_format(path)
+        except (BankStatementParserError, ValueError) as exc:
+            raise _refused(exc, path, filename) from exc
 
 
 @mcp.tool(
@@ -323,15 +339,19 @@ def parse_statement(
         as row dicts, and the statement ``summary``.
 
     Raises:
-        ValueError: If the format is unsupported or cannot be detected.
+        ToolError: If the format is unsupported, cannot be detected, or
+            the payload does not parse.
     """
     if format is not None:
         _require_format(format)
     suffix = _suffix_for(filename, format)
     with _materialise(content, suffix) as path:
-        parser = create_parser(path, format)
-        frame = parser.parse()
-        summary = _summary_to_jsonable(dict(parser.get_summary()))
+        try:
+            parser = create_parser(path, format)
+            frame = parser.parse()
+            summary = _summary_to_jsonable(dict(parser.get_summary()))
+        except (BankStatementParserError, ValueError) as exc:
+            raise _refused(exc, path, filename) from exc
         records = frame.to_dict("records")
         total = len(records)
         if limit is not None:
@@ -453,14 +473,18 @@ def summarize_statement(
         The summary record with Decimal values stringified.
 
     Raises:
-        ValueError: If the format is unsupported or cannot be detected.
+        ToolError: If the format is unsupported, cannot be detected, or
+            the payload does not parse.
     """
     if format is not None:
         _require_format(format)
     suffix = _suffix_for(filename, format)
     with _materialise(content, suffix) as path:
-        parser = create_parser(path, format)
-        return _summary_to_jsonable(dict(parser.get_summary()))
+        try:
+            parser = create_parser(path, format)
+            return _summary_to_jsonable(dict(parser.get_summary()))
+        except (BankStatementParserError, ValueError) as exc:
+            raise _refused(exc, path, filename) from exc
 
 
 @mcp.resource(

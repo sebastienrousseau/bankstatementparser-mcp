@@ -36,6 +36,7 @@ __all__ = [
     "AssistantMessage",
     "Context",
     "MCPServer",
+    "ToolError",
     "UserMessage",
     "build_server",
     "result_content",
@@ -98,6 +99,30 @@ def _resolve_prompts() -> tuple[Any, Any]:
 
 
 UserMessage, AssistantMessage = _resolve_prompts()
+
+
+def _resolve_tool_error() -> Any:
+    """Return the SDK's ``ToolError`` for the installed major.
+
+    It is the one exception whose message the SDK relays to the client
+    verbatim in an ``isError`` result. Anything else a tool raises is
+    treated as a crash: 2.x replaces the text with a generic
+    "Error executing tool" and keeps the cause on the server, so a
+    caller never learns why its input was refused. It moved from
+    ``mcp.server.fastmcp.exceptions`` to
+    ``mcp.server.mcpserver.exceptions`` in 2.0.
+    """
+    import importlib
+
+    path = (
+        "mcp.server.mcpserver.exceptions"
+        if MCP_MAJOR >= 2
+        else "mcp.server.fastmcp.exceptions"
+    )
+    return importlib.import_module(path).ToolError
+
+
+ToolError = _resolve_tool_error()
 
 
 def build_server(name: str, version: str) -> Any:
