@@ -20,9 +20,8 @@ import pytest
 
 pytest.importorskip("mcp")
 
-from bankstatementparser.exceptions import ValidationError  # noqa: E402
-
 import bankstatementparser_mcp.server as server  # noqa: E402
+from bankstatementparser_mcp._mcp_compat import ToolError  # noqa: E402
 
 CSV = (
     "date,description,amount,currency,balance\n"
@@ -59,8 +58,8 @@ def test_require_format_accepts_known() -> None:
 
 
 def test_require_format_rejects_unknown() -> None:
-    """An unsupported format raises ValueError listing the valid set."""
-    with pytest.raises(ValueError, match="Unsupported format 'nope'"):
+    """An unsupported format raises ToolError listing the valid set."""
+    with pytest.raises(ToolError, match="Unsupported format 'nope'"):
         server._require_format("nope")
 
 
@@ -88,8 +87,8 @@ def test_suffix_for_no_filename_uses_format() -> None:
 
 
 def test_suffix_for_raises_without_hint() -> None:
-    """No usable extension and no format raises a guiding ValueError."""
-    with pytest.raises(ValueError, match="Provide a 'filename'"):
+    """No usable extension and no format raises a guiding ToolError."""
+    with pytest.raises(ToolError, match="Provide a 'filename'"):
         server._suffix_for("statement.txt", None)
 
 
@@ -107,9 +106,14 @@ def test_detect_format_mt940() -> None:
 
 
 def test_detect_format_failure() -> None:
-    """An undetectable payload raises ValidationError."""
-    with pytest.raises(ValidationError):
+    """An undetectable payload is refused with a readable ToolError.
+
+    The message names the caller's filename, not the private temp path
+    the parser actually read.
+    """
+    with pytest.raises(ToolError, match="mystery.xml") as info:
         server.detect_format("<unknown/>", "mystery.xml")
+    assert "/tmp" not in str(info.value)
 
 
 def test_detect_format_garbage_with_csv_hint() -> None:
@@ -146,7 +150,7 @@ def test_parse_statement_limit_truncates() -> None:
 
 def test_parse_statement_rejects_unknown_format() -> None:
     """An unsupported explicit format is rejected before parsing."""
-    with pytest.raises(ValueError, match="Unsupported format 'nope'"):
+    with pytest.raises(ToolError, match="Unsupported format 'nope'"):
         server.parse_statement(CSV, "statement.csv", format="nope")
 
 
@@ -165,8 +169,8 @@ def test_parse_statement_limit_above_row_count() -> None:
 
 
 def test_parse_statement_malformed_xml_raises() -> None:
-    """A malformed XML payload surfaces the parser's ValidationError."""
-    with pytest.raises(ValidationError):
+    """A malformed XML payload is refused with the parser's reason."""
+    with pytest.raises(ToolError):
         server.parse_statement("<not valid xml", "statement.xml")
 
 
@@ -200,7 +204,7 @@ def test_validate_statement_error() -> None:
 
 def test_validate_statement_rejects_unknown_format() -> None:
     """An unsupported explicit format is rejected up front."""
-    with pytest.raises(ValueError, match="Unsupported format 'nope'"):
+    with pytest.raises(ToolError, match="Unsupported format 'nope'"):
         server.validate_statement(CSV, "statement.csv", format="nope")
 
 
@@ -225,8 +229,8 @@ def test_validate_statement_explicit_wrong_format() -> None:
 # summarize_statement (garbage path)
 # --------------------------------------------------------------------------
 def test_summarize_statement_garbage_raises() -> None:
-    """An undetectable payload raises rather than returning a summary."""
-    with pytest.raises(ValidationError):
+    """An undetectable payload is refused rather than summarised."""
+    with pytest.raises(ToolError, match="mystery.xml"):
         server.summarize_statement("<unknown/>", "mystery.xml")
 
 
@@ -243,7 +247,7 @@ def test_summarize_statement_mt940() -> None:
 
 def test_summarize_statement_rejects_unknown_format() -> None:
     """An unsupported explicit format is rejected before parsing."""
-    with pytest.raises(ValueError, match="Unsupported format 'nope'"):
+    with pytest.raises(ToolError, match="Unsupported format 'nope'"):
         server.summarize_statement(CSV, "statement.csv", format="nope")
 
 
@@ -308,3 +312,31 @@ def test_example_scripts_run_without_error(script: Path) -> None:
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     module.main()
+
+
+def test_refusal_reaches_the_client_through_dispatch() -> None:
+    """Through ``call_tool`` a refused payload is an isError result whose
+    text carries the reason, not the SDK's generic "Error executing tool"."""
+    import asyncio
+
+    from bankstatementparser_mcp._mcp_compat import (
+        result_content,
+        result_is_error,
+    )
+
+    async def go():
+        try:
+            return await server.mcp.call_tool(
+                "detect_format", {"content": "<unknown/>", "filename": "x.xml"}
+            )
+        except ToolError as exc:  # mcp 1.x raises instead of returning
+            return exc
+
+    result = asyncio.run(go())
+    if isinstance(result, Exception):
+        text = str(result)
+    else:
+        assert result_is_error(result)
+        text = result_content(result)[0].text
+    assert "x.xml" in text
+    assert "Unable to detect" in text

@@ -1,5 +1,16 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- `detect_format`, `parse_statement` and `summarize_statement` now refuse
+  an unparseable or undetectable payload with a `ToolError` that names the
+  caller's filename and the parser's reason. They used to let the parser's
+  exception escape, which the SDK reports as a bare "Error executing
+  tool" with the cause kept on the server, so an agent could not tell a
+  wrong `filename` hint from a corrupt statement.
+
 ## [0.0.19] - 2026-08-31
 
 ### Added
