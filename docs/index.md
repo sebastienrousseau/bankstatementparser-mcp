@@ -12,6 +12,7 @@ readme
 api
 roadmap
 changelog
+adr/index
 ```
 
 ## Quick links

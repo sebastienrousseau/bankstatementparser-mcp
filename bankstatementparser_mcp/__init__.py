@@ -16,7 +16,8 @@
 """MCP server exposing the bankstatementparser library as agent tools.
 
 Install with ``pip install bankstatementparser-mcp`` and run
-``bankstatementparser-mcp`` (stdio transport).
+``bankstatementparser-mcp`` (stdio by default; ``--transport
+streamable-http`` or ``--transport sse`` for HTTP).
 """
 
 __version__ = "0.0.19"

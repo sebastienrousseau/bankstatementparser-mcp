@@ -35,6 +35,7 @@
 - [The ISO 20022 MCP Suite](#the-iso-20022-mcp-suite) — the four coordinated servers and when to use each
 - [Install](#install) — PyPI, virtualenv, Docker
 - [Quick start](#quick-start) — register with Claude Desktop in 30 seconds
+- [Transports](#transports) — stdio, streamable HTTP (2026-07-28 and 2025-11-25) and SSE from one command line
 
 **Library reference**
 
@@ -71,7 +72,7 @@ duration of a single call. Tools return JSON-serialisable data.
 
 | Concern | How bankstatementparser-mcp handles it |
 | :--- | :--- |
-| Transport | stdio (FastMCP default); zero config beyond the client manifest |
+| Transport | stdio by default; `--transport streamable-http` (2026-07-28 and 2025-11-25 on one endpoint) or `--transport sse` for HTTP |
 | Input model | Inline content + filename hint; no shared filesystem required |
 | Format fidelity | Tools delegate to `bankstatementparser`'s `create_parser` pipeline |
 | Format detection | `detect_format` mirrors the library's `detect_statement_format` |
@@ -119,7 +120,7 @@ Nov 2026 cutover).
 | :--- | :--- | :--- |
 | PyPI | `pip install bankstatementparser-mcp` | Pulls in `bankstatementparser >= 0.0.18` + MCP SDK |
 | Source | `git clone https://github.com/sebastienrousseau/bankstatementparser-mcp && cd bankstatementparser-mcp && poetry install` | For development |
-| Docker (GHCR) | `docker pull ghcr.io/sebastienrousseau/bankstatementparser-mcp:latest` | Multi-arch (linux/amd64, linux/arm64); runs `bankstatementparser-mcp` over stdio |
+| Docker (GHCR) | `docker pull ghcr.io/sebastienrousseau/bankstatementparser-mcp:latest` | Multi-arch (linux/amd64, linux/arm64); runs `bankstatementparser-mcp` over stdio; pass `--transport streamable-http --host 0.0.0.0` and publish port 8000 for HTTP |
 
 Requires Python 3.10 or later. Works on macOS, Linux, and Windows.
 
@@ -151,8 +152,37 @@ Register the server with any MCP client (Claude Desktop shown):
 
 That's it. Restart the client and the tools are available to the agent.
 
-The server speaks JSON-RPC over stdin/stdout — it is meant to be
-launched by an MCP client, not used interactively.
+By default the server speaks JSON-RPC over stdin/stdout — it is meant
+to be launched by an MCP client, not used interactively. For a shared
+deployment, see [Transports](#transports).
+
+---
+
+## Transports
+
+One command line, three transports:
+
+| Command | Transport | Endpoint | Protocol revisions |
+| :--- | :--- | :--- | :--- |
+| `bankstatementparser-mcp` | stdio | the client spawns the process | 2026-07-28, 2025-11-25 |
+| `bankstatementparser-mcp --transport streamable-http` | Streamable HTTP | `http://127.0.0.1:8000/mcp` | 2026-07-28 (stateless, `server/discover`) and 2025-11-25 (`initialize`, `Mcp-Session-Id`) on the same endpoint; responses stream as server-sent events, `GET` opens the server-to-client stream |
+| `bankstatementparser-mcp --transport sse` | HTTP+SSE (2024-11-05) | `http://127.0.0.1:8000/sse` and `/messages/` | for clients that still expect the older transport |
+
+`--host` and `--port` change the bind address (defaults `127.0.0.1` and
+`8000`). The HTTP transports carry no authentication of their own: bind
+loopback, or put the server behind a gateway you trust before binding a
+routable address. Every release is verified over streamable HTTP with
+[scout](https://github.com/sebastienrousseau/scout) in both protocol
+eras and over SSE with the MCP SDK client; see
+[ADR 0001](docs/adr/0001-three-transports-one-command-line.md).
+
+```json
+{
+  "mcpServers": {
+    "bankstatementparser": { "url": "http://127.0.0.1:8000/mcp" }
+  }
+}
+```
 
 ---
 

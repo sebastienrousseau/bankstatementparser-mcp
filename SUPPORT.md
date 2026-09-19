@@ -8,9 +8,9 @@ Thanks for using bankstatementparser-mcp. Here's the fastest way to get help, by
 
 - **Read first:** the [README](README.md), the runnable
   [`examples/`](examples/) (tool walkthrough, validation pipeline,
-  bank-reply parsing), and the parent
+  MT940 parsing, the resource and the prompt), and the parent
   [`bankstatementparser`](https://github.com/sebastienrousseau/bankstatementparser) repo for
-  message-type / scheme background.
+  statement-format background.
 - **Still stuck?** Open a
   [GitHub Discussion](https://github.com/sebastienrousseau/bankstatementparser/discussions)
   on the parent repo (shared with bankstatementparser and bankstatementparser-lsp) or a question

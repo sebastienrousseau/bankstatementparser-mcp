@@ -19,8 +19,10 @@ remediation timeline.
 
 `bankstatementparser-mcp` is a Model Context Protocol server that wraps
 the [`bankstatementparser`](https://github.com/sebastienrousseau/bankstatementparser)
-library and exposes it as agent tools. It runs locally over stdio (no
-network listener of its own), so the security surface is:
+library and exposes it as agent tools. It speaks stdio by default (the
+client spawns it; nothing listens) and opens an HTTP listener only when
+asked with `--transport streamable-http` or `--transport sse`, so the
+security surface is:
 
 - **Untrusted arguments** - tool calls (`parse_statement`,
   `validate_statement`, `detect_format`, `summarize_statement`) can come
@@ -31,6 +33,10 @@ network listener of its own), so the security surface is:
 - **No caller-supplied paths** - the tools do not open arbitrary
   filesystem paths; only the temporary file the server itself created is
   read back.
+- **The HTTP listener** - `--transport streamable-http` and
+  `--transport sse` bind `127.0.0.1` unless `--host` says otherwise and
+  carry no authentication or TLS of their own. Do not bind a routable
+  address without a gateway in front of it that adds both.
 
 ## Hardening
 
@@ -40,8 +46,8 @@ network listener of its own), so the security surface is:
 - **Validation as data** - `validate_statement` returns
   `{"is_valid": false, "error": …}` rather than raising; tracebacks and
   stack frames are not surfaced over the wire.
-- **No network sockets** - the server only speaks stdio. No HTTP listener
-  to harden, no TLS to manage.
+- **Loopback by default** - stdio needs no socket; the HTTP transports
+  bind loopback unless told otherwise (ADR 0001).
 - **No secrets** - the package does not embed credentials or call out to
   external services.
 
@@ -51,8 +57,15 @@ network listener of its own), so the security surface is:
   100% coverage gate, interrogate).
 - `security.yml` runs `bandit` against the package on every push and
   weekly via cron.
-- `codeql.yml` runs GitHub's CodeQL Python analysis weekly.
-- Dependency updates are picked up via Dependabot.
+- `codeql.yml` runs GitHub's CodeQL Python analysis on every push, pull
+  request and weekly.
+- `scorecard.yml` publishes the OpenSSF Scorecard weekly; every action
+  in every workflow is pinned by commit SHA.
+- `dco.yml` requires a `Signed-off-by:` trailer on every commit.
+- Dependabot (`.github/dependabot.yml`) proposes pip, GitHub Actions and
+  Docker updates weekly.
+- `release.yml` publishes to PyPI through OIDC trusted publishing with
+  SLSA build provenance, cosign signatures and SBOMs.
 
 ## Cryptography Status
 

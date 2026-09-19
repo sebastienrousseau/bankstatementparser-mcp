@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+### Added
+
+- `--transport streamable-http` and `--transport sse`, with `--host` and
+  `--port`. Streamable HTTP serves both current protocol revisions
+  (2026-07-28 stateless with `server/discover`, and 2025-11-25 with the
+  `initialize` handshake) on one endpoint and streams responses as
+  server-sent events; `sse` serves the older HTTP+SSE transport. stdio
+  stays the default and is unchanged. `--version` prints the version.
+  ADR 0001 records the decision.
+
 ### Fixed
 
 - `detect_format`, `parse_statement` and `summarize_statement` now refuse

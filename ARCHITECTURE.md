@@ -10,7 +10,7 @@ bankstatementparser-mcp without prior context.
 
 ```
 MCP client (Claude Desktop, IDE, agent)
-        |  stdio (JSON-RPC)
+        |  stdio (JSON-RPC), or streamable HTTP / SSE with --transport
         v
 bankstatementparser_mcp/server.py   (FastMCP server: tools, resource, prompt)
         |  inline content -> private temp file
@@ -35,9 +35,9 @@ statement text plus a filename hint rather than a path.
 | Area | Module | Responsibility |
 | :--- | :--- | :--- |
 | **Server** | `bankstatementparser_mcp/server.py` | The FastMCP server, all tool / resource / prompt registrations and the temp-file helpers |
-| **Entry point** | `bankstatementparser_mcp.server:main` (console script: `bankstatementparser-mcp`) | Launches the server over stdio |
+| **Entry point** | `bankstatementparser_mcp.server:main` (console script: `bankstatementparser-mcp`) | Launches the server over stdio, or over streamable HTTP / SSE with `--transport` (`_cli.py` + `_transports.py`, ADR 0001) |
 | **Version** | `bankstatementparser_mcp/__init__.py` | Single source of truth (`__version__`) |
-| **Tests** | `tests/test_mcp_server.py` | In-process regressions covering every tool, helper, the resource, and the prompt |
+| **Tests** | `tests/test_mcp_server.py`, `tests/test_transports.py`, `tests/test_mcp_sdk_compat.py`, `tests/test_suite_conformance.py` | In-process regressions covering every tool, helper, the resource and the prompt; the command line; the SDK shim; and the shared suite conformance gate |
 | **Examples** | `examples/` | One runnable script per usage shape |
 | **Release helpers** | `scripts/verify_versions.py` | Asserts `__version__`, `pyproject.toml`, and `CHANGELOG.md` agree |
 
@@ -63,8 +63,11 @@ The current MCP surface:
 - **Validation as data.** `validate_statement` never raises: a failure
   is returned as `{"is_valid": false, "error": ...}` so the agent can
   reason about failure without parsing tracebacks.
-- **No network sockets.** The server only speaks stdio. No HTTP listener
-  to harden, no TLS to manage.
+- **Loopback by default.** stdio needs no socket. The HTTP transports
+  (`--transport streamable-http`, `--transport sse`) bind `127.0.0.1`
+  unless `--host` says otherwise and add no authentication of their
+  own; a routable deployment sits behind a gateway the operator trusts
+  (ADR 0001).
 - **Coverage enforced at 100%** line+branch and docstring; only the
   process entry point is `# pragma: no cover`.
 
@@ -82,6 +85,7 @@ The current MCP surface:
 ## Where to look first
 
 - Runnable examples: [`examples/`](examples/)
+- Decisions: [`docs/adr/`](docs/adr/index.md)
 - Roadmap: [`ROADMAP.md`](ROADMAP.md)
 - Release process: [`RELEASING.md`](RELEASING.md)
 - Parent library: [`bankstatementparser`](https://github.com/sebastienrousseau/bankstatementparser)
