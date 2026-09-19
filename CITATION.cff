@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+cff-version: 1.2.0
+message: "If you use bankstatementparser-mcp in research or production write-ups, please cite it as below."
+type: software
+title: "bankstatementparser-mcp: Model Context Protocol server for bank statement ingestion"
+abstract: >-
+  A Model Context Protocol server exposing the bankstatementparser library to
+  AI agents: five tools for discovering, detecting, parsing, validating and
+  summarising bank statements in ISO 20022 CAMT.053 and pain.001, SWIFT
+  MT940, OFX/QFX and CSV, from inline content.
+authors:
+  - family-names: Rousseau
+    given-names: Sebastien
+    email: sebastian.rousseau@gmail.com
+version: "0.0.19"
+date-released: "2026-08-31"
+license: "Apache-2.0 OR MIT"
+repository-code: "https://github.com/sebastienrousseau/bankstatementparser-mcp"
+url: "https://bankstatementparser.com"
+keywords:
+  - bank statements
+  - ISO 20022
+  - CAMT.053
+  - MT940
+  - OFX
+  - Model Context Protocol
+  - MCP
+  - AI agents
+  - banking

@@ -10,11 +10,13 @@ single person.
 ## Mission and scope
 
 bankstatementparser-mcp is the Model Context Protocol surface for the
-[`bankstatementparser`](https://github.com/sebastienrousseau/bankstatementparser) ISO 20022
-library. It exposes generation, validation, identifier checking, and
-bank-reply parsing as MCP tools / resources / prompts so AI agents and
-assistants can drive payment file flows. Changes are weighed against that
-scope: correctness, security, and clarity over feature breadth.
+[`bankstatementparser`](https://github.com/sebastienrousseau/bankstatementparser)
+bank statement parsing library. It exposes format discovery, format
+detection, parsing, dry-run validation and summaries of ISO 20022
+CAMT.053 and pain.001, SWIFT MT940, OFX/QFX and CSV statements as MCP
+tools / a resource / a prompt so AI agents and assistants can read bank
+statements from inline content. Changes are weighed against that scope:
+correctness, security, and clarity over feature breadth.
 
 ## Roles
 
