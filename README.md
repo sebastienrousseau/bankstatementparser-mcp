@@ -25,6 +25,10 @@
   <a href="https://glama.ai/mcp/servers/sebastienrousseau/bankstatementparser-mcp"><img src="https://glama.ai/mcp/servers/sebastienrousseau/bankstatementparser-mcp/badges/score.svg" alt="Glama MCP server score" /></a>
 </p>
 
+<p align="center">
+  <img src=".github/demo.gif" alt="bankstatementparser-mcp Demo" width="100%" />
+</p>
+
 ---
 
 ## Contents
@@ -172,7 +176,7 @@ One command line, three transports:
 `8000`). The HTTP transports carry no authentication of their own: bind
 loopback, or put the server behind a gateway you trust before binding a
 routable address. Every release is verified over streamable HTTP with
-[scout](https://github.com/sebastienrousseau/scout) in both protocol
+[passmcp](https://github.com/sebastienrousseau/passmcp) in both protocol
 eras and over SSE with the MCP SDK client; see
 [ADR 0001](docs/adr/0001-three-transports-one-command-line.md).
 

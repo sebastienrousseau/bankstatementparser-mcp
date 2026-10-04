@@ -6,12 +6,12 @@
     "url": "https://github.com/sebastienrousseau/bankstatementparser-mcp",
     "source": "github"
   },
-  "version": "0.0.19",
+  "version": "0.0.20",
   "packages": [
     {
       "registryType": "pypi",
       "identifier": "bankstatementparser-mcp",
-      "version": "0.0.19",
+      "version": "0.0.20",
       "transport": {
         "type": "stdio"
       }

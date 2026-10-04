@@ -1,4 +1,4 @@
-.PHONY: help install dev test lint format type-check security clean examples doc-coverage check
+.PHONY: help install dev test lint format type-check security clean examples doc-coverage demo check
 
 PYTHON ?= python3
 POETRY ?= poetry
@@ -47,5 +47,8 @@ examples: ## Verify example scripts run
 
 doc-coverage: ## Enforce the 100% docstring coverage gate
 	$(POETRY) run interrogate -c pyproject.toml -v bankstatementparser_mcp
+
+demo: ## Render the README demo GIF with VHS
+	vhs .github/demo.tape
 
 check: lint type-check test doc-coverage examples ## Run all gates

@@ -1,9 +1,12 @@
 # Changelog
 
-## [Unreleased]
+## [0.0.20] - 2026-10-03
 
 ### Added
 
+- Animated terminal `demo.gif` rendered via VHS from `.github/demo.tape`.
+- `AGENTS.md` defining AI collaboration invariants and verification gates.
+- SPDX Apache-2.0 OR MIT dual license compliance with `LICENSES/` tree.
 - `--transport streamable-http` and `--transport sse`, with `--host` and
   `--port`. Streamable HTTP serves both current protocol revisions
   (2026-07-28 stateless with `server/discover`, and 2025-11-25 with the
