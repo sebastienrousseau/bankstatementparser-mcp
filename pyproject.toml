@@ -19,13 +19,9 @@ python = ">=3.10,<4.0"
 bankstatementparser = ">=0.0.18"
 mcp = ">=1.2,<3"
 langchain-core = { version = ">=0.3,<2", optional = true }
-crewai = { version = ">=0.100,<1", optional = true, python = ">=3.10,<3.14" }
-llama-index-core = { version = ">=0.12,<1", optional = true }
 
 [tool.poetry.extras]
 langchain = ["langchain-core"]
-crewai = ["crewai"]
-llamaindex = ["llama-index-core"]
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=9.0.3,<10.0.0"
