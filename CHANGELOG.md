@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.21] - 2026-10-04
+
+### Documentation
+
+- Standardized documentation formatting and license references.
+- Synchronized release version metadata across packaging descriptors.
+
 ## [0.0.20] - 2026-10-03
 
 ### Added
@@ -262,6 +269,8 @@ Suite. No functional or API changes.
     block in the README (and `docs/*.md`) so no documented example can
     silently rot.
 
+[0.0.21]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.21
+[0.0.20]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.20
 [0.0.19]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.19
 [0.0.18]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.18
 [0.0.14]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.14
