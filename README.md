@@ -122,7 +122,7 @@ Nov 2026 cutover).
 
 | Channel | Command | Notes |
 | :--- | :--- | :--- |
-| PyPI | `pip install bankstatementparser-mcp` | Pulls in `bankstatementparser >= 0.0.18` + MCP SDK |
+| PyPI | `pip install bankstatementparser-mcp` | Pulls in `bankstatementparser >= 0.0.28` + MCP SDK |
 | Source | `git clone https://github.com/sebastienrousseau/bankstatementparser-mcp && cd bankstatementparser-mcp && poetry install` | For development |
 | Docker (GHCR) | `docker pull ghcr.io/sebastienrousseau/bankstatementparser-mcp:latest` | Multi-arch (linux/amd64, linux/arm64); runs `bankstatementparser-mcp` over stdio; pass `--transport streamable-http --host 0.0.0.0` and publish port 8000 for HTTP |
 
@@ -295,7 +295,7 @@ A `Makefile` orchestrates the quality gates (kept in lockstep with CI):
 | `make type-check` | `mypy --strict` |
 | `make docs` | `interrogate --fail-under=100` (docstring coverage) |
 
-Current state (v0.0.19): **100% line + branch coverage** against a 100%
+Current state (v0.0.28): **100% line + branch coverage** against a 100%
 enforced floor, mypy `--strict` clean, interrogate 100%.
 
 ---
