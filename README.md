@@ -16,13 +16,14 @@
 </p>
 
 <p align="center">
-  <a href="https://pypi.org/project/bankstatementparser-mcp/"><img src="https://img.shields.io/pypi/v/bankstatementparser-mcp?style=for-the-badge" alt="PyPI version" /></a>
-  <a href="https://pypi.org/project/bankstatementparser-mcp/"><img src="https://img.shields.io/pypi/pyversions/bankstatementparser-mcp.svg?style=for-the-badge" alt="Python versions" /></a>
-  <a href="https://pypi.org/project/bankstatementparser-mcp/"><img src="https://img.shields.io/pypi/dm/bankstatementparser-mcp.svg?style=for-the-badge" alt="PyPI downloads" /></a>
-  <a href="https://github.com/sebastienrousseau/bankstatementparser-mcp/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/sebastienrousseau/bankstatementparser-mcp/ci.yml?branch=main&label=Tests&style=for-the-badge" alt="Tests" /></a>
-  <a href="https://github.com/sebastienrousseau/bankstatementparser-mcp/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/sebastienrousseau/bankstatementparser-mcp/ci.yml?branch=main&label=Coverage&style=for-the-badge" alt="Coverage" /></a>
-  <a href="#license"><img src="https://img.shields.io/pypi/l/bankstatementparser-mcp?style=for-the-badge" alt="License" /></a>
-  <a href="https://glama.ai/mcp/servers/sebastienrousseau/bankstatementparser-mcp"><img src="https://glama.ai/mcp/servers/sebastienrousseau/bankstatementparser-mcp/badges/score.svg" alt="Glama MCP server score" /></a>
+  <a href="https://github.com/sebastienrousseau/bankstatementparser-mcp/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/sebastienrousseau/bankstatementparser-mcp/ci.yml?branch=main&label=Tests&style=for-the-badge&logo=github" alt="Tests" height="28" /></a>
+  <a href="https://github.com/sebastienrousseau/bankstatementparser-mcp/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/sebastienrousseau/bankstatementparser-mcp/ci.yml?branch=main&label=Coverage&style=for-the-badge" alt="Coverage" height="28" /></a>
+  <a href="https://pypi.org/project/bankstatementparser-mcp/"><img src="https://img.shields.io/pypi/v/bankstatementparser-mcp?style=for-the-badge&color=fc8d62&logo=python" alt="PyPI version" height="28" /></a>
+  <a href="https://pypi.org/project/bankstatementparser-mcp/"><img src="https://img.shields.io/pypi/pyversions/bankstatementparser-mcp.svg?style=for-the-badge" alt="Python versions" height="28" /></a>
+  <a href="https://pypi.org/project/bankstatementparser-mcp/"><img src="https://img.shields.io/pypi/dm/bankstatementparser-mcp.svg?style=for-the-badge" alt="PyPI downloads" height="28" /></a>
+  <a href="https://scorecard.dev/viewer/?uri=github.com/sebastienrousseau/bankstatementparser-mcp"><img src="https://img.shields.io/ossf-scorecard/github.com/sebastienrousseau/bankstatementparser-mcp?style=for-the-badge&label=OpenSSF%20Scorecard&logo=openssf" alt="OpenSSF Scorecard" height="28" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0%20OR%20MIT-blue.svg?style=for-the-badge" alt="License: Apache-2.0 OR MIT" height="28" /></a>
+  <a href="https://glama.ai/mcp/servers/sebastienrousseau/bankstatementparser-mcp"><img src="https://glama.ai/mcp/servers/sebastienrousseau/bankstatementparser-mcp/badges/score.svg" alt="Glama MCP server score" height="28" /></a>
 </p>
 
 <p align="center">
