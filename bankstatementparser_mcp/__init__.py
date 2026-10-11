@@ -20,4 +20,4 @@ Install with ``pip install bankstatementparser-mcp`` and run
 streamable-http`` or ``--transport sse`` for HTTP).
 """
 
-__version__ = "0.0.21"
+__version__ = "0.0.28"

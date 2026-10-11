@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.28] - 2026-10-11
+
+### Changed
+
+- Aligned version across the `bankstatementparser` suite to `0.0.28`.
+- Raised core `bankstatementparser` dependency requirement to `>= 0.0.28`.
+
 ## [0.0.21] - 2026-10-04
 
 ### Documentation
@@ -269,6 +276,7 @@ Suite. No functional or API changes.
     block in the README (and `docs/*.md`) so no documented example can
     silently rot.
 
+[0.0.28]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.28
 [0.0.21]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.21
 [0.0.20]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.20
 [0.0.19]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.19

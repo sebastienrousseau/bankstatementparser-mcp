@@ -138,14 +138,14 @@ yaml = ["PyYAML"]
 
 [[package]]
 name = "bankstatementparser"
-version = "0.0.19"
-description = "BankStatementParser is your essential tool for easy bank statement management. Designed with finance and treasury experts in mind, it offers a simple way to handle CAMT (ISO 20022) formats and more. Get quick, accurate insights from your financial data and spend less time on processing. It's the smart, hassle-free way to stay on top of your transactions."
+version = "0.0.28"
+description = "Parse bank statements (CAMT, PAIN.001, MT940, MT942, OFX, BAI2, CSV, and PDF) into unified Transactions with treasury analytics, 2-way reconciliation, PDF forensics, and ledger export."
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 files = [
-    {file = "bankstatementparser-0.0.19-py3-none-any.whl", hash = "sha256:8cb44cabfed1da6f941785965259d95362f96b9194994f8a96de902c8e732721"},
-    {file = "bankstatementparser-0.0.19.tar.gz", hash = "sha256:ba9c6f49384b517b3f8f195e7d323ab3f2f9460513fd4e53380c03d03efa3cd7"},
+    {file = "bankstatementparser-0.0.28-py3-none-any.whl", hash = "sha256:c122d2394e95bc3e01b0b0a312fd641e597c5808006612d8aa54da3c4cabfd84"},
+    {file = "bankstatementparser-0.0.28.tar.gz", hash = "sha256:5fd86cfb374e4b819e791242aea0c4ec4b1f0115d01837c93ee5a0dff2917f90"},
 ]
 
 [package.dependencies]
@@ -155,7 +155,7 @@ pandas = ">=2.3.3,<3.0.0"
 pydantic = ">=2.11.0,<3.0.0"
 
 [package.extras]
-api = ["fastapi (>=0.115.0)", "uvicorn (>=0.34.0)"]
+api = ["fastapi (>=0.115.0)", "python-multipart (>=0.0.32)", "uvicorn (>=0.34.0)"]
 enrichment = ["litellm (>=1.83.10) ; python_version < \"3.14\""]
 excel = ["openpyxl (>=3.1.5,<4.0.0)"]
 hybrid = ["litellm (>=1.83.10) ; python_version < \"3.14\"", "pypdf (>=4.0.0)"]
@@ -3968,4 +3968,4 @@ langchain = ["langchain-core"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "a9d1b7d94cf0fbdea398ed7d2e57d1c786c1e116423b030e4a74da891c899dcd"
+content-hash = "c00e734ac6878fe9897bb2de56c0a8da926780690cfe72d09860862cfb9298b6"
