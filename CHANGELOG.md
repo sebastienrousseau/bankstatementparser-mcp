@@ -1,5 +1,30 @@
 # Changelog
 
+## [Unreleased]
+
+### Security
+
+- The release tooling (`requirements/build.txt`) floors `filelock >= 4.2.1`
+  (GHSA-9vhv-jxww-xfm5, GHSA-567q-5qvw-pf92, GHSA-v4x8-3wr5-3wq8; it pinned
+  4.0.10) and `certifi >= 2026.10.19` (PYSEC-2026-4320; it pinned
+  2026.7.22), and keeps `virtualenv >= 21.14.13` (GHSA-cx6f-vjhg-g3cc).
+  filelock 4.2.1 needs Python 3.11 and only 3.12 jobs install the tree, so
+  it is compiled for 3.12, universally: that restores the pins (cachecontrol
+  among them) a non-universal Dependabot recompile dropped, without which
+  `pip install --require-hashes -r requirements/build.txt` failed.
+- The release SBOM job points `cyclonedx-py environment` and `pip-licenses`
+  at the Poetry venv (`poetry env info --executable`). Run through `poetry
+  run`, they described their own interpreter, so the SBOM listed the SBOM
+  tooling instead of the runtime set.
+- `opentelemetry-api >= 1.45.1` (GHSA-xcq7-p3pf-p88h; the lock held 1.44.0),
+  the `langchain` extra floors `certifi >= 2026.10.19` (PYSEC-2026-4320),
+  and the dev group floors black at 26.10.1 (CVE-2026-114134).
+
+### Changed
+
+- `requirements/build.in` floors `dulwich >= 1.2.19` (it pinned 1.2.17), in
+  place of Dependabot #105.
+
 ## [0.0.28] - 2026-10-11
 
 ### Changed
