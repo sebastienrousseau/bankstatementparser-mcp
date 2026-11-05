@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [0.0.29] - 2026-11-05
 
 ### Security
 
@@ -24,6 +24,8 @@
 
 - `requirements/build.in` floors `dulwich >= 1.2.19` (it pinned 1.2.17), in
   place of Dependabot #105.
+- Raised core `bankstatementparser` dependency requirement to `>= 0.0.29`.
+- Aligned version across the `bankstatementparser` suite to `0.0.29`.
 
 ## [0.0.28] - 2026-10-11
 
