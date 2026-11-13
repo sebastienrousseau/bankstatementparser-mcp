@@ -223,10 +223,11 @@ def _summary_to_jsonable(summary: dict[str, Any]) -> dict[str, Any]:
 def list_supported_formats() -> list[str]:
     """List every bank statement format identifier this server can parse.
 
-    Use this first to discover the valid ``format`` strings before calling
-    ``detect_format`` or ``parse_statement``. For the file extensions and a
-    human-readable description of each format, read the
-    ``bankstatementparser://formats`` resource instead.
+    Use this first to discover the valid ``format`` strings accepted by
+    ``detect_format``, ``parse_statement``, ``validate_statement``, and
+    ``summarize_statement``. For the file extensions and a human-readable
+    description of each format, read the ``bankstatementparser://formats``
+    resource instead.
 
     Returns:
         The supported format identifiers.
@@ -262,8 +263,8 @@ def detect_format(
 
     Use this when you hold statement text but do not yet know its format,
     to resolve the ``format`` identifier from the content plus filename
-    hint. Once the format is known, call ``parse_statement`` to read the
-    transactions instead of calling this again.
+    hint. Once the format is known, use ``parse_statement`` to read the
+    transactions.
 
     Args:
         content: The raw statement text.
