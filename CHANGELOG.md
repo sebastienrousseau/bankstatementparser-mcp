@@ -1,5 +1,21 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Reworded cross-tool imperatives in `list_supported_formats` and
+  `detect_format` into declarative scope descriptions so every MCP tool
+  governs only itself and clears `passmcp` `catalog.text.shadowing` checks.
+
+### Changed
+
+- CI, Docker, and release workflows: `github/codeql-action` 4.39.3,
+  `docker/login-action` 4.8.0, and `sigstore/cosign-installer` 4.1.3 (#125).
+- Dependencies and SBOM tooling: `langchain-core` 1.7.7 (#126) and `ruff`
+  0.17.5 (#128) in `poetry.lock` (pruning orphaned `cyclonedx-bom` entries),
+  and `cyclonedx-bom` 8.0.1 in `requirements/sbom.txt` (#127).
+
 ## [0.0.29] - 2026-11-05
 
 ### Security
