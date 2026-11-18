@@ -30,6 +30,9 @@
   Pinned-Dependencies and top-level Token-Permissions alerts.
 - `pip-audit` checks the locked runtime and dev sets instead of the runner's
   environment.
+- pip-audit is a dev dependency on Python 3.11+ only, with `filelock >= 4.2.1`:
+  it pulls filelock, every filelock up to 4.2.0 has advisories, and 4.2.1
+  needs Python 3.11, so on 3.10 the lock held the affected 4.1.0.
 
 ### Changed
 

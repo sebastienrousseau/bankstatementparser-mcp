@@ -25,7 +25,8 @@ COPY bankstatementparser_mcp ./bankstatementparser_mcp
 
 RUN python -m venv /opt/venv \
     && /opt/venv/bin/pip install --require-hashes -r requirements.txt \
-    && /opt/venv/bin/pip install --no-deps .
+    && /opt/venv/bin/pip wheel --no-deps --wheel-dir /tmp/wheels . \
+    && /opt/venv/bin/pip install --no-deps /tmp/wheels/*.whl
 
 FROM python:3.14-slim@sha256:9aaa474097d094040649f2162a627c0049b408f52138d980916788d80f04802f
 
