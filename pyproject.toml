@@ -48,7 +48,12 @@ tomli = { version = ">=2", python = "<3.11" }
 packaging = ">=23"
 hypothesis = ">=6.82,<7"
 build = "^1.6.1"
-pip-audit = "^2.10.1"
+# pip-audit pulls filelock (via cachecontrol[filecache]). Every filelock
+# up to 4.2.0 carries advisories and 4.2.1 needs Python 3.11, so pip-audit
+# is installed on 3.11+ only (its CI job runs on 3.12) and the floor keeps
+# any affected filelock from resolving.
+pip-audit = { version = "^2.10.1", python = ">=3.11" }
+filelock = { version = ">=4.2.1", python = ">=3.11" }
 types-jsonschema = "^4.26.0.20261006"
 [build-system]
 requires = ["poetry-core"]

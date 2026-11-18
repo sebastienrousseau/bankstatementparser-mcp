@@ -28,7 +28,7 @@ jobs:
       - name: Install bankstatementparser-mcp
         run: |
           pip install --require-hashes -r requirements/runtime.txt
-          pip install --no-deps .
+          pip install --no-deps -e .
 
       - name: List tools via MCP Inspector CLI
         run: npx -y @modelcontextprotocol/inspector --cli bankstatementparser-mcp --method tools/list
