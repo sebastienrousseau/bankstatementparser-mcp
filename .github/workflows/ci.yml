@@ -26,15 +26,14 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
 
-      # bankstatementparser-mcp depends on the core bankstatementparser library, which is not yet
-      # published to PyPI. Install it from its GitHub repository first,
-      # then install this package and its dev dependencies on top.
-      - name: Install bankstatementparser (from PyPI) + this package
+      # requirements/ci.txt is exported from poetry.lock with hashes
+      # (scripts/export_locked_requirements.py), so every job installs the
+      # locked core, runtime and dev tools; the package itself goes on top
+      # without resolving anything further.
+      - name: Install locked dependencies + this package
         run: |
-          python -m pip install --upgrade pip
-          pip install "bankstatementparser>=0.0.11"
-          pip install -e .
-          pip install pytest pytest-cov interrogate hypothesis 'tomli; python_version<"3.11"'
+          pip install --require-hashes -r requirements/ci.txt
+          pip install --no-deps -e .
 
       - name: Run tests with the 100% coverage gate
         run: |
@@ -87,12 +86,17 @@ jobs:
           python-version: "3.12"
           cache: "pip"
 
-      - name: Install bankstatementparser (from PyPI) + this package
+      - name: Install locked dependencies + this package
         run: |
-          python -m pip install --upgrade pip
-          pip install "bankstatementparser>=0.0.11"
-          pip install -e .
-          pip install ruff black mypy types-jsonschema
+          pip install --require-hashes -r requirements/ci.txt
+          pip install --no-deps -e .
+
+      - name: Locked requirement exports match poetry.lock
+        run: |
+          python scripts/export_locked_requirements.py --with dev --output "$RUNNER_TEMP/ci.txt"
+          diff -u requirements/ci.txt "$RUNNER_TEMP/ci.txt"
+          python scripts/export_locked_requirements.py --output "$RUNNER_TEMP/runtime.txt"
+          diff -u requirements/runtime.txt "$RUNNER_TEMP/runtime.txt"
 
       - name: Ruff check
         run: ruff check bankstatementparser_mcp/ tests/
@@ -115,11 +119,10 @@ jobs:
           python-version: "3.12"
           cache: "pip"
 
-      - name: Install bankstatementparser (from PyPI) + this package
+      - name: Install locked runtime dependencies + this package
         run: |
-          python -m pip install --upgrade pip
-          pip install "bankstatementparser>=0.0.11"
-          pip install -e .
+          pip install --require-hashes -r requirements/runtime.txt
+          pip install --no-deps -e .
 
       - name: Run examples
         run: |
@@ -143,8 +146,7 @@ jobs:
       # from PyPI and catches packaging / CI-vs-local divergence.
       - name: Build the wheel
         run: |
-          python -m pip install --upgrade pip
-          pip install build
+          pip install --require-hashes -r requirements/ci.txt
           python -m build
 
       - name: Install the wheel into a clean venv

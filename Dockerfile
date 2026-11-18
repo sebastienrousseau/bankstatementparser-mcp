@@ -4,38 +4,30 @@
 # The container runs the FastMCP server over stdio so an MCP client can
 # launch it directly with ``docker run -i --rm bankstatementparser-mcp``.
 
-FROM python:3.14-slim AS builder
+# Pinned by digest; Dependabot's docker updater moves it.
+FROM python:3.14-slim@sha256:9aaa474097d094040649f2162a627c0049b408f52138d980916788d80f04802f AS builder
 
 WORKDIR /build
 
 ENV PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# Pin can be overridden at build-time so the GHCR pipeline can install
-# bankstatementparser from a matching feat/* branch before the parent release hits
-# PyPI; the default resolves the published version once available. The
-# git client is needed only when the override spec is a git+ URL; it
-# stays in this build stage and never ships in the final image.
-ARG BANKSTATEMENTPARSER_PIP_SPEC="bankstatementparser>=0.0.11"
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends git \
-    && rm -rf /var/lib/apt/lists/*
-
+# requirements/runtime.txt is exported from poetry.lock with hashes, so
+# the image installs exactly the locked runtime set; the package itself
+# goes on top without resolving anything further.
+#
 # pyproject.toml carries ``readme = "README.md"``, so README.md must be
 # present at build-time for ``pip install .`` to resolve the package
 # metadata.
+COPY requirements/runtime.txt ./requirements.txt
 COPY pyproject.toml README.md ./
 COPY bankstatementparser_mcp ./bankstatementparser_mcp
 
-# Install bankstatementparser from PyPI (or the override spec), then layer this
-# package on top inside a self-contained virtualenv.
 RUN python -m venv /opt/venv \
-    && /opt/venv/bin/pip install --upgrade pip \
-    && /opt/venv/bin/pip install "$BANKSTATEMENTPARSER_PIP_SPEC" \
-    && /opt/venv/bin/pip install .
+    && /opt/venv/bin/pip install --require-hashes -r requirements.txt \
+    && /opt/venv/bin/pip install --no-deps .
 
-
-FROM python:3.14-slim
+FROM python:3.14-slim@sha256:9aaa474097d094040649f2162a627c0049b408f52138d980916788d80f04802f
 
 LABEL org.opencontainers.image.title="bankstatementparser-mcp" \
       org.opencontainers.image.description="Model Context Protocol server for the bankstatementparser bank statement parsing library." \
