@@ -1,4 +1,4 @@
-.PHONY: help install dev test lint format type-check security clean examples doc-coverage demo check
+.PHONY: help install dev test lint format fuzz type-check security clean examples doc-coverage demo check
 
 PYTHON ?= python3
 POETRY ?= poetry
@@ -19,12 +19,16 @@ test: ## Run tests with the 100% line+branch coverage gate
 		--cov-report=term-missing --cov-fail-under=100 -v
 
 lint: ## Run linters (ruff + black check)
-	$(POETRY) run ruff check bankstatementparser_mcp/ tests/
-	$(POETRY) run black --check bankstatementparser_mcp/ tests/
+	$(POETRY) run ruff check bankstatementparser_mcp/ tests/ fuzz/
+	$(POETRY) run black --check bankstatementparser_mcp/ tests/ fuzz/
 
 format: ## Auto-format code (ruff fix + black)
-	$(POETRY) run ruff check --fix bankstatementparser_mcp/ tests/
-	$(POETRY) run black bankstatementparser_mcp/ tests/
+	$(POETRY) run ruff check --fix bankstatementparser_mcp/ tests/ fuzz/
+	$(POETRY) run black bankstatementparser_mcp/ tests/ fuzz/
+
+fuzz: ## Fuzz the MCP tools with Atheris for 60s (Linux x86_64, Python 3.12+)
+	$(POETRY) install --with fuzz
+	$(POETRY) run python fuzz/fuzz_tools.py -max_total_time=60
 
 type-check: ## Run mypy type checking
 	$(POETRY) run mypy bankstatementparser_mcp/

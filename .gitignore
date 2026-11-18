@@ -36,3 +36,9 @@ tmp/
 .mypy_cache/
 .ruff_cache/
 bankstatementparser_mcp.egg-info/
+
+# libFuzzer reproducers from fuzz/fuzz_tools.py
+crash-*
+leak-*
+timeout-*
+oom-*

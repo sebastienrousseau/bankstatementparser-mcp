@@ -2,12 +2,25 @@
 
 ## [Unreleased]
 
+### Added
+
+- `fuzz/fuzz_tools.py`, an Atheris (libFuzzer) target for every tool that
+  takes a statement payload, and a CI job that runs it for two minutes.
+  Atheris lives in an optional `fuzz` Poetry group, installed from the
+  hashed `requirements/fuzz.txt` export. Run it with `make fuzz`
+  (Linux x86_64, Python 3.12+).
+
 ### Changed
 
 - Release titles read `bankstatementparser-mcp <version>` instead of the bare tag.
 
 ### Fixed
 
+- `parse_statement` and `summarize_statement` refuse malformed input with
+  a `ToolError` when an explicit `format` skips detection. Core passes
+  lxml's `XMLSyntaxError` (`format="camt"`) and `csv.Error`
+  (`format="csv"`) through unchanged, so the client got a bare "Error
+  executing tool" instead of the reason. Found by the new fuzz target.
 - The `server.json` description is 99 characters; the MCP Registry caps it
   at 100, so every publish from v0.0.20 to v0.0.30 failed with HTTP 422.
   A test now checks the limit.

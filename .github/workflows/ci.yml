@@ -97,12 +97,14 @@ jobs:
           diff -u requirements/ci.txt "$RUNNER_TEMP/ci.txt"
           python scripts/export_locked_requirements.py --output "$RUNNER_TEMP/runtime.txt"
           diff -u requirements/runtime.txt "$RUNNER_TEMP/runtime.txt"
+          python scripts/export_locked_requirements.py --with fuzz --output "$RUNNER_TEMP/fuzz.txt"
+          diff -u requirements/fuzz.txt "$RUNNER_TEMP/fuzz.txt"
 
       - name: Ruff check
-        run: ruff check bankstatementparser_mcp/ tests/
+        run: ruff check bankstatementparser_mcp/ tests/ fuzz/
 
       - name: Black check
-        run: black --check bankstatementparser_mcp/ tests/ benches/
+        run: black --check bankstatementparser_mcp/ tests/ benches/ fuzz/
 
       - name: Mypy
         run: mypy bankstatementparser_mcp/
@@ -127,6 +129,41 @@ jobs:
       - name: Run examples
         run: |
           for f in examples/*.py; do echo "=== $f ==="; python "$f"; done
+
+  fuzz:
+    # Coverage-guided fuzzing of every payload-taking tool with Atheris
+    # (libFuzzer). The target fails on any exception other than the
+    # ToolError the tools promise, so a crash here is a real defect.
+    name: Fuzz (Atheris)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install locked dependencies + this package
+        run: |
+          pip install --require-hashes -r requirements/fuzz.txt
+          pip install --no-deps -e .
+
+      - name: Fuzz the MCP tools
+        run: |
+          mkdir -p "$RUNNER_TEMP/corpus" "$RUNNER_TEMP/crashes"
+          python fuzz/fuzz_tools.py "$RUNNER_TEMP/corpus" \
+            -max_total_time=120 -timeout=25 \
+            -artifact_prefix="$RUNNER_TEMP/crashes/"
+
+      - name: Upload crash reproducers
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: fuzz-crashes
+          path: ${{ runner.temp }}/crashes/
 
   smoke:
     name: Smoke test (installed wheel)
