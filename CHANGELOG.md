@@ -1,5 +1,22 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Release notes are written by the release workflow. A final
+  `release-notes` job runs after every asset is attached and rewrites
+  the GitHub release in the suite's format: Highlights, What's Changed,
+  New Contributors (when any), Checksums of every asset, and the Full
+  Changelog link. Until now the body was GitHub's generated list alone, so 0.0.30
+  and 0.0.31 had to be corrected by hand.
+- The Highlights are the one hand-written part, kept in
+  `.github/releases/<tag>.md`. The build refuses to publish when that
+  file is missing, has fewer than 2 or more than 4
+  `* **Headline**: text` bullets, or contains an em dash.
+- `scripts/release_notes.py`, shared with every suite repository,
+  composes the body from the GitHub API and the downloaded assets.
+
 ## [0.0.31] - 2026-11-18
 
 ### Added
@@ -356,6 +373,7 @@ Suite. No functional or API changes.
     block in the README (and `docs/*.md`) so no documented example can
     silently rot.
 
+[Unreleased]: https://github.com/sebastienrousseau/bankstatementparser-mcp/compare/v0.0.31...HEAD
 [0.0.31]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.31
 [0.0.30]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.30
 [0.0.28]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.28
