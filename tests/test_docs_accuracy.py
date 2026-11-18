@@ -17,6 +17,7 @@ the test.
 from __future__ import annotations
 
 import asyncio
+import json
 import re
 from pathlib import Path
 
@@ -266,3 +267,16 @@ class TestDevelopmentClaims:
         assert (
             floor in self.readme_text
         ), f"README should mention the bankstatementparser >= {floor} floor"
+
+
+class TestRegistryManifest:
+    """server.json must pass the MCP Registry's own validation."""
+
+    def test_description_fits_the_registry_limit(self) -> None:
+        """The registry schema caps ServerDetail.description at 100 chars.
+
+        A longer one makes ``mcp-publisher publish`` fail with HTTP 422,
+        which kept every release from v0.0.20 to v0.0.30 off the registry.
+        """
+        manifest = json.loads(_read(REPO_ROOT / "server.json"))
+        assert 1 <= len(manifest["description"]) <= 100
