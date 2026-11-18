@@ -1,22 +1,6 @@
 # Changelog
 
-## [Unreleased]
-
-### Fixed
-
-- Reworded cross-tool imperatives in `list_supported_formats` and
-  `detect_format` into declarative scope descriptions so every MCP tool
-  governs only itself and clears `passmcp` `catalog.text.shadowing` checks.
-
-### Changed
-
-- CI, Docker, and release workflows: `github/codeql-action` 4.39.3,
-  `docker/login-action` 4.8.0, and `sigstore/cosign-installer` 4.1.3 (#125).
-- Dependencies and SBOM tooling: `langchain-core` 1.7.7 (#126) and `ruff`
-  0.17.5 (#128) in `poetry.lock` (pruning orphaned `cyclonedx-bom` entries),
-  and `cyclonedx-bom` 8.0.1 in `requirements/sbom.txt` (#127).
-
-## [0.0.29] - 2026-11-05
+## [0.0.30] - Unreleased
 
 ### Security
 
@@ -35,13 +19,27 @@
 - `opentelemetry-api >= 1.45.1` (GHSA-xcq7-p3pf-p88h; the lock held 1.44.0),
   the `langchain` extra floors `certifi >= 2026.10.19` (PYSEC-2026-4320),
   and the dev group floors black at 26.10.1 (CVE-2026-114134).
+- `opentelemetry-api >= 1.45.2` (GHSA-mf5v-w3w3-f6cg); the lock already
+  held 1.45.2.
 
 ### Changed
 
 - `requirements/build.in` floors `dulwich >= 1.2.19` (it pinned 1.2.17), in
   place of Dependabot #105.
-- Raised core `bankstatementparser` dependency requirement to `>= 0.0.29`.
-- Aligned version across the `bankstatementparser` suite to `0.0.29`.
+- Requires core `bankstatementparser >= 0.0.29`, the newest released core.
+- Aligned version across the `bankstatementparser` suite to `0.0.30`. 0.0.29
+  was prepared but never published; its changes ship in 0.0.30.
+- CI, Docker, and release workflows: `github/codeql-action` 4.39.3,
+  `docker/login-action` 4.8.0, and `sigstore/cosign-installer` 4.1.3 (#125).
+- Dependencies and SBOM tooling: `langchain-core` 1.7.7 (#126) and `ruff`
+  0.17.5 (#128) in `poetry.lock` (pruning orphaned `cyclonedx-bom` entries),
+  and `cyclonedx-bom` 8.0.1 in `requirements/sbom.txt` (#127).
+
+### Fixed
+
+- Reworded cross-tool imperatives in `list_supported_formats` and
+  `detect_format` into declarative scope descriptions so every MCP tool
+  governs only itself and clears `passmcp` `catalog.text.shadowing` checks.
 
 ## [0.0.28] - 2026-10-11
 
@@ -319,7 +317,7 @@ Suite. No functional or API changes.
     block in the README (and `docs/*.md`) so no documented example can
     silently rot.
 
-[0.0.29]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.29
+[0.0.30]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.30
 [0.0.28]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.28
 [0.0.21]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.21
 [0.0.20]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.20
