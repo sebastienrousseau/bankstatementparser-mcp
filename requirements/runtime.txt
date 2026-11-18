@@ -8,9 +8,9 @@ anyio==4.15.1 ; (python_full_version < "4.0" and python_full_version >= "3.10") 
 attrs==26.1.0 ; (python_full_version < "4.0" and python_full_version >= "3.10") and python_full_version >= "3.9" \
     --hash=sha256:c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309 \
     --hash=sha256:d03ceb89cb322a8fd706d4fb91940737b6642aa36998fe130a9bc96c985eff32
-bankstatementparser==0.0.30 ; (python_full_version < "4.0" and python_full_version >= "3.10") and (python_full_version < "4.0" and python_full_version >= "3.10") \
-    --hash=sha256:71eebaf5107431b7885b2ca4fab81ea20aca26ed1cc81e3cea0db45592b67be6 \
-    --hash=sha256:bf0f4e23d207087ecc080dd6759be61b0370e84448e6f08b878374e96eafe539
+bankstatementparser==0.0.31 ; (python_full_version < "4.0" and python_full_version >= "3.10") and (python_full_version < "4.0" and python_full_version >= "3.10") \
+    --hash=sha256:53e05f86a4d2cbc51a2c4a4dc5f71c11a14c8c6c5f84c6ce2a31213fdb5b8c89 \
+    --hash=sha256:6ec787c2688cf5b57e234d64b991856074cd120889c2135cb25f16a61a8abe5b
 cffi==2.0.0 ; (python_full_version < "4.0" and python_full_version >= "3.10") and python_full_version >= "3.9" and platform_python_implementation != "PyPy" \
     --hash=sha256:00bdf7acc5f795150faa6957054fbbca2439db2f775ce831222b66f192f03beb \
     --hash=sha256:07b271772c100085dd28b74fa0cd81c8fb1a3ba18b21e03d7c27f3436a10606b \
