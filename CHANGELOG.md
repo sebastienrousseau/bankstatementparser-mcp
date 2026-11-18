@@ -21,6 +21,15 @@
   and the dev group floors black at 26.10.1 (CVE-2026-114134).
 - `opentelemetry-api >= 1.45.2` (GHSA-mf5v-w3w3-f6cg); the lock already
   held 1.45.2.
+- Every CI job and the Docker image install from hash-locked exports of
+  `poetry.lock` (`requirements/ci.txt`, `requirements/runtime.txt`, written
+  by `scripts/export_locked_requirements.py` and checked against the lock in
+  CI) with `--require-hashes`, and the package itself with `--no-deps`. Both
+  Docker stages pin `python:3.14-slim` by digest, and `docker.yml` grants its
+  write permissions to the build job only. This clears the OpenSSF Scorecard
+  Pinned-Dependencies and top-level Token-Permissions alerts.
+- `pip-audit` checks the locked runtime and dev sets instead of the runner's
+  environment.
 
 ### Changed
 

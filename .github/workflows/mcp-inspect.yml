@@ -27,8 +27,8 @@ jobs:
 
       - name: Install bankstatementparser-mcp
         run: |
-          python -m pip install --upgrade pip
-          pip install .
+          pip install --require-hashes -r requirements/runtime.txt
+          pip install --no-deps .
 
       - name: List tools via MCP Inspector CLI
         run: npx -y @modelcontextprotocol/inspector --cli bankstatementparser-mcp --method tools/list
@@ -37,7 +37,7 @@ jobs:
         run: |
           bankstatementparser-mcp --transport streamable-http --port 8000 &
           bankstatementparser-mcp --transport sse --port 8001 &
-          for i in $(seq 1 30); do
+          for _ in $(seq 1 30); do
             curl -sf -o /dev/null -X POST http://127.0.0.1:8000/mcp \
               -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' -d '{}' && break
             sleep 1

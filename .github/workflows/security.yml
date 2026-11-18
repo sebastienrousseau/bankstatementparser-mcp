@@ -25,8 +25,8 @@ jobs:
           python-version: "3.12"
           cache: "pip"
 
-      - name: Install bandit
-        run: pip install bandit
+      - name: Install locked dev tools (bandit)
+        run: pip install --require-hashes -r requirements/ci.txt
 
       - name: Run bandit
         run: bandit -r bankstatementparser_mcp/ -ll
@@ -43,12 +43,12 @@ jobs:
           python-version: "3.12"
           cache: "pip"
 
-      - name: Install pip-audit + this package
-        run: |
-          python -m pip install --upgrade pip
-          pip install pip-audit
-          pip install "bankstatementparser>=0.0.11"
-          pip install .
+      - name: Install locked dev tools (pip-audit)
+        run: pip install --require-hashes -r requirements/ci.txt
 
-      - name: Audit installed packages
-        run: pip-audit
+      # Audits the locked sets that ship (runtime) and that CI runs
+      # (dev), rather than whatever the runner happens to have installed.
+      - name: Audit locked requirements
+        run: |
+          pip-audit --require-hashes --disable-pip -r requirements/runtime.txt
+          pip-audit --require-hashes --disable-pip -r requirements/ci.txt
