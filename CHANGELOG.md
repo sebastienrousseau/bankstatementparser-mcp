@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.34] - 2026-11-18
+
+### Changed
+
+- Require `bankstatementparser >= 0.0.33`, the newest core release, and
+  align the version with the suite's 0.0.34 release. No other changes.
+
 ## [0.0.33] - 2026-11-18
 
 ### Changed
@@ -382,6 +389,7 @@ Suite. No functional or API changes.
     block in the README (and `docs/*.md`) so no documented example can
     silently rot.
 
+[0.0.34]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.34
 [0.0.33]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.33
 [0.0.32]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.32
 [0.0.31]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.31
