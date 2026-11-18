@@ -12,9 +12,9 @@ atheris==3.1.0 ; (python_full_version < "4.0" and python_full_version >= "3.10")
 attrs==26.1.0 ; (python_full_version < "4.0" and python_full_version >= "3.10") and python_full_version >= "3.9" \
     --hash=sha256:c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309 \
     --hash=sha256:d03ceb89cb322a8fd706d4fb91940737b6642aa36998fe130a9bc96c985eff32
-bankstatementparser==0.0.29 ; (python_full_version < "4.0" and python_full_version >= "3.10") and (python_full_version < "4.0" and python_full_version >= "3.10") \
-    --hash=sha256:99a5f51b637d4c6bcf2ab5e8c9c1bd1e56a95210eb2697d8053f254152529ab3 \
-    --hash=sha256:bcb47f07f4696186c215640bd2d59857a8809ffab033fe37abdff2ecd944a3de
+bankstatementparser==0.0.30 ; (python_full_version < "4.0" and python_full_version >= "3.10") and (python_full_version < "4.0" and python_full_version >= "3.10") \
+    --hash=sha256:71eebaf5107431b7885b2ca4fab81ea20aca26ed1cc81e3cea0db45592b67be6 \
+    --hash=sha256:bf0f4e23d207087ecc080dd6759be61b0370e84448e6f08b878374e96eafe539
 cffi==2.0.0 ; (python_full_version < "4.0" and python_full_version >= "3.10") and python_full_version >= "3.9" and platform_python_implementation != "PyPy" \
     --hash=sha256:00bdf7acc5f795150faa6957054fbbca2439db2f775ce831222b66f192f03beb \
     --hash=sha256:07b271772c100085dd28b74fa0cd81c8fb1a3ba18b21e03d7c27f3436a10606b \
