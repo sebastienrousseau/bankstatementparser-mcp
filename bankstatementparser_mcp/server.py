@@ -32,6 +32,7 @@ Run it with::
 
 from __future__ import annotations
 
+import csv
 import os
 import tempfile
 from collections.abc import Iterator
@@ -51,6 +52,13 @@ from bankstatementparser_mcp import __version__, _cli
 from bankstatementparser_mcp._mcp_compat import ToolError, build_server
 
 mcp = build_server("bankstatementparser", __version__)
+
+# Every way a core parser rejects malformed input. Besides its own
+# errors and ValueError, core lets lxml's XMLSyntaxError (a SyntaxError
+# subclass) and csv.Error through unchanged when an explicit format
+# skips detection. Each is turned into a ToolError so the client sees
+# the reason instead of a bare "Error executing tool".
+_PARSE_ERRORS = (BankStatementParserError, ValueError, SyntaxError, csv.Error)
 
 # Shared MCP tool annotations. Every tool in this server is a pure,
 # side-effect-free reader: it takes the statement text **inline** as an
@@ -280,7 +288,7 @@ def detect_format(
     with _materialise(content, suffix) as path:
         try:
             return detect_statement_format(path)
-        except (BankStatementParserError, ValueError) as exc:
+        except _PARSE_ERRORS as exc:
             raise _refused(exc, path, filename) from exc
 
 
@@ -353,7 +361,7 @@ def parse_statement(
             parser = create_parser(path, format)
             frame = parser.parse()
             summary = _summary_to_jsonable(dict(parser.get_summary()))
-        except (BankStatementParserError, ValueError) as exc:
+        except _PARSE_ERRORS as exc:
             raise _refused(exc, path, filename) from exc
         records = frame.to_dict("records")
         total = len(records)
@@ -486,7 +494,7 @@ def summarize_statement(
         try:
             parser = create_parser(path, format)
             return _summary_to_jsonable(dict(parser.get_summary()))
-        except (BankStatementParserError, ValueError) as exc:
+        except _PARSE_ERRORS as exc:
             raise _refused(exc, path, filename) from exc
 
 
