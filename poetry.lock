@@ -4020,4 +4020,4 @@ langchain = ["certifi", "langchain-core"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "274f6605c2994cda75ac882aab800fb98cb027470ee9f1f81b76731fb724ba64"
+content-hash = "da0df37e5d7f0ea443b3ac09efb9fac3e04d24a2e54ba057e5b06e667d135013"
