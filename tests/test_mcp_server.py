@@ -13,6 +13,7 @@ the suite is self-contained and offline.
 from __future__ import annotations
 
 import importlib.util
+from collections.abc import Callable
 from pathlib import Path
 from unittest import mock
 
@@ -172,6 +173,30 @@ def test_parse_statement_malformed_xml_raises() -> None:
     """A malformed XML payload is refused with the parser's reason."""
     with pytest.raises(ToolError):
         server.parse_statement("<not valid xml", "statement.xml")
+
+
+@pytest.mark.parametrize(
+    "tool", [server.parse_statement, server.summarize_statement]
+)
+@pytest.mark.parametrize(
+    ("content", "fmt", "reason"),
+    [
+        # An explicit format skips detection, so lxml's XMLSyntaxError
+        # and csv.Error reach the tool straight from the core parsers.
+        ("<not valid xml", "camt", "Specification mandates value"),
+        ("��", "csv", "Could not determine delimiter"),
+    ],
+)
+def test_parser_syntax_errors_become_tool_errors(
+    tool: Callable[..., object], content: str, fmt: str, reason: str
+) -> None:
+    """Malformed input under an explicit format is refused, not leaked.
+
+    Found by fuzz/fuzz_tools.py: any exception other than ToolError
+    reaches the client as a bare "Error executing tool".
+    """
+    with pytest.raises(ToolError, match=reason):
+        tool(content, None, format=fmt)
 
 
 def test_parse_statement_explicit_wrong_format() -> None:
