@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Release titles read `bankstatementparser-mcp <version>` instead of the bare tag.
+
+### Fixed
+
+- The `server.json` description is 99 characters; the MCP Registry caps it
+  at 100, so every publish from v0.0.20 to v0.0.30 failed with HTTP 422.
+  A test now checks the limit.
+
 ## [0.0.30] - Unreleased
 
 ### Security
