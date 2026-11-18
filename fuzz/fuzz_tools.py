@@ -31,6 +31,7 @@ Run (Linux x86_64, Python 3.12+, ``poetry install --with fuzz``)::
 
 from __future__ import annotations
 
+import contextlib
 import logging
 import sys
 
@@ -75,15 +76,13 @@ def test_one_input(data: bytes) -> None:
     fmt = _pick(fdp, _FORMATS)
     content = fdp.ConsumeUnicodeNoSurrogates(fdp.remaining_bytes())
 
+    # ToolError is the tools' promised refusal of bad input, so it is
+    # the one outcome that is not a finding; anything else escapes.
     for tool in (parse_statement, summarize_statement):
-        try:
+        with contextlib.suppress(ToolError):
             tool(content=content, filename=filename, format=fmt)
-        except ToolError:
-            pass
-    try:
+    with contextlib.suppress(ToolError):
         detect_format(content=content, filename=filename or "statement.xml")
-    except ToolError:
-        pass
 
     try:
         verdict = validate_statement(
