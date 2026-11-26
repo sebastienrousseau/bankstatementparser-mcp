@@ -1,5 +1,36 @@
 # Changelog
 
+## [0.0.35] - 2026-11-26
+
+### Added
+
+- `scripts/check_complexity.py`, the suite's standard-library
+  complexity gate, copied byte for byte from `bankstatementparser`:
+  cyclomatic 10, cognitive 15, Halstead difficulty 30 and 60 lines per
+  function, 500 lines per file. The 8 functions and files already over
+  a ceiling are recorded in `scripts/complexity_baseline.json`; CI and
+  `make check` fail when one gets worse, a new one appears, or an
+  improvement is left unrecorded, so the baseline can only shrink.
+
+### Changed
+
+- Require `bankstatementparser >= 0.0.34`, the newest core release, and
+  align the version with the suite's 0.0.35 release, which brings all
+  fourteen packages and bankstatementparser.com onto one version.
+- Dependencies: pydantic 2.14.4 with pydantic-core 2.50.5, httpx2 and
+  httpcore2 2.14.0 (2.16.2 on Python 3.11+), sse-starlette 3.5.1
+  (3.7.1 on Python 3.11+), lxml 6.1.3, pytz 2026.6, typing-inspection
+  0.4.5, mypy-extensions 1.2.0, pluggy 1.7.0, iniconfig 2.3.1 and ruff
+  0.17.6. `requirements/{ci,runtime,fuzz}.txt` are re-exported from the
+  lock.
+- Release SBOM tooling: cyclonedx-bom 9.0.0 in `requirements/sbom.txt`.
+  The `cyclonedx-py environment` step is unchanged.
+- CI: `ossf/scorecard-action` 2.6.0.
+- `scripts/check_suite_consistency.py` now checks the eight packages
+  joining the suite (BACS, CAMT.054, CFONB and SEPA loaders, EBICS
+  transport, OFX, QIF and SWIFT writers) and the website's latest
+  GitHub release.
+
 ## [0.0.34] - 2026-11-18
 
 ### Changed
@@ -389,6 +420,7 @@ Suite. No functional or API changes.
     block in the README (and `docs/*.md`) so no documented example can
     silently rot.
 
+[0.0.35]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.35
 [0.0.34]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.34
 [0.0.33]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.33
 [0.0.32]: https://github.com/sebastienrousseau/bankstatementparser-mcp/releases/tag/v0.0.32

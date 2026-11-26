@@ -1,0 +1,28 @@
+{
+  "bankstatementparser_mcp/server.py": {
+    "file_lines": 568
+  },
+  "bankstatementparser_mcp/server.py::parse_statement": {
+    "lines": 82
+  },
+  "bankstatementparser_mcp/server.py::validate_statement": {
+    "lines": 61
+  },
+  "scripts/export_locked_requirements.py::_project_node": {
+    "cyclomatic": 11
+  },
+  "scripts/export_locked_requirements.py::_selected": {
+    "cyclomatic": 11
+  },
+  "scripts/verify_versions.py::main": {
+    "cognitive": 18,
+    "cyclomatic": 17
+  },
+  "tests/test_suite_conformance.py": {
+    "file_lines": 678
+  },
+  "tests/test_suite_conformance.py::_dev_spec": {
+    "cognitive": 23,
+    "cyclomatic": 12
+  }
+}
