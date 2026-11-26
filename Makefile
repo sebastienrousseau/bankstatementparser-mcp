@@ -1,4 +1,4 @@
-.PHONY: help install dev test lint format fuzz type-check security clean examples doc-coverage demo check
+.PHONY: help install dev test lint format fuzz type-check security clean examples doc-coverage complexity demo check
 
 PYTHON ?= python3
 POETRY ?= poetry
@@ -55,4 +55,11 @@ doc-coverage: ## Enforce the 100% docstring coverage gate
 demo: ## Render the README demo GIF with VHS
 	vhs .github/demo.tape
 
-check: lint type-check test doc-coverage examples ## Run all gates
+# Per-function ceilings (cyclomatic 10, cognitive 15, Halstead 30,
+# 60 lines; 500 lines per file) against scripts/complexity_baseline.json,
+# which may only shrink. Record an improvement with
+# `python3 scripts/check_complexity.py --update`.
+complexity: ## Enforce the complexity baseline
+	$(PYTHON) scripts/check_complexity.py
+
+check: lint type-check complexity test doc-coverage examples ## Run all gates
