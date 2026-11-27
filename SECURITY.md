@@ -66,7 +66,15 @@ security surface is:
 - Dependabot (`.github/dependabot.yml`) proposes pip, GitHub Actions and
   Docker updates weekly.
 - `release.yml` publishes to PyPI through OIDC trusted publishing with
-  SLSA build provenance, cosign signatures and SBOMs.
+  SLSA build provenance, cosign signatures and SBOMs. Every GitHub
+  release carries a keyless cosign `.sig` and `.pem` per distribution
+  and, from 0.0.36, a SLSA Build Level 3 provenance file
+  (`bankstatementparser-mcp-vX.Y.Z.intoto.jsonl`) from
+  slsa-github-generator. Verify a wheel with
+  `slsa-verifier verify-artifact --provenance-path
+  bankstatementparser-mcp-vX.Y.Z.intoto.jsonl --source-uri
+  github.com/sebastienrousseau/bankstatementparser-mcp --source-tag
+  vX.Y.Z <wheel>`.
 
 ## Cryptography Status
 
