@@ -8,7 +8,7 @@ bankstatementparser-mcp without prior context.
 
 ## The pipeline
 
-```
+```text
 MCP client (Claude Desktop, IDE, agent)
         |  stdio (JSON-RPC), or streamable HTTP / SSE with --transport
         v

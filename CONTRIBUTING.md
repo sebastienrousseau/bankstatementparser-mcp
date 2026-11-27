@@ -59,24 +59,32 @@ pip install poetry
 
 1. **Fork** the repository
 2. **Create a branch** from `main`:
+
    ```bash
    git checkout -b feat/my-feature
    ```
+
 3. **Make changes** - follow the coding standards below
 4. **Run tests**:
+
    ```bash
    poetry run pytest tests/ -v
    ```
+
 5. **Run linters**:
+
    ```bash
    poetry run ruff check bankstatementparser_mcp/
    poetry run mypy bankstatementparser_mcp/
    poetry run black --check bankstatementparser_mcp/ tests/
    ```
+
 6. **Sign off, sign and commit**:
+
    ```bash
    git commit -s -S -m "feat: add my feature"
    ```
+
 7. **Push** and open a pull request
 
 ## Sign-off (Required)
@@ -102,7 +110,7 @@ git config --global commit.gpgsign true
 
 Use [Conventional Commits](https://www.conventionalcommits.org/):
 
-```
+```text
 feat: add a new MCP tool wrapping a bankstatementparser helper
 fix: return an error payload instead of raising on bad input
 docs: update README with the MCP client config

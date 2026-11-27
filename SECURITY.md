@@ -3,10 +3,11 @@
 ## Reporting Security Vulnerabilities
 
 If you discover a security vulnerability in bankstatementparser-mcp,
-please email **security@bankstatementparser.com** instead of using the
+please email **<security@bankstatementparser.com>** instead of using the
 issue tracker.
 
 Please include:
+
 1. Description of the vulnerability
 2. Steps to reproduce
 3. Potential impact
@@ -76,6 +77,6 @@ crypto-bearing package in the dependency tree is transitive via
 
 ## Contact
 
-- **Email**: security@bankstatementparser.com
-- **GitHub Advisories**: https://github.com/sebastienrousseau/bankstatementparser-mcp/security/advisories
-- **GitHub Discussions**: https://github.com/sebastienrousseau/bankstatementparser/discussions
+- **Email**: <security@bankstatementparser.com>
+- **GitHub Advisories**: <https://github.com/sebastienrousseau/bankstatementparser-mcp/security/advisories>
+- **GitHub Discussions**: <https://github.com/sebastienrousseau/bankstatementparser/discussions>

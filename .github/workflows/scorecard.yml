@@ -2,8 +2,8 @@
 #
 # Publishes results to the OpenSSF REST API so the badge and the public
 # viewer work:
-#   badge:  https://api.scorecard.dev/projects/github.com/sebastienrousseau/bankstatementparser-mcp/badge
-#   viewer: https://scorecard.dev/viewer/?uri=github.com/sebastienrousseau/bankstatementparser-mcp
+#   badge:  https://api.scorecard.dev/projects/github.com/sebastienrousseau/<repo>/badge
+#   viewer: https://scorecard.dev/viewer/?uri=github.com/sebastienrousseau/<repo>
 #
 # All third-party actions are pinned by commit SHA (Scorecard's own
 # Pinned-Dependencies check demands it). Same workflow as the rest of the suite.
