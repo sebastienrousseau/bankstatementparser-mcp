@@ -8,7 +8,7 @@ bankstatementparser-mcp without prior context.
 
 ## The pipeline
 
-```
+```text
 MCP client (Claude Desktop, IDE, agent)
         |  stdio (JSON-RPC), or streamable HTTP / SSE with --transport
         v
@@ -36,10 +36,16 @@ statement text plus a filename hint rather than a path.
 | :--- | :--- | :--- |
 | **Server** | `bankstatementparser_mcp/server.py` | The FastMCP server, all tool / resource / prompt registrations and the temp-file helpers |
 | **Entry point** | `bankstatementparser_mcp.server:main` (console script: `bankstatementparser-mcp`) | Launches the server over stdio, or over streamable HTTP / SSE with `--transport` (`_cli.py` + `_transports.py`, ADR 0001) |
-| **Version** | `bankstatementparser_mcp/__init__.py` | Single source of truth (`__version__`) |
-| **Tests** | `tests/test_mcp_server.py`, `tests/test_transports.py`, `tests/test_mcp_sdk_compat.py`, `tests/test_suite_conformance.py` | In-process regressions covering every tool, helper, the resource and the prompt; the command line; the SDK shim; and the shared suite conformance gate |
+| **SDK shim** | `bankstatementparser_mcp/_mcp_compat.py` | Builds the server object on mcp 2.x (`MCPServer`) or mcp 1.x (`FastMCP`) so one codebase runs on both majors |
+| **Command line** | `bankstatementparser_mcp/_cli.py`, `bankstatementparser_mcp/_transports.py` | The suite's shared parser (`build_parser`, `serve`) and the transport launcher |
+| **Completions** | `bankstatementparser_mcp/completion.py`, `completions/` | The console script's parser for shtab; `make completions` writes the bash and zsh files, CI fails if they are stale |
+| **Adapters** | `bankstatementparser_mcp/adapters.py` | The same tools for LangChain, CrewAI and LlamaIndex, imported lazily |
+| **Version** | `bankstatementparser_mcp/__init__.py` | `__version__`, kept equal to `pyproject.toml` |
+| **Tests** | `tests/` | In-process regressions covering every tool, helper, the resource and the prompt; the command line; the SDK shim; docs and examples accuracy; release notes; fuzz harness smoke; and the shared suite conformance gate |
+| **Fuzzing** | `fuzz/fuzz_tools.py` | Atheris target for every payload-taking tool, run by the CI `Fuzz` job |
 | **Examples** | `examples/` | One runnable script per usage shape |
-| **Release helpers** | `scripts/verify_versions.py` | Asserts `__version__`, `pyproject.toml`, and `CHANGELOG.md` agree |
+| **Manual** | `mkdocs.yml`, `docs/` | The MkDocs Material user manual and API reference, deployed to GitHub Pages |
+| **Release helpers** | `scripts/` | `verify_versions.py` (every version restatement agrees), `release_notes.py` (release body), `export_locked_requirements.py` (hashed exports of `poetry.lock`), `check_complexity.py` (complexity baseline), `check_suite_consistency.py` (published suite agrees), `readme-check.sh` (README template) |
 
 ## Tools, resource, prompt
 

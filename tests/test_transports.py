@@ -137,3 +137,16 @@ def test_main_defaults_to_stdio(monkeypatch: pytest.MonkeyPatch) -> None:
     )
     server.main([])
     assert calls == [((), {})]
+
+
+def test_completion_parser_is_the_servers_command_line() -> None:
+    """``make completions`` reads the same flags ``main`` parses."""
+    from bankstatementparser_mcp import __version__, completion
+
+    parser = completion.parser()
+    assert parser.prog == "bankstatementparser-mcp"
+    options = {o for a in parser._actions for o in a.option_strings}
+    assert {"--version", "--transport", "--host", "--port"} <= options
+    args = parser.parse_args(["--transport", "sse", "--port", "8001"])
+    assert (args.transport, args.host, args.port) == ("sse", "127.0.0.1", 8001)
+    assert __version__ in parser.description

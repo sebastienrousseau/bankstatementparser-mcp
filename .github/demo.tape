@@ -18,12 +18,15 @@ Show
 
 Type "poetry run bankstatementparser-mcp --version"
 Enter
-Sleep 2s
+Wait /\$$/
+Sleep 1s
 
 Type "poetry run python examples/01_mcp_tools.py"
 Enter
-Sleep 3s
+Wait /\$$/
+Sleep 2s
 
 Type "poetry run python examples/02_validate_pipeline.py"
 Enter
+Wait /\$$/
 Sleep 4s

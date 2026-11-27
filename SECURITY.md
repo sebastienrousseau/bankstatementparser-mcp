@@ -3,10 +3,11 @@
 ## Reporting Security Vulnerabilities
 
 If you discover a security vulnerability in bankstatementparser-mcp,
-please email **security@bankstatementparser.com** instead of using the
+please email **<security@bankstatementparser.com>** instead of using the
 issue tracker.
 
 Please include:
+
 1. Description of the vulnerability
 2. Steps to reproduce
 3. Potential impact
@@ -65,7 +66,15 @@ security surface is:
 - Dependabot (`.github/dependabot.yml`) proposes pip, GitHub Actions and
   Docker updates weekly.
 - `release.yml` publishes to PyPI through OIDC trusted publishing with
-  SLSA build provenance, cosign signatures and SBOMs.
+  SLSA build provenance, cosign signatures and SBOMs. Every GitHub
+  release carries a keyless cosign `.sig` and `.pem` per distribution
+  and, from 0.0.36, a SLSA Build Level 3 provenance file
+  (`bankstatementparser-mcp-vX.Y.Z.intoto.jsonl`) from
+  slsa-github-generator. Verify a wheel with
+  `slsa-verifier verify-artifact --provenance-path
+  bankstatementparser-mcp-vX.Y.Z.intoto.jsonl --source-uri
+  github.com/sebastienrousseau/bankstatementparser-mcp --source-tag
+  vX.Y.Z <wheel>`.
 
 ## Cryptography Status
 
@@ -76,6 +85,6 @@ crypto-bearing package in the dependency tree is transitive via
 
 ## Contact
 
-- **Email**: security@bankstatementparser.com
-- **GitHub Advisories**: https://github.com/sebastienrousseau/bankstatementparser-mcp/security/advisories
-- **GitHub Discussions**: https://github.com/sebastienrousseau/bankstatementparser/discussions
+- **Email**: <security@bankstatementparser.com>
+- **GitHub Advisories**: <https://github.com/sebastienrousseau/bankstatementparser-mcp/security/advisories>
+- **GitHub Discussions**: <https://github.com/sebastienrousseau/bankstatementparser/discussions>

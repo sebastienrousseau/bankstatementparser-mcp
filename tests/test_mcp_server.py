@@ -117,6 +117,30 @@ def test_detect_format_failure() -> None:
     assert "/tmp" not in str(info.value)
 
 
+def test_refusal_names_only_the_filename_behind_a_symlinked_tmpdir(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The parser resolves the temp path; the refusal still hides it.
+
+    The core library reports the resolved path. When the temp directory
+    is reached through a symlink (macOS's /var -> /private/var) or a
+    Windows 8.3 short name, the resolved form differs from the one
+    mkstemp returned, and only replacing that form left the prefix in
+    the message: "/privatemystery.xml".
+    """
+    real = tmp_path / "real"
+    real.mkdir()
+    link = tmp_path / "link"
+    try:
+        link.symlink_to(real, target_is_directory=True)
+    except OSError:  # Windows without the symlink privilege
+        pytest.skip("cannot create a directory symlink here")
+    monkeypatch.setattr(server.tempfile, "tempdir", str(link))
+    with pytest.raises(ToolError) as info:
+        server.detect_format("<unknown/>", "mystery.xml")
+    assert str(info.value) == "Unable to detect statement format: mystery.xml"
+
+
 def test_detect_format_garbage_with_csv_hint() -> None:
     """Garbage content with a ``.csv`` hint detects via the extension."""
     assert server.detect_format("garbage nonsense", "statement.csv") == "csv"

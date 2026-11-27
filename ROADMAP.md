@@ -6,7 +6,7 @@ library. It summarises the CHANGELOG and the open issues; it does not
 promise work that is not tracked there. Releases ship when the gates
 pass, not on a calendar.
 
-## v0.0.19 (current)
+## Shipped (0.0.36, current)
 
 - Five tools over the `bankstatementparser` parser core:
   `list_supported_formats`, `detect_format`, `parse_statement`,
@@ -14,19 +14,16 @@ pass, not on a calendar.
   text inline.
 - One resource (`bankstatementparser://formats`) and one prompt
   (`analyze_statement`).
-- Agent adapters for LangChain, CrewAI and LlamaIndex (`adapters.py`).
-- 100% line+branch coverage gate, the shared suite conformance test, a
-  detect-and-parse benchmark, and a scheduled check that the published
-  suite agrees with itself.
-- One version number across the `bankstatementparser` packages.
-
-## Next release (on `main`, unreleased)
-
 - stdio, streamable HTTP (2026-07-28 and 2025-11-25) and SSE from one
-  command line (ADR 0001).
+  command line (ADR 0001), with generated bash and zsh completions.
 - `detect_format`, `parse_statement` and `summarize_statement` refuse an
   unparseable payload with a `ToolError` that names the caller's
   filename and the parser's reason.
+- Agent adapters for LangChain, CrewAI and LlamaIndex (`adapters.py`).
+- 100% line+branch coverage gate, the shared suite conformance test, a
+  detect-and-parse benchmark, Atheris fuzzing, and a scheduled check
+  that the published suite agrees with itself.
+- One version number across the `bankstatementparser` packages.
 
 ## Beyond
 

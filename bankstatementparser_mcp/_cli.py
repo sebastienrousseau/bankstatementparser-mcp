@@ -63,10 +63,12 @@ def add_arguments(parser: argparse.ArgumentParser) -> None:
     )
 
 
-def serve(
-    server: Any, argv: Sequence[str] | None, prog: str, version: str
-) -> None:
-    """Parse ``argv`` and run ``server``: the body of every ``main()``."""
+def build_parser(prog: str, version: str) -> argparse.ArgumentParser:
+    """The server's whole command line: ``--version`` plus the transport flags.
+
+    ``serve`` parses with it, and ``make completions`` hands it to shtab, so
+    the shell completions are generated from the parser that runs.
+    """
     parser = argparse.ArgumentParser(
         prog=prog,
         description=f"{prog} {version}: an MCP server. Speaks stdio by default.",
@@ -75,5 +77,12 @@ def serve(
         "--version", action="version", version=f"{prog} {version}"
     )
     add_arguments(parser)
-    args = parser.parse_args(argv)
+    return parser
+
+
+def serve(
+    server: Any, argv: Sequence[str] | None, prog: str, version: str
+) -> None:
+    """Parse ``argv`` and run ``server``: the body of every ``main()``."""
+    args = build_parser(prog, version).parse_args(argv)
     run(server, args.transport, args.host, args.port)

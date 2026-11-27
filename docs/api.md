@@ -1,19 +1,26 @@
-# Python API reference
+# API reference
 
-The standalone server's importable Python surface (used by the runnable
-examples and any agent that wraps the FastMCP instance directly).
+The server's importable Python surface: the tools, the resource and the
+prompt are plain functions, so an agent framework or a test can call
+them in-process. Generated from the docstrings by mkdocstrings.
 
-```{eval-rst}
-.. automodule:: bankstatementparser_mcp
-   :members:
-   :undoc-members:
-```
+::: bankstatementparser_mcp.server
+    options:
+      members:
+        - list_supported_formats
+        - detect_format
+        - parse_statement
+        - validate_statement
+        - summarize_statement
+        - formats_resource
+        - analyze_statement
+        - main
 
-## Tool / resource / prompt module
+::: bankstatementparser_mcp.adapters
+    options:
+      members:
+        - as_langchain_tools
+        - as_crewai_tools
+        - as_llamaindex_tools
 
-```{eval-rst}
-.. automodule:: bankstatementparser_mcp.server
-   :members:
-   :undoc-members:
-   :show-inheritance:
-```
+::: bankstatementparser_mcp.completion

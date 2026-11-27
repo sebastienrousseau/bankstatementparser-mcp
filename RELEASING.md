@@ -55,7 +55,11 @@ A release is ready only when **all** of the following hold on `main`:
 4. The tag triggers the `publish` job in `release.yml`, which fails fast
    if the tag does not match the package version, then builds, runs
    `twine check`, creates the GitHub release from the `CHANGELOG.md`
-   section, and publishes to PyPI via OIDC trusted publishing.
+   section, and publishes to PyPI via OIDC trusted publishing. It then
+   signs each distribution with cosign (`.sig` + `.pem`), attaches the
+   SBOMs, attaches SLSA provenance (`*.intoto.jsonl`, the `provenance`
+   job), and finally rewrites the release notes so their Checksums
+   cover every asset.
 
 ## After releasing
 

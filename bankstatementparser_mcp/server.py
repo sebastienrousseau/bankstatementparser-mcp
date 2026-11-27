@@ -200,13 +200,13 @@ def _materialise(content: str, suffix: str) -> Iterator[Path]:
 def _refused(exc: Exception, path: Path, filename: str | None) -> ToolError:
     """Turn a parser failure into an error the caller can act on.
 
-    The parsers read a private temp file, so their messages name a path
-    that means nothing to the caller; the original filename takes its
-    place. Raising ``ToolError`` is what makes the SDK relay the text:
-    any other exception is reported as a bare "Error executing tool".
+    The parsers name the private temp file, resolved (behind a symlink or
+    a Windows short name that differs from mkstemp's path); the caller's
+    filename takes the place of both. Raising ``ToolError`` makes the SDK
+    relay the text: any other exception is a bare "Error executing tool".
     """
-    message = str(exc).replace(str(path), filename or "<inline payload>")
-    return ToolError(message)
+    raw = str(exc).replace(str(path.resolve()), str(path))
+    return ToolError(raw.replace(str(path), filename or "<inline payload>"))
 
 
 def _summary_to_jsonable(summary: dict[str, Any]) -> dict[str, Any]:

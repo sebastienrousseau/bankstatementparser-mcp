@@ -9,6 +9,12 @@ on:
 permissions:
   contents: read
 
+# A fixed Inspector release rather than whatever npm serves as latest on
+# the day, so a conformance failure points at this server, not at a new
+# Inspector. 2.16.0 was npm's latest when the 0.0.35 release passed.
+env:
+  INSPECTOR: "@modelcontextprotocol/inspector@2.16.0"
+
 jobs:
   inspect:
     name: MCP Inspector (tools/list)
@@ -31,7 +37,7 @@ jobs:
           pip install --no-deps -e .
 
       - name: List tools via MCP Inspector CLI
-        run: npx -y @modelcontextprotocol/inspector --cli bankstatementparser-mcp --method tools/list
+        run: npx -y "$INSPECTOR" --cli bankstatementparser-mcp --method tools/list
 
       - name: Serve streamable HTTP and SSE in the background
         run: |
@@ -44,7 +50,7 @@ jobs:
           done
 
       - name: List tools over streamable HTTP via MCP Inspector CLI
-        run: npx -y @modelcontextprotocol/inspector --cli http://127.0.0.1:8000/mcp --transport http --method tools/list
+        run: npx -y "$INSPECTOR" --cli http://127.0.0.1:8000/mcp --transport http --method tools/list
 
       - name: List tools over SSE via MCP Inspector CLI
-        run: npx -y @modelcontextprotocol/inspector --cli http://127.0.0.1:8001/sse --transport sse --method tools/list
+        run: npx -y "$INSPECTOR" --cli http://127.0.0.1:8001/sse --transport sse --method tools/list

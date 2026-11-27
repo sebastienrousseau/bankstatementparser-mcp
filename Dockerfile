@@ -33,7 +33,7 @@ FROM python:3.14-slim@sha256:9aaa474097d094040649f2162a627c0049b408f52138d980916
 LABEL org.opencontainers.image.title="bankstatementparser-mcp" \
       org.opencontainers.image.description="Model Context Protocol server for the bankstatementparser bank statement parsing library." \
       org.opencontainers.image.source="https://github.com/sebastienrousseau/bankstatementparser-mcp" \
-      org.opencontainers.image.licenses="Apache-2.0"
+      org.opencontainers.image.licenses="Apache-2.0 OR MIT"
 
 # Non-root user (MCP clients launch the container with stdio; no extra
 # privileges needed).

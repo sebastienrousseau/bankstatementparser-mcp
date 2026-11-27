@@ -2,8 +2,8 @@
 #
 # Publishes results to the OpenSSF REST API so the badge and the public
 # viewer work:
-#   badge:  https://api.scorecard.dev/projects/github.com/sebastienrousseau/bankstatementparser-mcp/badge
-#   viewer: https://scorecard.dev/viewer/?uri=github.com/sebastienrousseau/bankstatementparser-mcp
+#   badge:  https://api.scorecard.dev/projects/github.com/sebastienrousseau/<repo>/badge
+#   viewer: https://scorecard.dev/viewer/?uri=github.com/sebastienrousseau/<repo>
 #
 # All third-party actions are pinned by commit SHA (Scorecard's own
 # Pinned-Dependencies check demands it). Same workflow as the rest of the suite.
@@ -48,6 +48,6 @@ jobs:
           retention-days: 5
 
       - name: Upload to code scanning
-        uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4
+        uses: github/codeql-action/upload-sarif@1bd86f2fdb4b86187fa4059f16f31a3202acc9ea # v4
         with:
           sarif_file: results.sarif
