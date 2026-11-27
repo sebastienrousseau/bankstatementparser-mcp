@@ -8,12 +8,6 @@
   "bankstatementparser_mcp/server.py::validate_statement": {
     "lines": 61
   },
-  "scripts/export_locked_requirements.py::_project_node": {
-    "cyclomatic": 11
-  },
-  "scripts/export_locked_requirements.py::_selected": {
-    "cyclomatic": 11
-  },
   "scripts/verify_versions.py::main": {
     "cognitive": 18,
     "cyclomatic": 17
