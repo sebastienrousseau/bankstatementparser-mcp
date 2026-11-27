@@ -32,6 +32,9 @@
   macOS it read `Unable to detect statement format: /privatemystery.xml`,
   and on Windows it carried the whole `C:\Users\...\Temp\tmp*.xml`
   path. The resolved form is now replaced too.
+- The container image's `org.opencontainers.image.licenses` label, set
+  in both the Dockerfile and the Docker workflow, said `Apache-2.0`;
+  it now says `Apache-2.0 OR MIT`, as `pyproject.toml` declares.
 
 ### Changed
 
