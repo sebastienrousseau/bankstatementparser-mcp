@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.0.36] - 2026-11-27
+
+### Changed
+
+- Require `bankstatementparser >= 0.0.35`, the newest core release, and
+  align the version with the suite's 0.0.36 release. `poetry.lock` and
+  `requirements/{ci,runtime,fuzz}.txt` move to bankstatementparser
+  0.0.35.
+- CI: `github/codeql-action` 4.39.4 (Dependabot #150).
+
 ## [0.0.35] - 2026-11-26
 
 ### Added
