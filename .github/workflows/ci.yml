@@ -99,6 +99,8 @@ jobs:
           diff -u requirements/runtime.txt "$RUNNER_TEMP/runtime.txt"
           python scripts/export_locked_requirements.py --with fuzz --output "$RUNNER_TEMP/fuzz.txt"
           diff -u requirements/fuzz.txt "$RUNNER_TEMP/fuzz.txt"
+          python scripts/export_locked_requirements.py --with docs --output "$RUNNER_TEMP/docs.txt"
+          diff -u requirements/docs.txt "$RUNNER_TEMP/docs.txt"
 
       - name: Ruff check
         run: ruff check bankstatementparser_mcp/ tests/ fuzz/

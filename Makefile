@@ -1,4 +1,4 @@
-.PHONY: help install dev test lint format fuzz type-check security clean examples doc-coverage complexity completions demo check
+.PHONY: help install dev test lint format fuzz type-check security clean examples doc-coverage docs complexity completions demo check
 
 PYTHON ?= python3
 POETRY ?= poetry
@@ -61,6 +61,10 @@ completions: ## Generate bash and zsh completions into completions/
 		bankstatementparser_mcp.completion.parser > completions/bankstatementparser-mcp.bash
 	$(POETRY) run shtab --shell=zsh --prog bankstatementparser-mcp \
 		bankstatementparser_mcp.completion.parser > completions/_bankstatementparser-mcp
+
+docs: ## Build the user manual (mkdocs --strict) into site/
+	$(POETRY) install --with docs
+	NO_MKDOCS_2_WARNING=1 $(POETRY) run mkdocs build --strict
 
 demo: ## Render the README demo GIF with VHS
 	vhs .github/demo.tape

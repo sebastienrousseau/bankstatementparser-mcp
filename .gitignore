@@ -42,3 +42,6 @@ crash-*
 leak-*
 timeout-*
 oom-*
+
+# MkDocs build output
+site/

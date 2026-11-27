@@ -59,6 +59,17 @@ types-jsonschema = "^4.26.0.20261006"
 # (make completions); CI fails when the committed files are stale.
 shtab = "^1.13.0"
 
+# The user manual (mkdocs.yml, deployed to GitHub Pages by
+# .github/workflows/docs.yml). CI installs requirements/docs.txt, the
+# hashed export of this group. mkdocs-material 9.8 needs Python 3.11, and
+# the manual is built on 3.12 only, so the group is marked to match.
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+mkdocs-material = { version = "^9.8", python = ">=3.11" }
+mkdocstrings = { version = ">=1.0", python = ">=3.11", extras = ["python"] }
+
 # Coverage-guided fuzzing of the MCP tools (fuzz/fuzz_tools.py, run by
 # the CI "Fuzz" job). Atheris ships wheels for Linux x86_64 on CPython
 # 3.12+ only and no sdist, so the group is optional and marked to match.
