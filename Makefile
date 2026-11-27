@@ -1,4 +1,4 @@
-.PHONY: help install dev test lint format fuzz type-check security clean examples doc-coverage complexity demo check
+.PHONY: help install dev test lint format fuzz type-check security clean examples doc-coverage complexity completions demo check
 
 PYTHON ?= python3
 POETRY ?= poetry
@@ -51,6 +51,16 @@ examples: ## Verify example scripts run
 
 doc-coverage: ## Enforce the 100% docstring coverage gate
 	$(POETRY) run interrogate -c pyproject.toml -v bankstatementparser_mcp
+
+# Generated from the server's own argparse parser
+# (bankstatementparser_mcp.completion.parser) by shtab, so they cannot
+# drift from the flags; CI regenerates them and fails on a difference.
+completions: ## Generate bash and zsh completions into completions/
+	mkdir -p completions
+	$(POETRY) run shtab --shell=bash --prog bankstatementparser-mcp \
+		bankstatementparser_mcp.completion.parser > completions/bankstatementparser-mcp.bash
+	$(POETRY) run shtab --shell=zsh --prog bankstatementparser-mcp \
+		bankstatementparser_mcp.completion.parser > completions/_bankstatementparser-mcp
 
 demo: ## Render the README demo GIF with VHS
 	vhs .github/demo.tape

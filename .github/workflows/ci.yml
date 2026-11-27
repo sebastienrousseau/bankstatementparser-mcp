@@ -112,6 +112,17 @@ jobs:
       - name: Complexity baseline
         run: python3 scripts/check_complexity.py
 
+      # completions/ is generated from the server's own parser by shtab
+      # (make completions); a flag change that leaves it stale fails here.
+      - name: Shell completions match the parser
+        run: |
+          shtab --shell=bash --prog bankstatementparser-mcp \
+            bankstatementparser_mcp.completion.parser > "$RUNNER_TEMP/completion.bash"
+          diff -u completions/bankstatementparser-mcp.bash "$RUNNER_TEMP/completion.bash"
+          shtab --shell=zsh --prog bankstatementparser-mcp \
+            bankstatementparser_mcp.completion.parser > "$RUNNER_TEMP/completion.zsh"
+          diff -u completions/_bankstatementparser-mcp "$RUNNER_TEMP/completion.zsh"
+
   examples:
     name: Examples
     runs-on: ubuntu-latest

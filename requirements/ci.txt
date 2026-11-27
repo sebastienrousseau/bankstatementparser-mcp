@@ -1981,6 +1981,9 @@ ruff==0.17.6 ; (python_full_version < "4.0" and python_full_version >= "3.10") a
     --hash=sha256:d8b14e1473dc86ab9069cf7a2ba5041dc012f59110201844ed04cfddf07055a0 \
     --hash=sha256:fb589e032806bb942e4fb526f30b80a1a64112147ed9f1d38cc3de2e255b6f45 \
     --hash=sha256:fd661702202a89c00a4c9d0339008805fa5876bfa1c57e165495c2e62230dfbf
+shtab==1.13.0 ; (python_full_version < "4.0" and python_full_version >= "3.10") and python_full_version >= "3.9" \
+    --hash=sha256:0a5be9d7ab2b4549e9a38252abcd5ecf5ec6813ecd80c6b06fa851bff55a5085 \
+    --hash=sha256:cdf7543fc1888dd131320917f3ba9643d8f1a77d406114a09d5a31f76274c7d9
 six==1.17.0 ; (python_full_version < "4.0" and python_full_version >= "3.10") and (python_full_version != "3.0.*" and python_full_version != "3.1.*" and python_full_version != "3.2.*" and python_full_version >= "2.7") \
     --hash=sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274 \
     --hash=sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81

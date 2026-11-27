@@ -55,6 +55,9 @@ build = "^1.6.1"
 pip-audit = { version = "^2.10.1", python = ">=3.11" }
 filelock = { version = ">=4.2.1", python = ">=3.11" }
 types-jsonschema = "^4.26.0.20261006"
+# Generates completions/ from bankstatementparser_mcp.completion.parser
+# (make completions); CI fails when the committed files are stale.
+shtab = "^1.13.0"
 
 # Coverage-guided fuzzing of the MCP tools (fuzz/fuzz_tools.py, run by
 # the CI "Fuzz" job). Atheris ships wheels for Linux x86_64 on CPython

@@ -3522,6 +3522,21 @@ files = [
 ]
 
 [[package]]
+name = "shtab"
+version = "1.13.0"
+description = "Automagic shell tab completion for Python CLI applications"
+optional = false
+python-versions = ">=3.9"
+groups = ["dev"]
+files = [
+    {file = "shtab-1.13.0-py3-none-any.whl", hash = "sha256:cdf7543fc1888dd131320917f3ba9643d8f1a77d406114a09d5a31f76274c7d9"},
+    {file = "shtab-1.13.0.tar.gz", hash = "sha256:0a5be9d7ab2b4549e9a38252abcd5ecf5ec6813ecd80c6b06fa851bff55a5085"},
+]
+
+[package.extras]
+dev = ["click", "pytest (>=6)", "pytest-cov"]
+
+[[package]]
 name = "six"
 version = "1.17.0"
 description = "Python 2 and 3 compatibility utilities"
@@ -4613,4 +4628,4 @@ langchain = ["certifi", "langchain-core"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "16c92ecca1ffeb1e59395bdc2edc1fd91e63b68277e04b39b8ced19018843987"
+content-hash = "61c6c58a23e321c7f81fa28eaa84d2a0d99d5f2d285d53748281a8f62f0f6835"
