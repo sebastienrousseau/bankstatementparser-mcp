@@ -1,33 +1,26 @@
 <!-- SPDX-License-Identifier: Apache-2.0 OR MIT -->
 
 <p align="center">
-  <img
-    src="https://cloudcdn.pro/bankstatementparser/v1/logos/bankstatementparser.svg"
-    alt="bankstatementparser-mcp logo"
-    width="120"
-    height="120"
-  />
+  <img src="https://cloudcdn.pro/bankstatementparser/v1/logos/bankstatementparser.svg" alt="bankstatementparser-mcp logo" width="128" />
 </p>
 
 <h1 align="center">bankstatementparser-mcp</h1>
 
 <p align="center">
-  <b>Model Context Protocol server exposing the bankstatementparser library as first-class agent tools for reading bank statements.</b>
+  Model Context Protocol server that lets AI agents read, validate and summarise bank statements (CAMT.053, pain.001, MT940, OFX/QFX, CSV) through the bankstatementparser library.
 </p>
 
 <p align="center">
-  <a href="https://github.com/sebastienrousseau/bankstatementparser-mcp/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/sebastienrousseau/bankstatementparser-mcp/ci.yml?branch=main&label=Tests&style=for-the-badge&logo=github" alt="Tests" height="28" /></a>
-  <a href="https://github.com/sebastienrousseau/bankstatementparser-mcp/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/sebastienrousseau/bankstatementparser-mcp/ci.yml?branch=main&label=Coverage&style=for-the-badge" alt="Coverage" height="28" /></a>
-  <a href="https://pypi.org/project/bankstatementparser-mcp/"><img src="https://img.shields.io/pypi/v/bankstatementparser-mcp?style=for-the-badge&color=fc8d62&logo=python" alt="PyPI version" height="28" /></a>
-  <a href="https://pypi.org/project/bankstatementparser-mcp/"><img src="https://img.shields.io/pypi/pyversions/bankstatementparser-mcp.svg?style=for-the-badge" alt="Python versions" height="28" /></a>
-  <a href="https://pypi.org/project/bankstatementparser-mcp/"><img src="https://img.shields.io/pypi/dm/bankstatementparser-mcp.svg?style=for-the-badge" alt="PyPI downloads" height="28" /></a>
+  <a href="https://github.com/sebastienrousseau/bankstatementparser-mcp/actions"><img src="https://img.shields.io/github/actions/workflow/status/sebastienrousseau/bankstatementparser-mcp/ci.yml?style=for-the-badge&logo=github" alt="Build" height="28" /></a>
+  <a href="https://pypi.org/project/bankstatementparser-mcp/"><img src="https://img.shields.io/pypi/v/bankstatementparser-mcp?style=for-the-badge&color=fc8d62&logo=python" alt="Registry" height="28" /></a>
+  <a href="https://sebastienrousseau.com/bankstatementparser-mcp/"><img src="https://img.shields.io/badge/docs-user%20manual-0a7bbb?style=for-the-badge&labelColor=555555&logo=materialformkdocs" alt="Docs" height="28" /></a>
   <a href="https://scorecard.dev/viewer/?uri=github.com/sebastienrousseau/bankstatementparser-mcp"><img src="https://img.shields.io/ossf-scorecard/github.com/sebastienrousseau/bankstatementparser-mcp?style=for-the-badge&label=OpenSSF%20Scorecard&logo=openssf" alt="OpenSSF Scorecard" height="28" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0%20OR%20MIT-blue.svg?style=for-the-badge" alt="License: Apache-2.0 OR MIT" height="28" /></a>
-  <a href="https://glama.ai/mcp/servers/sebastienrousseau/bankstatementparser-mcp"><img src="https://glama.ai/mcp/servers/sebastienrousseau/bankstatementparser-mcp/badges/score.svg" alt="Glama MCP server score" height="28" /></a>
+  <a href="https://github.com/sebastienrousseau/bankstatementparser-mcp/blob/main/docs/POLICIES.md"><img src="https://img.shields.io/badge/python-3.10%2B-93450a.svg?style=for-the-badge&logo=python" alt="Python 3.10+" height="28" /></a>
 </p>
 
 <p align="center">
-  <img src=".github/demo.gif" alt="bankstatementparser-mcp Demo" width="100%" />
+  <img src="https://raw.githubusercontent.com/sebastienrousseau/bankstatementparser-mcp/main/.github/demo.gif" alt="A terminal running bankstatementparser-mcp --version, then the 01_mcp_tools.py and 02_validate_pipeline.py examples detecting, parsing, validating and summarising inline statements" width="100%" />
 </p>
 
 ---
@@ -36,101 +29,51 @@
 
 **Getting started**
 
-- [What is bankstatementparser-mcp?](#what-is-bankstatementparser-mcp) — the problem it solves
-- [The ISO 20022 MCP Suite](#the-iso-20022-mcp-suite) — the four coordinated servers and when to use each
-- [Install](#install) — PyPI, virtualenv, Docker
-- [Quick start](#quick-start) — register with Claude Desktop in 30 seconds
-- [Transports](#transports) — stdio, streamable HTTP (2026-07-28 and 2025-11-25) and SSE from one command line
+- [Install](#install): PyPI, source, Docker (GHCR), the MCP Registry
+- [Requirements](#requirements): toolchain floor, platforms
+- [Quick Start](#quick-start): register the server with an MCP client
+
+**The bankstatementparser-mcp ecosystem**
+
+- [The bankstatementparser-mcp ecosystem](#the-bankstatementparser-mcp-ecosystem): the core library, the LSP, the ISO 20022 MCP servers
 
 **Library reference**
 
-- [Tools](#tools) — the five tools, one resource, one prompt
-- [Using the tools](#using-the-tools) — call them in-process from Python
+- [Capabilities at a glance](#capabilities-at-a-glance): the current surface by theme
+- [Ecosystem comparison](#ecosystem-comparison): short matrix; full table at [`docs/COMPARISON.md`](docs/COMPARISON.md)
+- [Benchmarks](#benchmarks): headline numbers; full table at [`docs/BENCHMARKS.md`](docs/BENCHMARKS.md)
+- [Features](#features): module-level capability list
+- [Configuration](#configuration): core options
+- [Examples](#examples): runnable example index
 
 **Operational**
 
-- [When not to use bankstatementparser-mcp](#when-not-to-use-bankstatementparser-mcp) — honest boundaries
-- [Development](#development) — gates, make targets
-- [Security](#security) — sandboxing posture
-- [Documentation](#documentation) — examples, guides
-- [Contributing](#contributing) — how to get changes in
-- [License](#license) — Apache-2.0
-
----
-
-## What is bankstatementparser-mcp?
-
-The [Model Context Protocol](https://modelcontextprotocol.io) (MCP) is
-an open standard that lets AI agents discover and call external tools in
-a uniform way. **bankstatementparser-mcp** is the MCP server that turns the
-[`bankstatementparser`](https://github.com/sebastienrousseau/bankstatementparser)
-library into first-class agent tools — so an assistant can read,
-validate, and summarise **bank statements** in formats such as ISO 20022
-CAMT.053, SWIFT MT940, OFX/QFX, and CSV directly from a conversation.
-
-Every tool is a thin wrapper over the `bankstatementparser` parser core
-(`create_parser`, `detect_statement_format`), so the results behave
-identically to the CLI. Because an MCP client does not share the
-server's filesystem, the tools take **inline statement content** (plus a
-filename hint) and materialise it in a private temporary file for the
-duration of a single call. Tools return JSON-serialisable data.
-
-| Concern | How bankstatementparser-mcp handles it |
-| :--- | :--- |
-| Transport | stdio by default; `--transport streamable-http` (2026-07-28 and 2025-11-25 on one endpoint) or `--transport sse` for HTTP |
-| Input model | Inline content + filename hint; no shared filesystem required |
-| Format fidelity | Tools delegate to `bankstatementparser`'s `create_parser` pipeline |
-| Format detection | `detect_format` mirrors the library's `detect_statement_format` |
-| Validation | `validate_statement` is a dry run that returns structured results |
-| Isolation | Each call writes to a private temp file that is deleted on exit |
-
----
-
-## The ISO 20022 MCP Suite
-
-`bankstatementparser-mcp` is the **ingestion layer** of eight coordinated,
-vendor-neutral MCP servers that together cover the ISO 20022
-bank-statement workflow and the November 2026 structured-address
-cutover — statement depth, whole-catalogue routing, reconciliation,
-multi-format ingestion, and address remediation. Dependency ranges are kept
-aligned across the suite, so the servers co-install cleanly in a single
-Python environment: start with one, add the rest as your workflow grows.
-
-| Server | Scope | Surface | Install | Use it when |
-| :--- | :--- | :--- | :--- | :--- |
-| [`camt053-mcp`](https://github.com/sebastienrousseau/camt053-mcp) | ISO 20022 `camt.053`/`camt.052` bank statements: parse, validate, filter, reverse; MT940/MT942 migration; CBPR+ readiness; journal export | 24 MCP tools · 4 prompts · 3 resources | `pip install camt053-mcp` | You work with bank-to-customer statements end to end — the suite's flagship |
-| [`iso20022-mcp`](https://github.com/sebastienrousseau/iso20022-mcp) | Unified gateway: `search` / `describe` / `validate` / `generate` / `parse` meta-tools routed across the `pain` · `pacs` · `camt` · `acmt` families | 7 meta-tools | `pip install "iso20022-mcp[all]"` | You want one entry point to every message family |
-| [`reconcile-mcp`](https://github.com/sebastienrousseau/reconcile-mcp) | Matches expected `pain.001` payments against observed `camt.053` entries — exact, partial, one-to-many, many-to-one, every match scored and explained | 7 MCP tools | `pip install reconcile-mcp` | You need explainable statement/payment reconciliation |
-| [`bankstatementparser-mcp`](#install) | Multi-format statement ingestion: ISO 20022 CAMT.053 and pain.001, SWIFT MT940, OFX/QFX, CSV | 5 MCP tools · 1 prompt · 1 resource | `pip install bankstatementparser-mcp` | Your statements arrive in mixed or legacy formats — **this package** |
-| [`structured-address-fix-mcp`](https://github.com/sebastienrousseau/structured-address-fix-mcp) | ISO 20022 postal-address classification, assessment & remediation for the November 2026 structured-address cutover, plus a high-level orchestration layer — readiness scoring, clearing-profile linting, and audit evidence (`pacs.008` / `pain.001` debtor & creditor addresses) | 9 MCP tools | `pip install structured-address-fix-mcp` | You need debtor/creditor addresses cliff-ready ahead of 14 Nov 2026 |
-| [`iso20022-readiness-suite-mcp`](https://github.com/sebastienrousseau/iso20022-readiness-suite-mcp) | Orchestration gateway: detect → structurally validate → clearing-profile lint → readiness score, plus automated remediation and `pacs.002` bank-response simulation — a meta-client over the foundational servers | 4 MCP tools | `pip install iso20022-readiness-suite-mcp` | You want one high-level readiness / orchestration entry point over the suite |
-| [`iso20022-bank-profile-mcp`](https://github.com/sebastienrousseau/iso20022-bank-profile-mcp) | Manages, validates and serves bank-specific clearing profiles / rule packs (CBPR+, SEPA_Instant, FedNow, Generic); premium rule-pack entitlement gating | 4 MCP tools | `pip install iso20022-bank-profile-mcp` | You lint payments against your own institution's market practice |
-| [`iso20022-evidence-pack-mcp`](https://github.com/sebastienrousseau/iso20022-evidence-pack-mcp) | Compiles readiness findings, remediation diffs and simulated responses into a sealed, Ed25519-signable audit evidence pack | 6 MCP tools | `pip install iso20022-evidence-pack-mcp` | You need tamper-evident audit / certification artifacts |
-
-In one line each: **`camt053-mcp`** is the bank-statement flagship
-(deepest camt.05x surface, stdio + authenticated streamable HTTP);
-**`iso20022-mcp`** is the generic message toolkit (a handful of verbs
-over the whole catalogue); **`reconcile-mcp`** is the reconciliation
-workflow (did the money we expected actually arrive?);
-**`bankstatementparser-mcp`** is the ingestion layer (many formats in,
-one transaction shape out); and **`structured-address-fix-mcp`** is the
-postal-address specialist (debtor/creditor addresses cliff-ready for the
-Nov 2026 cutover).
+- [When not to use bankstatementparser-mcp](#when-not-to-use-bankstatementparser-mcp): limitations
+- [Development](#development): make targets, fuzzing, CI
+- [Security](#security): guarantees and compliance
+- [Documentation](#documentation): all reference docs
+- [Stability guarantees](#stability-guarantees): SemVer axis, output stability, minimum toolchain discipline
+- [License](#license)
 
 ---
 
 ## Install
 
+### As a Python library
+
+```bash
+pip install bankstatementparser-mcp
+```
+
+That installs the `bankstatementparser-mcp` command, `bankstatementparser >= 0.0.35` and the MCP SDK.
+
 | Channel | Command | Notes |
 | :--- | :--- | :--- |
-| PyPI | `pip install bankstatementparser-mcp` | Pulls in `bankstatementparser >= 0.0.34` + MCP SDK |
+| PyPI | `pip install bankstatementparser-mcp` | Add `[langchain]` for the LangChain adapter |
 | Source | `git clone https://github.com/sebastienrousseau/bankstatementparser-mcp && cd bankstatementparser-mcp && poetry install` | For development |
 | Docker (GHCR) | `docker pull ghcr.io/sebastienrousseau/bankstatementparser-mcp:latest` | Multi-arch (linux/amd64, linux/arm64); runs `bankstatementparser-mcp` over stdio; pass `--transport streamable-http --host 0.0.0.0` and publish port 8000 for HTTP |
 
-Requires Python 3.10 or later. Works on macOS, Linux, and Windows.
-
-<details>
-<summary>Using an isolated virtual environment (recommended)</summary>
+An isolated virtual environment keeps the server's dependencies apart:
 
 ```sh
 python -m venv venv
@@ -139,13 +82,34 @@ venv\Scripts\activate           # Windows
 python -m pip install -U bankstatementparser-mcp
 ```
 
-</details>
+### MCP Registry
+
+The server is listed in the MCP Registry under this name, which the registry checks against this README:
+
+`mcp-name: io.github.sebastienrousseau/bankstatementparser-mcp`
+
+### Shell completions
+
+Bash and zsh completions for the command line live in [`completions/`](completions/), generated from the server's own argument parser (`make completions`).
+
+### Packaging status
+
+[![Packaging status](https://repology.org/badge/vertical-allrepos/python:bankstatementparser-mcp.svg)](https://repology.org/project/python:bankstatementparser-mcp/versions)
+
+Repology lists every repository that packages `bankstatementparser-mcp`. PyPI and GHCR are the channels this project publishes to itself.
 
 ---
 
-## Quick start
+## Requirements
 
-Register the server with any MCP client (Claude Desktop shown):
+- **Python 3.10 or later.** CI tests CPython 3.10, 3.11, 3.12, 3.13 and 3.14 on Linux, macOS and Windows; [`docs/POLICIES.md`](docs/POLICIES.md) says when the floor moves.
+- **[`bankstatementparser`](https://pypi.org/project/bankstatementparser/) 0.0.35 or later**, the parser core every tool delegates to.
+- **The MCP SDK**, `mcp >= 1.30` on the 1.x line or `>= 2.2` on 2.x (2.0 and 2.1 are excluded for GHSA-84m7-p3x7-pcfv).
+- **An MCP client** (Claude Desktop, Claude Code, an IDE, or an agent framework) to launch it. The Docker image needs only a container runtime.
+
+---
+
+## Quick Start
 
 ```json
 {
@@ -155,68 +119,99 @@ Register the server with any MCP client (Claude Desktop shown):
 }
 ```
 
-That's it. Restart the client and the tools are available to the agent.
-
-By default the server speaks JSON-RPC over stdin/stdout — it is meant
-to be launched by an MCP client, not used interactively. For a shared
-deployment, see [Transports](#transports).
+Add this to your MCP client's configuration (Claude Desktop shown) and restart the client: the five tools, the resource and the prompt are then available to the agent. By default the server speaks JSON-RPC over stdin/stdout, so it is meant to be launched by an MCP client, not used interactively. For a shared deployment over HTTP, see [Configuration](#configuration).
 
 ---
 
-## Transports
+## The bankstatementparser-mcp ecosystem
 
-One command line, three transports:
+bankstatementparser-mcp is the agent-facing layer of the `bankstatementparser` suite, whose packages ship one version together, and the multi-format ingestion server of the ISO 20022 MCP servers. Dependency ranges are kept aligned, so the servers co-install in one Python environment. The full tables are in [The suite](docs/suite.md).
 
-| Command | Transport | Endpoint | Protocol revisions |
-| :--- | :--- | :--- | :--- |
-| `bankstatementparser-mcp` | stdio | the client spawns the process | 2026-07-28, 2025-11-25 |
-| `bankstatementparser-mcp --transport streamable-http` | Streamable HTTP | `http://127.0.0.1:8000/mcp` | 2026-07-28 (stateless, `server/discover`) and 2025-11-25 (`initialize`, `Mcp-Session-Id`) on the same endpoint; responses stream as server-sent events, `GET` opens the server-to-client stream |
-| `bankstatementparser-mcp --transport sse` | HTTP+SSE (2024-11-05) | `http://127.0.0.1:8000/sse` and `/messages/` | for clients that still expect the older transport |
-
-`--host` and `--port` change the bind address (defaults `127.0.0.1` and
-`8000`). The HTTP transports carry no authentication of their own: bind
-loopback, or put the server behind a gateway you trust before binding a
-routable address. Every release is verified over streamable HTTP with
-[passmcp](https://github.com/sebastienrousseau/passmcp) in both protocol
-eras and over SSE with the MCP SDK client; see
-[ADR 0001](docs/adr/0001-three-transports-one-command-line.md).
-
-```json
-{
-  "mcpServers": {
-    "bankstatementparser": { "url": "http://127.0.0.1:8000/mcp" }
-  }
-}
-```
+| Component | Purpose | Use case |
+| :--- | :--- | :--- |
+| [`bankstatementparser`](https://github.com/sebastienrousseau/bankstatementparser) | The parser core: CAMT, pain.001, CSV, OFX, QFX, MT940 and PDF statements | Parsing statements from Python or the CLI |
+| **`bankstatementparser-mcp`** | This server: five MCP tools, one resource, one prompt | An agent reading statements in mixed or legacy formats |
+| [`bankstatementparser-lsp`](https://github.com/sebastienrousseau/bankstatementparser-lsp) | Language server with live MT940 diagnostics | Editing MT940 files |
+| Loaders, writers and transport | BAI2, MT942, CFONB, CAMT.054, SEPA and BACS loaders; XLSX, QIF, OFX and SWIFT writers; EBICS transport | Formats beyond the core, and retrieval over EBICS |
+| [`camt053-mcp`](https://github.com/sebastienrousseau/camt053-mcp) | ISO 20022 `camt.053`/`camt.052` statements end to end | Deep camt.05x work |
+| [`reconcile-mcp`](https://github.com/sebastienrousseau/reconcile-mcp) | Matches `pain.001` payments against `camt.053` entries | Statement and payment reconciliation |
 
 ---
 
-## Tools
+## Capabilities at a glance
 
-All tools delegate to the `bankstatementparser` parser core, so they
-behave identically to the library.
-
-- `list_supported_formats` — List every bank statement format the parser can read
-- `detect_format` — Detect which statement format an inline payload is
-- `parse_statement` — Parse a statement into structured transactions plus a summary
-- `validate_statement` — Dry-run check whether a statement parses cleanly
-- `summarize_statement` — Return only the statement summary (no per-transaction rows)
-
-Plus one resource and one prompt:
-
-- Resource `bankstatementparser://formats` — Read-only catalogue of supported formats and their file extensions
-- Prompt `analyze_statement` — Guided multi-step prompt that walks an agent through reading and reconciling a statement
-
-Supported formats: `camt` (ISO 20022 CAMT.053, `.xml`), `pain001`
-(ISO 20022 pain.001, `.xml`), `csv` (`.csv`), `ofx` (`.ofx`), `qfx`
-(`.qfx`), and `mt940` (SWIFT MT940, `.mt940` / `.sta`).
+| Area | Capability | Status |
+| :--- | :--- | :--- |
+| Tools | `list_supported_formats`, `detect_format`, `parse_statement`, `validate_statement`, `summarize_statement` | Shipped |
+| Resource | `bankstatementparser://formats`, the supported-format catalogue | Shipped |
+| Prompt | `analyze_statement`, a guided read-and-reconcile walkthrough | Shipped |
+| Formats | `camt`, `pain001`, `csv`, `ofx`, `qfx`, `mt940` | Shipped |
+| Transports | stdio; streamable HTTP (2026-07-28 and 2025-11-25); HTTP+SSE (2024-11-05) | Shipped |
+| Adapters | LangChain, CrewAI, LlamaIndex tool objects | Shipped |
+| Distribution | PyPI wheel and sdist, multi-arch GHCR image, MCP Registry entry | Shipped |
 
 ---
 
-## Using the tools
+## Ecosystem comparison
 
-The tools are plain functions on the `bankstatementparser_mcp.server`
-module, so you can call them in-process:
+The choice is between this server, the library it wraps, and a deeper single-format server. Every cell comes from the projects' own READMEs.
+
+| Project | Input formats | Interface | Input model |
+| :--- | :---: | :---: | :---: |
+| **bankstatementparser-mcp** | CAMT.053, pain.001, MT940, OFX, QFX, CSV | MCP (stdio, streamable HTTP, SSE) | Inline content and a filename hint |
+| `bankstatementparser` | The same, plus PDF | Python library and CLI | Paths on disk |
+| `camt053-mcp` | `camt.053`/`camt.052` | MCP (stdio, authenticated streamable HTTP) | Tool arguments |
+
+See [`docs/COMPARISON.md`](docs/COMPARISON.md) for the evidence and complete matrix.
+
+---
+
+## Benchmarks
+
+`benches/bench_detect_and_parse.py` times `detect_format` and `parse_statement` on generated statements. Detection costs 5 to 11 ms per call whatever the size, because it peeks at the head of the document; parsing grows with the document.
+
+| Scenario | Result | Environment |
+| :--- | ---: | :--- |
+| `detect_format`, CAMT.053, 2,000 entries (530 KiB) | 6.6 ms | Apple M1 Pro, macOS 27.2.1, CPython 3.12.16 |
+| `parse_statement`, CAMT.053, 2,000 entries (530 KiB) | 132.8 ms | Apple M1 Pro, macOS 27.2.1, CPython 3.12.16 |
+| `parse_statement`, MT940, 2,000 entries (132 KiB) | 40.7 ms | Apple M1 Pro, macOS 27.2.1, CPython 3.12.16 |
+| `parse_statement`, CSV, 2,000 entries (82 KiB) | 9.4 ms | Apple M1 Pro, macOS 27.2.1, CPython 3.12.16 |
+
+See [`docs/BENCHMARKS.md`](docs/BENCHMARKS.md) for methodology and full results.
+
+---
+
+## Features
+
+- **`bankstatementparser_mcp.server`**: the MCP server. Five tools (`list_supported_formats`, `detect_format`, `parse_statement`, `validate_statement`, `summarize_statement`), one resource and one prompt. Every tool is a thin wrapper over the `bankstatementparser` parser core (`create_parser`, `detect_statement_format`), so results behave identically to the library.
+- **Inline content.** An MCP client does not share the server's filesystem, so the tools take the statement text plus a filename hint and write it to a private temporary file for the duration of one call.
+- **Errors as data.** `detect_format`, `parse_statement` and `summarize_statement` refuse an unparseable payload with a `ToolError` naming the filename and the parser's reason; `validate_statement` returns `{"is_valid": false, "error": ...}` instead of raising.
+- **`bankstatementparser_mcp.adapters`**: the same tools as LangChain, CrewAI and LlamaIndex tool objects, each framework imported only when its adapter is called.
+- **`bankstatementparser_mcp._cli` and `_transports`**: the command line shared by the suite's servers, and the stdio, streamable HTTP and SSE launchers.
+- **`bankstatementparser_mcp._mcp_compat`**: one codebase on MCP SDK 1.x (`FastMCP`) and 2.x (`MCPServer`).
+
+The tools, resource and prompt are described in full in the [manual](docs/tools.md).
+
+---
+
+## Configuration
+
+The server has no configuration file and reads no environment variables. Everything is a command-line flag:
+
+| Flag | Default | Effect |
+| :--- | :--- | :--- |
+| `--transport` | `stdio` | `stdio`, `streamable-http` (HTTP at `/mcp`) or `sse` (HTTP+SSE at `/sse` and `/messages/`) |
+| `--host` | `127.0.0.1` | Interface the HTTP transports bind |
+| `--port` | `8000` | Port the HTTP transports bind |
+| `--version` | | Print the version and exit |
+
+The HTTP transports carry no authentication of their own: bind loopback, or put the server behind a gateway you trust before binding a routable address. A client registers the HTTP endpoint with `{"mcpServers": {"bankstatementparser": {"url": "http://127.0.0.1:8000/mcp"}}}`. See [Transports](docs/transports.md) and [ADR 0001](docs/adr/0001-three-transports-one-command-line.md).
+
+---
+
+## Examples
+
+The tools are plain functions on `bankstatementparser_mcp.server`, so you can call them in-process:
 
 ```python
 from bankstatementparser_mcp.server import (
@@ -243,9 +238,7 @@ print(parsed["transaction_count"], parsed["columns"])
 print(summarize_statement(csv, "statement.csv"))
 ```
 
-The resource and prompt are plain functions too: `formats_resource`
-backs `bankstatementparser://formats`, and `analyze_statement` returns
-the guided multi-step prompt.
+The resource and prompt are plain functions too: `formats_resource` backs `bankstatementparser://formats`, and `analyze_statement` returns the guided multi-step prompt.
 
 ```python
 from bankstatementparser_mcp.server import (
@@ -257,140 +250,74 @@ print(formats_resource())          # the supported-formats catalogue
 print(analyze_statement("statement.csv"))  # the guided analysis prompt
 ```
 
-See the [`examples/`](examples/) folder for runnable walkthroughs,
-including [`04_resource_and_prompt.py`](examples/04_resource_and_prompt.py).
+[`examples/`](examples/) holds four runnable walkthroughs, each run in CI:
+
+| Example | Demonstrates |
+| :--- | :--- |
+| [`01_mcp_tools.py`](examples/01_mcp_tools.py) | `list_supported_formats`, `detect_format` and `parse_statement` |
+| [`02_validate_pipeline.py`](examples/02_validate_pipeline.py) | `validate_statement` then `summarize_statement` before trusting a statement |
+| [`03_parse_bank_replies.py`](examples/03_parse_bank_replies.py) | Detecting and parsing an inline SWIFT MT940 statement |
+| [`04_resource_and_prompt.py`](examples/04_resource_and_prompt.py) | The `bankstatementparser://formats` resource and the `analyze_statement` prompt |
 
 ---
 
 ## When not to use bankstatementparser-mcp
 
-- **You're not driving an MCP-aware agent.** Use the
-  [`bankstatementparser`](https://pypi.org/project/bankstatementparser/)
-  CLI or library directly — it exposes the same surface with less
-  indirection.
-- **You need to parse files already on disk in bulk.** The library's
-  CLI reads paths directly and avoids the inline-content round-trip the
-  MCP tools use.
+- **You're not driving an MCP-aware agent.** Use the [`bankstatementparser`](https://pypi.org/project/bankstatementparser/) CLI or library directly: it exposes the same surface with less indirection.
+- **You need to parse files already on disk in bulk.** The library's CLI reads paths directly and avoids the inline-content round trip the MCP tools use.
+- **You need authentication on the HTTP transports.** The server adds none; it belongs on loopback or behind a gateway you trust.
+- **Your format is not one of the six.** BAI2, MT942, CFONB, CAMT.054, SEPA and BACS are read by the suite's loader packages, not by this server.
 
 ---
 
 ## Development
-
-`bankstatementparser-mcp` uses [Poetry](https://python-poetry.org/) and
-[mise](https://mise.jdx.dev/).
 
 ```bash
 git clone https://github.com/sebastienrousseau/bankstatementparser-mcp.git
 cd bankstatementparser-mcp
 mise install
 poetry install
+make check
 ```
 
-A `Makefile` orchestrates the quality gates (kept in lockstep with CI):
-
-| Target | What it runs |
-| :--- | :--- |
-| `make check` | All gates (REQUIRED before commit) |
-| `make test` | `pytest --cov=bankstatementparser_mcp --cov-branch --cov-fail-under=100` |
-| `make lint` | `ruff check` + `black --check` |
-| `make type-check` | `mypy --strict` |
-| `make docs` | `interrogate --fail-under=100` (docstring coverage) |
-
-Current state (v0.0.35): **100% line + branch coverage** against a 100%
-enforced floor, mypy `--strict` clean, interrogate 100%.
+`make check` runs the local gates: `ruff` and `black`, `mypy --strict`, the complexity baseline (`scripts/check_complexity.py`), `pytest` with a 100% line + branch coverage floor, `interrogate` at 100% docstring coverage, and the examples. Other targets: `make fuzz` (Atheris, 60 s, Linux x86_64 with Python 3.12+), `make docs` (the MkDocs manual, `--strict`), `make completions`, `make demo` (re-renders the GIF above with VHS from `.github/demo.tape`) and `make security` (Bandit). CI adds the OS by Python matrix, the Docker build, CodeQL, `pip-audit` on the locked requirements, the Docs Lint gates, and MCP protocol conformance. [`CONTRIBUTING.md`](CONTRIBUTING.md) covers branches, commit signing and sign-off.
 
 ---
 
 ## Security
 
-- **No persistent filesystem writes from tools.** Each call writes the
-  inline content to a private temporary file that is deleted as soon as
-  the call returns.
-- **Validation failures** from `validate_statement` are returned as
-  structured `{"is_valid": false, "error": ...}` payloads — never as
-  stack traces.
-- **Dependencies** are pinned via `poetry.lock` and audited by
-  `pip-audit` and Bandit in CI.
+- **No persistent filesystem writes from tools.** Each call writes the inline content to a private temporary file that is deleted as soon as the call returns.
+- **Validation failures** from `validate_statement` are returned as structured `{"is_valid": false, "error": ...}` payloads, never as stack traces.
+- **Loopback by default.** The HTTP transports bind `127.0.0.1` unless `--host` says otherwise.
+- **Fuzzing.** `fuzz/fuzz_tools.py` drives every payload-taking tool with Atheris in CI and fails on any exception other than the `ToolError` the tools promise.
+- **Supply chain.** Dependencies are locked in `poetry.lock`, CI installs hash-pinned exports of it, and `pip-audit`, Bandit and CodeQL run on every change. Releases publish to PyPI through OIDC trusted publishing and carry cosign signatures, SLSA provenance and SBOMs; every workflow action is pinned by commit SHA except the SLSA generator, which must be referenced by tag.
 
-To report a vulnerability, please use
-[GitHub private vulnerability reporting](https://github.com/sebastienrousseau/bankstatementparser-mcp/security)
-rather than a public issue.
+Report vulnerabilities according to [`SECURITY.md`](SECURITY.md).
 
 ---
 
 ## Documentation
 
-- **Runnable examples:** [`examples/`](https://github.com/sebastienrousseau/bankstatementparser-mcp/tree/main/examples)
-- **Release history:** [CHANGELOG.md](https://github.com/sebastienrousseau/bankstatementparser-mcp/blob/main/CHANGELOG.md)
+- **User manual:** [sebastienrousseau.com/bankstatementparser-mcp](https://sebastienrousseau.com/bankstatementparser-mcp/), built from [`docs/`](docs/) with MkDocs
+- **API reference:** [the manual's API page](https://sebastienrousseau.com/bankstatementparser-mcp/api/), generated from the docstrings
+- **Developer docs:** [`CONTRIBUTING.md`](CONTRIBUTING.md), [`ARCHITECTURE.md`](ARCHITECTURE.md), [`RELEASING.md`](RELEASING.md), [`AGENTS.md`](AGENTS.md)
+- **The suite:** [`docs/suite.md`](docs/suite.md), with every `bankstatementparser` package and ISO 20022 MCP server
+- **Decisions and history:** [`docs/adr/`](docs/adr/index.md), [`ROADMAP.md`](ROADMAP.md), [`CHANGELOG.md`](CHANGELOG.md)
+- **Directory listing:** [Glama](https://glama.ai/mcp/servers/sebastienrousseau/bankstatementparser-mcp)
 - **MCP specification:** [modelcontextprotocol.io](https://modelcontextprotocol.io)
 
 ---
 
-## Contributing
+## Stability guarantees
 
-Contributions are welcome — see the
-[contributing instructions](https://github.com/sebastienrousseau/bankstatementparser-mcp/blob/main/CONTRIBUTING.md).
-Thanks to all the
-[contributors](https://github.com/sebastienrousseau/bankstatementparser-mcp/graphs/contributors)
-who have helped build `bankstatementparser-mcp`.
-
----
-
-## Related MCP Servers
-
-The four core servers of the **ISO 20022 MCP Suite** are compared in
-[The ISO 20022 MCP Suite](#the-iso-20022-mcp-suite) above. The wider
-family — open-source, Apache-2.0 licensed MCP servers for banking and
-financial-services AI agents — also includes:
-
-| Server | Purpose |
-|---|---|
-| [`pain001-mcp`](https://github.com/sebastienrousseau/pain001-mcp) | Generate & validate ISO 20022 pain.001 payment files (v03–v12, pain.008, SEPA) with rulebook checks |
-| [`pacs008-mcp`](https://github.com/sebastienrousseau/pacs008-mcp) | Generate, validate, parse & scheme-check ISO 20022 pacs.008 FI-to-FI credit transfers + Nov-2026 address linting |
-| [`acmt001-mcp`](https://github.com/sebastienrousseau/acmt001-mcp) | Generate & validate ISO 20022 acmt account-management messages |
-| [`noyalib-mcp`](https://github.com/sebastienrousseau/noyalib) | Lossless YAML 1.2 parsing, formatting & validation (Rust, 100% spec compliance) |
-
----
-
-## MCP Registry
-
-`mcp-name: io.github.sebastienrousseau/bankstatementparser-mcp`
-
----
-
-## Ecosystem
-
-`bankstatementparser` is part of a modular financial ecosystem. Optional companion packages provide specialized loaders, writers, AI agents, language servers, and transport protocol adapters:
-
-| Package | GitHub Repository | PyPI | Role | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| **`bankstatementparser`** | [`sebastienrousseau/bankstatementparser`](https://github.com/sebastienrousseau/bankstatementparser) | [![PyPI](https://img.shields.io/pypi/v/bankstatementparser.svg)](https://pypi.org/project/bankstatementparser/) | Core Engine | Unified parser for CAMT (052/053), PAIN.001, CSV, OFX, QFX, MT940, and PDF statements |
-| **`bankstatementparser-mcp`** | [`sebastienrousseau/bankstatementparser-mcp`](https://github.com/sebastienrousseau/bankstatementparser-mcp) | [![PyPI](https://img.shields.io/pypi/v/bankstatementparser-mcp.svg)](https://pypi.org/project/bankstatementparser-mcp/) | AI Protocol | Model Context Protocol (MCP) server exposing statement tools to LLMs & AI agents |
-| **`bankstatementparser-lsp`** | [`sebastienrousseau/bankstatementparser-lsp`](https://github.com/sebastienrousseau/bankstatementparser-lsp) | [![PyPI](https://img.shields.io/pypi/v/bankstatementparser-lsp.svg)](https://pypi.org/project/bankstatementparser-lsp/) | Developer Tooling | Language Server Protocol (LSP) with live SWIFT MT940 statement validation & diagnostics |
-| **`bankstatementparser-transport-ebics`** | [`sebastienrousseau/bankstatementparser-transport-ebics`](https://github.com/sebastienrousseau/bankstatementparser-transport-ebics) | [![PyPI](https://img.shields.io/pypi/v/bankstatementparser-transport-ebics.svg)](https://pypi.org/project/bankstatementparser-transport-ebics/) | Transport | Automated bank statement retrieval over EBICS 3.0 (`H005`) and 2.5 (`H004`) protocols |
-| **`bankstatementparser-writer-xlsx`** | [`sebastienrousseau/bankstatementparser-writer-xlsx`](https://github.com/sebastienrousseau/bankstatementparser-writer-xlsx) | [![PyPI](https://img.shields.io/pypi/v/bankstatementparser-writer-xlsx.svg)](https://pypi.org/project/bankstatementparser-writer-xlsx/) | Output Writer | Formats and exports parsed banking transactions into styled Microsoft Excel (`.xlsx`) workbooks |
-| **`bankstatementparser-writer-qif`** | [`sebastienrousseau/bankstatementparser-writer-qif`](https://github.com/sebastienrousseau/bankstatementparser-writer-qif) | [![PyPI](https://img.shields.io/pypi/v/bankstatementparser-writer-qif.svg)](https://pypi.org/project/bankstatementparser-writer-qif/) | Output Writer | Serializes transactions into standard Quicken Interchange Format (`.qif`) exchange files |
-| **`bankstatementparser-writer-ofx`** | [`sebastienrousseau/bankstatementparser-writer-ofx`](https://github.com/sebastienrousseau/bankstatementparser-writer-ofx) | [![PyPI](https://img.shields.io/pypi/v/bankstatementparser-writer-ofx.svg)](https://pypi.org/project/bankstatementparser-writer-ofx/) | Output Writer | Serializes transactions into standard Open Financial Exchange (`.ofx`) XML/SGML files |
-| **`bankstatementparser-writer-swift`** | [`sebastienrousseau/bankstatementparser-writer-swift`](https://github.com/sebastienrousseau/bankstatementparser-writer-swift) | [![PyPI](https://img.shields.io/pypi/v/bankstatementparser-writer-swift.svg)](https://pypi.org/project/bankstatementparser-writer-swift/) | Output Writer | Exports transactions to SWIFT MT940 customer statements and MT942 interim reports |
-| **`bankstatementparser-loader-bai2`** | [`sebastienrousseau/bankstatementparser-loader-bai2`](https://github.com/sebastienrousseau/bankstatementparser-loader-bai2) | [![PyPI](https://img.shields.io/pypi/v/bankstatementparser-loader-bai2.svg)](https://pypi.org/project/bankstatementparser-loader-bai2/) | Input Loader | Parses BAI2 cash-management and account balance statements |
-| **`bankstatementparser-loader-mt942`** | [`sebastienrousseau/bankstatementparser-loader-mt942`](https://github.com/sebastienrousseau/bankstatementparser-loader-mt942) | [![PyPI](https://img.shields.io/pypi/v/bankstatementparser-loader-mt942.svg)](https://pypi.org/project/bankstatementparser-loader-mt942/) | Input Loader | Parses SWIFT MT942 interim transaction reports with credit/debit summary reconciliation |
-| **`bankstatementparser-loader-cfonb`** | [`sebastienrousseau/bankstatementparser-loader-cfonb`](https://github.com/sebastienrousseau/bankstatementparser-loader-cfonb) | [![PyPI](https://img.shields.io/pypi/v/bankstatementparser-loader-cfonb.svg)](https://pypi.org/project/bankstatementparser-loader-cfonb/) | Input Loader | Parses French CFONB 120 / AFB120 120-byte fixed-width banking statement files |
-| **`bankstatementparser-loader-camt054`** | [`sebastienrousseau/bankstatementparser-loader-camt054`](https://github.com/sebastienrousseau/bankstatementparser-loader-camt054) | [![PyPI](https://img.shields.io/pypi/v/bankstatementparser-loader-camt054.svg)](https://pypi.org/project/bankstatementparser-loader-camt054/) | Input Loader | Ingests ISO 20022 CAMT.054 real-time debit/credit notification stream XML |
-| **`bankstatementparser-loader-sepa`** | [`sebastienrousseau/bankstatementparser-loader-sepa`](https://github.com/sebastienrousseau/bankstatementparser-loader-sepa) | [![PyPI](https://img.shields.io/pypi/v/bankstatementparser-loader-sepa.svg)](https://pypi.org/project/bankstatementparser-loader-sepa/) | Input Loader | Ingests ISO 20022 SEPA PAIN.002 payment status reports and PAIN.008 direct debit mandates |
-| **`bankstatementparser-loader-bacs`** | [`sebastienrousseau/bankstatementparser-loader-bacs`](https://github.com/sebastienrousseau/bankstatementparser-loader-bacs) | [![PyPI](https://img.shields.io/pypi/v/bankstatementparser-loader-bacs.svg)](https://pypi.org/project/bankstatementparser-loader-bacs/) | Input Loader | Parses UK BACS Standard 18 / Faster Payments 106-byte fixed-width transmission files |
+- **Versioning.** Releases stay on the `0.0.x` line and step by exactly `0.0.1`, in lockstep with the rest of the `bankstatementparser` suite. Under SemVer a `0.0.x` release may break anything; this project names each break in the CHANGELOG instead.
+- **The breaking axis is the MCP surface**: tool, resource and prompt names, their arguments, and the shape of what they return. Renaming or removing any of them, or changing a returned field, is a breaking change and is called out in the CHANGELOG, even though no Python signature moves.
+- **Output stability.** Parsing is deterministic: the same statement and filename hint give the same result on the same `bankstatementparser` version. A change in what a tool returns for the same input is treated as breaking.
+- **Command line.** `--transport`, `--host`, `--port` and `--version` keep their names and defaults; the shell completions are regenerated from the parser so they cannot drift.
+- **Minimum toolchain.** Python 3.10 is the floor; it moves only in a release, for the whole suite at once, with the reason in the CHANGELOG ([`docs/POLICIES.md`](docs/POLICIES.md)).
 
 ---
 
 ## License
 
-Licensed under the [Apache License, Version 2.0](https://opensource.org/license/apache-2-0/).
-Any contribution submitted for inclusion shall be licensed as above,
-without additional terms.
-
----
-
-<p align="center">
-  <a href="https://bankstatementparser.com">bankstatementparser.com</a> ·
-  <a href="https://pypi.org/project/bankstatementparser-mcp/">PyPI</a> ·
-  <a href="https://github.com/sebastienrousseau/bankstatementparser-mcp">GitHub</a>
-</p>
+Dual-licensed under [Apache License, Version 2.0](LICENSE-APACHE) or [MIT](LICENSE-MIT), at your option (`SPDX-License-Identifier: Apache-2.0 OR MIT`). Any contribution submitted for inclusion in the work shall be dual-licensed as above, without additional terms or conditions.
