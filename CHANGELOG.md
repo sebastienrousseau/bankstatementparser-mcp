@@ -2,6 +2,15 @@
 
 ## [0.0.36] - 2026-11-27
 
+### Fixed
+
+- A refused payload's `ToolError` named a fragment of the private temp
+  path instead of only the caller's filename whenever the temp
+  directory resolves differently from the path `mkstemp` returns: on
+  macOS it read `Unable to detect statement format: /privatemystery.xml`,
+  and on Windows it carried the whole `C:\Users\...\Temp\tmp*.xml`
+  path. The resolved form is now replaced too.
+
 ### Changed
 
 - Require `bankstatementparser >= 0.0.35`, the newest core release, and
