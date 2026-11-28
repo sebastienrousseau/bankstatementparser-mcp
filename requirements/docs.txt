@@ -19,9 +19,9 @@ backrefs==8.3.1 ; (python_full_version < "4.0" and python_full_version >= "3.10"
     --hash=sha256:cecce5f4290b0eae0cb30a6e216c539465393218e6596ed164d82d20f2d96a54 \
     --hash=sha256:d818aea8a704e41c0ce60c619e23e136fd5fe87f0fdf0b601107473c35d2d407 \
     --hash=sha256:f3013ec3cc3ceb1069fa31c0432c73c2d72d652c03d082b96089745c290e7a10
-bankstatementparser==0.0.35 ; (python_full_version < "4.0" and python_full_version >= "3.10") and (python_full_version < "4.0" and python_full_version >= "3.10") \
-    --hash=sha256:00ec6ae69dcb6c0955e96a2f66f473cf0f26dfc7c626854af94e39e70edf0a11 \
-    --hash=sha256:c30d8ab535e88dd37872a7461b71eb2e6b4b90a1ca56e306cf5601095a076277
+bankstatementparser==0.0.36 ; (python_full_version < "4.0" and python_full_version >= "3.10") and (python_full_version < "4.0" and python_full_version >= "3.10") \
+    --hash=sha256:bdeb4ae68283f1c595fe7b0a1d06b8c9961a66dce1cd7b9866ce38bda98066f5 \
+    --hash=sha256:c4083637a6ee11b3e90b17fadd4bd3b8f260a6e149d17ff5b3bef48902acf784
 certifi==2026.10.23 ; (python_full_version < "4.0" and python_full_version >= "3.10") and python_full_version >= "3.7" and python_version >= "3.11" \
     --hash=sha256:a9895e6e2758b371e0545e321a3a8fd1fcfd9829ada8824a936dfb16aaaf36cd \
     --hash=sha256:e9b54de76e530bb6cf0ccd036787103acb58fd42ba930ea8bf948ddbaa2f61d1

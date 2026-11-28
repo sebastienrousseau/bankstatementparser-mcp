@@ -6,7 +6,17 @@ library. It summarises the CHANGELOG and the open issues; it does not
 promise work that is not tracked there. Releases ship when the gates
 pass, not on a calendar.
 
-## Shipped (0.0.36, current)
+## Shipped (0.0.37, current)
+
+- passmcp 0.0.10 scores the server 100/100 over stdio and over
+  streamable HTTP, and a CI job fails any change that scores less.
+- An unknown resource over streamable HTTP answers its JSON-RPC error
+  with HTTP 200, and `server/discover` over HTTP lists the 2025-11-25
+  handshake revision the endpoint still serves.
+- `parse_statement`'s catalogue entry fits passmcp's 500-token budget.
+- Requires `bankstatementparser >= 0.0.36`.
+
+## Shipped (0.0.36)
 
 - Five tools over the `bankstatementparser` parser core:
   `list_supported_formats`, `detect_format`, `parse_statement`,

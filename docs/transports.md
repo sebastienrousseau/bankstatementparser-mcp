@@ -11,9 +11,17 @@ One command line, three transports:
 `--host` and `--port` change the bind address (defaults `127.0.0.1` and
 `8000`). The HTTP transports carry no authentication of their own: bind
 loopback, or put the server behind a gateway you trust before binding a
-routable address. Every release is verified over streamable HTTP with
-[passmcp](https://github.com/sebastienrousseau/passmcp) in both protocol
-eras and over SSE with the MCP SDK client; see
+routable address.
+
+Every push and pull request runs the `passmcp conformance (100/100)` job
+of the MCP Protocol Conformance workflow
+(`.github/workflows/mcp-inspect.yml`). It builds the wheel and runs
+[passmcp](https://github.com/sebastienrousseau/passmcp) 0.0.10 against it
+over stdio and over streamable HTTP, where passmcp exercises both
+protocol eras (stateless `server/discover` requests and the
+`initialize` handshake), and it fails unless both runs score 100/100.
+The `MCP Inspector (tools/list)` job of the same workflow lists the tools
+over stdio, streamable HTTP and SSE. See
 [ADR 0001](adr/0001-three-transports-one-command-line.md).
 
 Register the HTTP endpoint with a client:

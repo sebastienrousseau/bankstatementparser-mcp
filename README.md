@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/sebastienrousseau/bankstatementparser-mcp/main/.github/demo.gif" alt="A terminal running bankstatementparser-mcp --version, then the 01_mcp_tools.py and 02_validate_pipeline.py examples detecting, parsing, validating and summarising inline statements" width="100%" />
+  <img src="https://raw.githubusercontent.com/sebastienrousseau/bankstatementparser-mcp/main/.github/demo.gif" alt="A terminal running bankstatementparser-mcp --version (0.0.37), then the 01_mcp_tools.py and 02_validate_pipeline.py examples detecting, parsing, validating and summarising inline statements" width="100%" />
 </p>
 
 ---
@@ -65,7 +65,7 @@
 pip install bankstatementparser-mcp
 ```
 
-That installs the `bankstatementparser-mcp` command, `bankstatementparser >= 0.0.35` and the MCP SDK.
+That installs the `bankstatementparser-mcp` command, `bankstatementparser >= 0.0.36` and the MCP SDK.
 
 | Channel | Command | Notes |
 | :--- | :--- | :--- |
@@ -103,7 +103,7 @@ Repology lists every repository that packages `bankstatementparser-mcp`. PyPI an
 ## Requirements
 
 - **Python 3.10 or later.** CI tests CPython 3.10, 3.11, 3.12, 3.13 and 3.14 on Linux, macOS and Windows; [`docs/POLICIES.md`](docs/POLICIES.md) says when the floor moves.
-- **[`bankstatementparser`](https://pypi.org/project/bankstatementparser/) 0.0.35 or later**, the parser core every tool delegates to.
+- **[`bankstatementparser`](https://pypi.org/project/bankstatementparser/) 0.0.36 or later**, the parser core every tool delegates to.
 - **The MCP SDK**, `mcp >= 1.30` on the 1.x line or `>= 2.2` on 2.x (2.0 and 2.1 are excluded for GHSA-84m7-p3x7-pcfv).
 - **An MCP client** (Claude Desktop, Claude Code, an IDE, or an agent framework) to launch it. The Docker image needs only a container runtime.
 
