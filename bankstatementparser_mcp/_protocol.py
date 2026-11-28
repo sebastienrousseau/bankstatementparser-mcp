@@ -23,6 +23,16 @@ then sees a transport failure instead of the protocol answer.
 :class:`UnknownResourceAsResult` sends that one reply with HTTP 200;
 every other status is left as the SDK chose it.
 
+**The handshake revision in server/discover.** Over streamable HTTP the
+server still answers ``initialize`` (the 2025-11-25 handshake) beside
+the stateless 2026-07-28 requests on one endpoint, as
+docs/transports.md promises, but the SDK's ``server/discover`` lists
+only the 2026-07-28 revisions, so a client cannot see that it may
+negotiate down. :func:`advertise_handshake` adds
+:data:`HANDSHAKE_REVISION` to ``supportedVersions`` there. Over stdio
+the first message fixes a connection's era, so one that has sent
+``server/discover`` cannot negotiate down, and its reply is left as is.
+
 On mcp 1.x none of this applies (no 2026-07-28 path), and
 :func:`install` does nothing.
 """
@@ -35,7 +45,12 @@ from typing import Any
 
 from bankstatementparser_mcp._mcp_compat import MCP_MAJOR
 
-__all__ = ["UnknownResourceAsResult", "install"]
+__all__ = [
+    "HANDSHAKE_REVISION",
+    "UnknownResourceAsResult",
+    "advertise_handshake",
+    "install",
+]
 
 _Message = MutableMapping[str, Any]
 _Receive = Callable[[], Awaitable[_Message]]
@@ -43,6 +58,9 @@ _Send = Callable[[_Message], Awaitable[None]]
 _ASGIApp = Callable[[_Message, _Receive, _Send], Awaitable[None]]
 
 _INVALID_PARAMS = -32602
+
+#: The initialize-handshake revision this server serves and advertises.
+HANDSHAKE_REVISION = "2025-11-25"
 
 
 def _is_unknown_resource(body: bytes) -> bool:
@@ -88,10 +106,26 @@ class UnknownResourceAsResult:
         await self.app(scope, receive, relay)
 
 
+async def advertise_handshake(
+    ctx: Any, call_next: Callable[[Any], Awaitable[Any]]
+) -> Any:
+    """Server middleware: list the handshake revision in an HTTP discover."""
+    result = await call_next(ctx)
+    if ctx.method != "server/discover" or not isinstance(result, dict):
+        return result
+    if ctx.request is None:  # stdio: no HTTP request behind the message
+        return result
+    versions = result.get("supportedVersions", [])
+    if HANDSHAKE_REVISION in versions:
+        return result
+    return {**result, "supportedVersions": [*versions, HANDSHAKE_REVISION]}
+
+
 def install(server: Any) -> Any:
     """Apply the corrections to ``server`` and return it."""
     if MCP_MAJOR < 2:  # pragma: no cover  (mcp 1.x has no 2026-07-28 path)
         return server
+    server.middleware.append(advertise_handshake)
     build_app = server.streamable_http_app
 
     def streamable_http_app(**kwargs: Any) -> UnknownResourceAsResult:

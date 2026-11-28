@@ -1,14 +1,16 @@
 """What passmcp checks on the wire, pinned in-process.
 
 Each test sends the request passmcp sends and asserts the answer it
-scores as conforming: the per-tool catalogue budget and an unknown
-resource over streamable HTTP. The HTTP tests drive the server's own
+scores as conforming: the per-tool catalogue budget, an unknown
+resource over streamable HTTP, and the protocol revisions
+``server/discover`` advertises. The HTTP tests drive the server's own
 ASGI app with its lifespan running, so no port is opened.
 """
 
 from __future__ import annotations
 
 import json
+from types import SimpleNamespace
 from typing import Any
 
 import anyio
@@ -19,7 +21,8 @@ from bankstatementparser_mcp import _protocol
 from bankstatementparser_mcp._mcp_compat import MCP_MAJOR
 
 modern_only = pytest.mark.skipif(
-    MCP_MAJOR < 2, reason="the 2026-07-28 HTTP path is 2.x"
+    MCP_MAJOR < 2,
+    reason="server/discover and the 2026-07-28 HTTP path are 2.x",
 )
 
 # passmcp's catalog.budget.tokens: a tool costs its wire JSON in
@@ -95,6 +98,8 @@ async def _post(
     payload = b"".join(
         m.get("body", b"") for m in sent if m["type"] == "http.response.body"
     )
+    if payload.startswith(b"event:"):  # an SSE reply: its one data line
+        payload = payload.split(b"data: ", 1)[1].split(b"\r\n", 1)[0]
     return status, json.loads(payload)
 
 
@@ -148,3 +153,59 @@ def test_other_methods_pass_through_untouched() -> None:
 @pytest.mark.parametrize("body", [b"Bad Request", b"[]", b"{}"])
 def test_a_body_that_is_not_the_unknown_resource_error(body: bytes) -> None:
     assert not _protocol._is_unknown_resource(body)
+
+
+@modern_only
+def test_discover_lists_the_handshake_revision_it_still_answers() -> None:
+    status, reply = anyio.run(_post, "server/discover", {"_meta": _META}, {})
+    assert status == 200
+    assert reply["result"]["supportedVersions"] == [
+        "2026-07-28",
+        _protocol.HANDSHAKE_REVISION,
+    ]
+
+
+@modern_only
+def test_the_handshake_itself_is_still_answered() -> None:
+    status, reply = anyio.run(
+        _post,
+        "initialize",
+        {
+            "protocolVersion": _protocol.HANDSHAKE_REVISION,
+            "capabilities": {},
+            "clientInfo": {"name": "test", "version": "0"},
+        },
+        {"mcp-protocol-version": _protocol.HANDSHAKE_REVISION},
+    )
+    assert status == 200
+    assert reply["result"]["protocolVersion"] == _protocol.HANDSHAKE_REVISION
+
+
+@pytest.mark.parametrize(
+    ("method", "request_", "result"),
+    [
+        ("tools/list", object(), {"tools": []}),
+        ("server/discover", object(), None),
+        (
+            "server/discover",
+            object(),
+            {
+                "supportedVersions": [
+                    "2026-07-28",
+                    _protocol.HANDSHAKE_REVISION,
+                ]
+            },
+        ),
+        # stdio: the first message fixes the era, so no negotiating down.
+        ("server/discover", None, {"supportedVersions": ["2026-07-28"]}),
+    ],
+)
+def test_advertise_handshake_leaves_other_results_alone(
+    method: str, request_: object, result: Any
+) -> None:
+    ctx = SimpleNamespace(method=method, request=request_)
+
+    async def call_next(_: Any) -> Any:
+        return result
+
+    assert anyio.run(_protocol.advertise_handshake, ctx, call_next) is result
