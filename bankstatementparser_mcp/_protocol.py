@@ -123,7 +123,7 @@ async def advertise_handshake(
 
 def install(server: Any) -> Any:
     """Apply the corrections to ``server`` and return it."""
-    if MCP_MAJOR < 2:  # pragma: no cover  (mcp 1.x has no 2026-07-28 path)
+    if MCP_MAJOR < 2:  # mcp 1.x has no 2026-07-28 path
         return server
     server.middleware.append(advertise_handshake)
     build_app = server.streamable_http_app

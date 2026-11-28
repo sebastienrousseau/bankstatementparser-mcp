@@ -209,3 +209,17 @@ def test_advertise_handshake_leaves_other_results_alone(
         return result
 
     assert anyio.run(_protocol.advertise_handshake, ctx, call_next) is result
+
+
+def test_install_leaves_an_mcp_1_server_untouched(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """On mcp 1.x there is no 2026-07-28 path, so nothing is wrapped."""
+    monkeypatch.setattr(_protocol, "MCP_MAJOR", 1)
+    middleware: list[Any] = []
+    app = object()
+    fake = SimpleNamespace(middleware=middleware, streamable_http_app=app)
+
+    assert _protocol.install(fake) is fake
+    assert middleware == []
+    assert fake.streamable_http_app is app
