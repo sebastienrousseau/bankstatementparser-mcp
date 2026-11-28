@@ -48,10 +48,10 @@ from bankstatementparser.exceptions import BankStatementParserError
 from mcp.types import ToolAnnotations
 from pydantic import Field
 
-from bankstatementparser_mcp import __version__, _cli
+from bankstatementparser_mcp import __version__, _cli, _protocol
 from bankstatementparser_mcp._mcp_compat import ToolError, build_server
 
-mcp = build_server("bankstatementparser", __version__)
+mcp = _protocol.install(build_server("bankstatementparser", __version__))
 
 # Every way a core parser rejects malformed input. Besides its own
 # errors and ValueError, core lets lxml's XMLSyntaxError (a SyntaxError
