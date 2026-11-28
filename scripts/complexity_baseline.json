@@ -1,9 +1,9 @@
 {
   "bankstatementparser_mcp/server.py": {
-    "file_lines": 568
+    "file_lines": 554
   },
   "bankstatementparser_mcp/server.py::parse_statement": {
-    "lines": 82
+    "lines": 68
   },
   "bankstatementparser_mcp/server.py::validate_statement": {
     "lines": 61

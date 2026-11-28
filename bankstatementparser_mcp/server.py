@@ -310,10 +310,9 @@ def parse_statement(
         str,
         Field(
             description=(
-                "Original filename of the payload; its extension "
-                "(.xml, .csv, .ofx, .qfx, .mt940, .sta) selects the "
-                "format when 'format' is omitted. Defaults to "
-                "'statement.xml'."
+                "Original filename; its extension (.xml, .csv, .ofx, "
+                ".qfx, .mt940, .sta) selects the format when 'format' "
+                "is omitted."
             ),
         ),
     ] = "statement.xml",
@@ -322,32 +321,19 @@ def parse_statement(
         int | None,
         Field(
             description=(
-                "Optional maximum number of transaction rows to return. "
-                "The full 'transaction_count' is always reported even "
-                "when the returned rows are truncated. When omitted, all "
-                "rows are returned."
+                "Maximum transaction rows to return; omitted returns "
+                "all. 'transaction_count' is always the full count."
             ),
         ),
     ] = None,
 ) -> dict[str, Any]:
     """Parse an inline statement payload into transaction rows and a summary.
 
-    Use this to read the full transaction detail plus the statement
-    balances from a payload. When you only need the balances/totals use
-    ``summarize_statement`` instead, and to merely confirm a payload parses
-    without returning any rows use ``validate_statement``.
-
-    Args:
-        content: The raw statement text.
-        filename: Original filename; its extension selects the format
-            when ``format`` is omitted.
-        format: Explicit format override.
-        limit: Optional cap on returned transaction rows.
-
-    Returns:
-        A dict with the resolved ``format``, ``columns``, full
-        ``transaction_count``, the (possibly truncated) ``transactions``
-        as row dicts, and the statement ``summary``.
+    Returns the resolved ``format``, the ``columns``, the full
+    ``transaction_count``, the ``transactions`` as row dicts (at most
+    ``limit``) and the statement ``summary``. For balances only,
+    ``summarize_statement`` returns just the summary; to confirm a
+    payload parses without any rows, ``validate_statement``.
 
     Raises:
         ToolError: If the format is unsupported, cannot be detected, or
