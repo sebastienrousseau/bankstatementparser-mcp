@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/sebastienrousseau/bankstatementparser-mcp/main/.github/demo.gif" alt="A terminal running bankstatementparser-mcp --version, then the 01_mcp_tools.py and 02_validate_pipeline.py examples detecting, parsing, validating and summarising inline statements" width="100%" />
+  <img src="https://raw.githubusercontent.com/sebastienrousseau/bankstatementparser-mcp/main/.github/demo.gif" alt="A terminal running bankstatementparser-mcp --version (0.0.37), then the 01_mcp_tools.py and 02_validate_pipeline.py examples detecting, parsing, validating and summarising inline statements" width="100%" />
 </p>
 
 ---
