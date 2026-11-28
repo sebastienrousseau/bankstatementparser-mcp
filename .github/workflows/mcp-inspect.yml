@@ -54,3 +54,92 @@ jobs:
 
       - name: List tools over SSE via MCP Inspector CLI
         run: npx -y "$INSPECTOR" --cli http://127.0.0.1:8001/sse --transport sse --method tools/list
+
+  # passmcp (https://github.com/sebastienrousseau/passmcp) connects the
+  # way an agent would and scores the server out of 100. This job builds
+  # the branch's wheel, runs passmcp over stdio and over streamable HTTP,
+  # and fails unless both score 100. The release archive is checked
+  # against the release's checksums.txt and against the digest pinned
+  # here, so a replaced asset fails the job instead of running.
+  passmcp:
+    name: passmcp conformance (100/100)
+    runs-on: ubuntu-latest
+    env:
+      PASSMCP_VERSION: "0.0.10"
+      # passmcp_Linux_x86_64.tar.gz, as listed in v0.0.10's checksums.txt.
+      PASSMCP_SHA256: "fd9d112681dbf26b2a3a77f7a8a10dc88924363a9c0a168547176da43d1977cf"
+      REPORTS: ${{ github.workspace }}/passmcp-reports
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install passmcp from its GitHub release
+        run: |
+          base="https://github.com/sebastienrousseau/passmcp/releases/download/v${PASSMCP_VERSION}"
+          mkdir -p "$RUNNER_TEMP/passmcp"
+          cd "$RUNNER_TEMP/passmcp"
+          curl -fsSLO "$base/passmcp_Linux_x86_64.tar.gz"
+          curl -fsSLO "$base/checksums.txt"
+          grep '  passmcp_Linux_x86_64.tar.gz$' checksums.txt | sha256sum -c -
+          echo "${PASSMCP_SHA256}  passmcp_Linux_x86_64.tar.gz" | sha256sum -c -
+          tar -xzf passmcp_Linux_x86_64.tar.gz passmcp
+          echo "$RUNNER_TEMP/passmcp" >> "$GITHUB_PATH"
+          ./passmcp version
+
+      # The same hash-pinned build tooling and command as the release job.
+      - name: Build this branch's wheel and install it into a clean venv
+        run: |
+          pip install --require-hashes -r requirements/build.txt
+          poetry build --format wheel
+          python -m venv "$RUNNER_TEMP/server"
+          "$RUNNER_TEMP/server/bin/pip" install --require-hashes -r requirements/runtime.txt
+          "$RUNNER_TEMP/server/bin/pip" install --no-deps dist/*.whl
+
+      - name: passmcp over stdio
+        run: |
+          passmcp check --stdio --report-dir "$REPORTS/stdio" \
+            -- "$RUNNER_TEMP/server/bin/bankstatementparser-mcp"
+
+      - name: passmcp over streamable HTTP
+        run: |
+          "$RUNNER_TEMP/server/bin/bankstatementparser-mcp" \
+            --transport streamable-http --port 8765 &
+          # Any HTTP answer means the listener is up.
+          for _ in $(seq 1 30); do
+            curl -s -o /dev/null http://127.0.0.1:8765/mcp && break
+            sleep 1
+          done
+          passmcp check http://127.0.0.1:8765/mcp --report-dir "$REPORTS/http"
+          kill %1
+
+      - name: Both transports score 100/100
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import sys
+
+          failed = False
+          for transport in ("stdio", "http"):
+              path = os.path.join(os.environ["REPORTS"], transport, "report.json")
+              with open(path, encoding="utf-8") as handle:
+                  score = json.load(handle)["score"]
+              print(f"{transport}: {score['total']}/100")
+              for category in score["categories"]:
+                  for deduction in category.get("deductions") or []:
+                      print(f"  {deduction}")
+              failed = failed or score["total"] != 100
+          sys.exit(1 if failed else 0)
+          PY
+
+      - name: Upload the passmcp reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: passmcp-reports
+          path: passmcp-reports/
+          if-no-files-found: warn
