@@ -2,6 +2,15 @@
 
 ## [0.0.37] - 2026-11-28
 
+### Added
+
+- CI: the `passmcp conformance (100/100)` job (MCP Protocol
+  Conformance workflow) installs passmcp 0.0.10 from its GitHub
+  release after checking its checksum, runs it over stdio and over
+  streamable HTTP against this branch's wheel, uploads the reports,
+  and fails unless both score 100/100. This release scores 100/100
+  on both.
+
 ### Changed
 
 - CI: four pinned actions move to their latest releases:
@@ -11,9 +20,20 @@
   `poetry.lock` and `requirements/{ci,docs,fuzz,runtime}.txt` move to
   bankstatementparser 0.0.36.
 - Version 0.0.37, in lockstep with the suite's 0.0.37 release.
+- `docs/transports.md` names the CI job that runs passmcp, the
+  transports it covers and the 100/100 it requires.
 
 ### Fixed
 
+- Over streamable HTTP, `resources/read` for a URI that does not exist
+  answered HTTP 400, so a client saw a transport failure; the
+  JSON-RPC error (-32602 with `data.uri`) now comes with HTTP 200.
+- Over streamable HTTP, `server/discover` lists 2025-11-25 beside
+  2026-07-28 in `supportedVersions`, since the endpoint still answers
+  the `initialize` handshake.
+- `parse_statement`'s catalogue entry is about 490 tokens instead of
+  627, under passmcp's 500-token budget per tool; its name and
+  arguments are unchanged.
 - The suite consistency check authenticates its GitHub API request
   with the workflow token, so the shared anonymous rate limit no
   longer fails it.
