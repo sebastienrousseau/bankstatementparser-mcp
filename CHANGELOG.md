@@ -22,6 +22,9 @@
 - Version 0.0.37, in lockstep with the suite's 0.0.37 release.
 - `docs/transports.md` names the CI job that runs passmcp, the
   transports it covers and the 100/100 it requires.
+- `make security` and the Security workflow run bandit's full scan
+  (`-c pyproject.toml`) with no fallback; a failing scan was hidden by
+  a medium-severity-only rerun, and CI ran only that rerun.
 
 ### Fixed
 
